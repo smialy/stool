@@ -1,0 +1,7 @@
+{
+  "name": "sjs",
+  "license": "MIT",
+  "devDependencies": {
+    "lerna": "^2.9.0"
+  }
+}
