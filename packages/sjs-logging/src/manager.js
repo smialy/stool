@@ -1,14 +1,18 @@
 import {LEVELS} from './consts';
 import {Logger} from './logger';
 import {Mask} from './filter';
+import { checkLevel } from './utils';
 
 export class Manager extends Mask {
 
-    constructor() {
+    constructor(root, level=LEVELS.NOTSET) {
         super();
-        this._loggers = {};
-        this.level = LEVELS.ALL;
-        this.getLogger().level = LEVELS.ALL;
+        this._loggers = new Map();
+        this._root = root;
+        this.disable = checkLevel(level);
+    }
+    setDisable(level){
+        this.disable = checkLevel(level);
     }
 
     /**
@@ -18,30 +22,30 @@ export class Manager extends Mask {
      * @return {Logger}
      */
     getLogger(name='root') {
-        if (!this._loggers[name]) {
+        if(!this._loggers.has(name)){
             let logger = new Logger(name);
             this._fixTree(logger);
             logger.manager = this;
-            this._loggers[name] = logger;
+            this._loggers.set(name, logger);
         }
-        return this._loggers[name];
+        return this._loggers.get(name);
     }
 
     _fixTree(logger) {
-        var parts = logger.name.split('.');
+        let parts = logger.name.split('.');
         while (parts.length) {
             parts.pop();
-            var parent = this._loggers[parts.join('.') || 'root'];
+            let name = parts.join('.') || 'root';
+            let parent = this._loggers.get(name);
             if (parent) {
                 logger.parent = parent;
                 break;
             }
         }
         if (logger.parent) {
-            for (var i in this._loggers) {
-                var item = this._loggers[i];
+            for (let item of this._loggers.values()) {
                 if (item.parent && item.parent === logger.parent) {
-                    var name = item.name;
+                    let name = item.name;
                     if (item.name.substr(0, logger.name.length) === logger.name) {
                         item.parent = logger;
                     }

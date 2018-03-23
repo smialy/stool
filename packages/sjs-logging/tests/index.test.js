@@ -1,7 +1,7 @@
 import {
     LEVELS,
     LEVEL_NAMES,
-    LEVEL_TO_MASK
+    levelToMask
 } from '../src/consts';
 import {
     Mask,
@@ -12,19 +12,19 @@ import {Manager} from '../src/manager';
 import {Handler, ConsoleHandler} from '../src/handler';
 import {Logger} from '../src/logger';
 
-class TestHandler extends Handler{
+class TestHandler extends Handler {
     constructor() {
         super();
         this._body = [];
     }
-    handle(record) {
+    emit(record) {
         this._body.push(record.msg);
     }
     result(sep) {
         return this._body.join(sep || ',');
     }
     reset() {
-        this.level = LEVELS.ALL;
+        this.setLevel(LEVELS.NOTSET);
         this._body = [];
     }
 }
@@ -39,10 +39,6 @@ function _dummy(logger) {
     logger.fatal('f');
 }
 
-function _mask(level) {
-    return level * 2 - 1;
-}
-
 function _TestCase() {
 
 }
@@ -55,138 +51,57 @@ QUnit.test('empty logger', assert => {
     logger.addHandler(handler);
 
     _dummy(logger);
-    assert.equal('', handler.result());
-});
-QUnit.test('custom logger mask', assert => {
-    let handler = new TestHandler();
-    var logger = new Logger();
-    logger.addHandler(handler);
-    logger.mask = LEVELS.DEBUG | LEVELS.ERROR;
-    _dummy(logger);
-    assert.equal('d,e', handler.result());
+    assert.equal('d,i,w1,w2,e,c,f', handler.result());
 });
 
-QUnit.test('setter/getter for level and mask ', assert => {
-    var logger = new Logger();
-
-    logger.level = LEVELS.DEBUG;
-    assert.equal(1, logger.mask);
-
-    logger.level = LEVELS.INFO;
-    assert.equal(_mask(LEVELS.INFO), logger.mask);
-
-    logger.level = LEVELS.WARN;
-    assert.equal(_mask(LEVELS.WARN), logger.mask);
-
-    logger.level = LEVELS.WARNING;
-    assert.equal(_mask(LEVELS.WARNING), logger.mask);
-
-    logger.level = LEVELS.ERROR;
-    assert.equal(_mask(LEVELS.ERROR), logger.mask);
-
-    logger.level = LEVELS.CRITICAL;
-    assert.equal(_mask(LEVELS.CRITICAL), logger.mask);
-
-    logger.level = LEVELS.FATAL;
-    assert.equal(_mask(LEVELS.FATAL), logger.mask);
-});
 QUnit.test('log level', assert => {
     let handler = new TestHandler();
     var logger = new Logger('test');
     logger.addHandler(handler);
 
     handler.reset();
-
-    logger.level = LEVELS.DEBUG;
-    _dummy(logger);
-    assert.equal('d', handler.result());
-
-    handler.reset();
-
-    logger.level = LEVELS.INFO;
-    _dummy(logger);
-    assert.equal('d,i', handler.result());
-
-    handler.reset();
-
-    logger.level = LEVELS.WARNING;
-    _dummy(logger);
-    assert.equal('d,i,w1,w2', handler.result());
-
-    handler.reset();
-
-    logger.level = LEVELS.WARN;
-    _dummy(logger);
-    assert.equal('d,i,w1,w2', handler.result());
-
-    handler.reset();
-
-    logger.level = LEVELS.ERROR;
-    _dummy(logger);
-    assert.equal('d,i,w1,w2,e', handler.result());
-
-    handler.reset();
-
-    logger.level = LEVELS.CRITICAL;
+    debugger
+    logger.setLevel(LEVELS.DEBUG);
     _dummy(logger);
     assert.equal('d,i,w1,w2,e,c,f', handler.result());
 
     handler.reset();
 
-    logger.level = LEVELS.FATAL;
+    logger.setLevel(LEVELS.INFO);
     _dummy(logger);
-    assert.equal('d,i,w1,w2,e,c,f', handler.result());
-
-});
-QUnit.test('log mask', assert => {
-    let handler = new TestHandler();
-    var logger = new Logger('test');
-    logger.addHandler(handler);
+    assert.equal('i,w1,w2,e,c,f', handler.result());
 
     handler.reset();
 
-    logger.mask = LEVELS.DEBUG;
+    logger.setLevel(LEVELS.WARNING);
     _dummy(logger);
-    assert.equal('d', handler.result());
+    assert.equal('w1,w2,e,c,f', handler.result());
 
     handler.reset();
 
-    logger.mask = LEVELS.INFO;
+    logger.setLevel(LEVELS.WARN);
     _dummy(logger);
-    assert.equal('i', handler.result());
+    assert.equal('w1,w2,e,c,f', handler.result());
 
     handler.reset();
 
-    logger.mask = LEVELS.WARNING;
+    logger.setLevel(LEVELS.ERROR);
     _dummy(logger);
-    assert.equal('w1,w2', handler.result());
+    assert.equal('e,c,f', handler.result());
 
     handler.reset();
 
-    logger.mask = LEVELS.WARN;
-    _dummy(logger);
-    assert.equal('w1,w2', handler.result());
-
-    handler.reset();
-
-    logger.mask = LEVELS.ERROR;
-    _dummy(logger);
-    assert.equal('e', handler.result());
-
-    handler.reset();
-
-    logger.mask = LEVELS.CRITICAL;
+    logger.setLevel(LEVELS.CRITICAL);
     _dummy(logger);
     assert.equal('c,f', handler.result());
 
     handler.reset();
 
-    logger.mask = LEVELS.FATAL;
+    logger.setLevel(LEVELS.FATAL);
     _dummy(logger);
     assert.equal('c,f', handler.result());
 
 });
-
 
 QUnit.test('manager priority', assert => {
     let handler = new TestHandler();
@@ -201,11 +116,12 @@ QUnit.test('manager priority', assert => {
     handler.reset();
 
     //manager has higher priority than logger
-    manager.level = LEVELS.DEBUG;
+    manager.setDisable(LEVELS.WARN);
 
-    logger.level = LEVELS.ALL;
+    logger.setLevel(LEVELS.INFO);
+    debugger
     _dummy(logger);
-    assert.equal('d', handler.result());
+    assert.equal('w1,w2,e,c,f', handler.result());
 });
 QUnit.test('get parent level 1', assert => {
     let handler = new TestHandler();
@@ -215,11 +131,11 @@ QUnit.test('get parent level 1', assert => {
     var b = manager.getLogger('a.b');
     var c = manager.getLogger('a.b.c');
     c.addHandler(handler);
-    a.level = LEVELS.INFO;
+    a.setLevel(LEVELS.INFO);
 
 
     _dummy(c);
-    assert.equal('d,i', handler.result());
+    assert.equal(handler.result(), 'i,w1,w2,e,c,f');
 
 });
 QUnit.test('get parent level 2', assert => {
@@ -230,12 +146,12 @@ QUnit.test('get parent level 2', assert => {
     var b = manager.getLogger('a.b');
     var c = manager.getLogger('a.b.c');
 
-    a.level = LEVELS.DEBUG;
-    b.level = LEVELS.INFO;
+    a.setLevel(LEVELS.DEBUG);
+    b.setLevel(LEVELS.INFO);
     c.addHandler(handler);
 
     _dummy(c);
-    assert.equal('d,i', handler.result());
+    assert.equal(handler.result(), 'i,w1,w2,e,c,f');
 });
 
 QUnit.test('get parent level 3', assert => {
@@ -245,12 +161,11 @@ QUnit.test('get parent level 3', assert => {
     var a = manager.getLogger('a');
     var c = manager.getLogger('a.b.c');
 
-    a.level = LEVELS.INFO;
+    a.setLevel(LEVELS.INFO);
 
     c.addHandler(handler);
-
     _dummy(c);
-    assert.equal('d,i', handler.result());
+    assert.equal(handler.result(),'i,w1,w2,e,c,f');
 });
 QUnit.test('get parent level 4', assert => {
     var handler = new TestHandler();
@@ -261,14 +176,14 @@ QUnit.test('get parent level 4', assert => {
     var d = manager.getLogger('a.b.c.d');
     var b = manager.getLogger('a.b');
 
-    a.level = LEVELS.DEBUG;
+    a.setLevel(LEVELS.DEBUG);
 
-    b.level = LEVELS.INFO;
+    b.setLevel(LEVELS.INFO);
 
     d.addHandler(handler);
 
     _dummy(d);
-    assert.equal('d,i', handler.result());
+    assert.equal(handler.result(), 'i,w1,w2,e,c,f');
 });
 QUnit.test('propagate log', assert => {
     var handler = new TestHandler();
@@ -276,12 +191,12 @@ QUnit.test('propagate log', assert => {
     var a = manager.getLogger('a');
     var b = manager.getLogger('a.b');
     var c = manager.getLogger('a.b.c');
-    a.level = LEVELS.DEBUG;
+    a.setLevel(LEVELS.DEBUG);
 
     a.addHandler(handler);
 
     _dummy(c);
-    assert.equal('d', handler.result());
+    assert.equal('d,i,w1,w2,e,c,f', handler.result());
 });
 
 QUnit.module('sjs-logging - Handler');
@@ -289,7 +204,7 @@ QUnit.module('sjs-logging - Handler');
 QUnit.test('handler init', assert => {
     var handler = new TestHandler();
     var logger = new Logger('test');
-    logger.level = LEVELS.ALL;
+    logger.setLevel(LEVELS.NOTSET);
     logger.addHandler(handler);
 
     _dummy(logger);
@@ -301,9 +216,9 @@ QUnit.test('handler level', assert => {
     var logger = new Logger('test');
     logger.addHandler(handler);
 
-    logger.level = LEVELS.ALL;
-    handler.level = LEVELS.INFO;
+    logger.setLevel(LEVELS.NOTSET);
+    handler.setLevel(LEVELS.INFO);
     _dummy(logger);
 
-    assert.equal('d,i', handler.result());
+    assert.equal('i,w1,w2,e,c,f', handler.result());
 });

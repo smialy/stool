@@ -1,34 +1,38 @@
-import {LEVELS, LEVEL_NAMES, LEVEL_TO_MASK} from './consts';
+import {LEVELS, LEVEL_NAMES} from './consts';
+import {levelToMask, checkLevel} from './utils';
 import { Handler } from './handler';
 import { Filterer } from './filter';
 
 
-export class Logger extends Filterer{
+export class Logger extends Filterer {
 
     /**
      * @param {string} name
      * @param {number} [level=LEVELS.NOTSET] level
      */
     constructor(name, level=LEVELS.NOTSET){
-    	  super();
-    	  this.level = level;
+        super();
         this.name = name;
+        this.level = checkLevel(level);
         this.parent =  null;
-    	  this.propagate = true;
+        this.propagate = true;
         this._handlers = [];
     }
 
+    setLevel(level){
+        this.level = checkLevel(level);
+    }
     /**
      *
      * @param {Handler} handler
      */
     addHandler(handler) {
         if (!(handler instanceof Handler)) {
-            throw new Error('Expected sjs-log.Handler');
+            throw new Error('Expected sjs-logging.Handler');
         }
         if(this._handlers.indexOf(handler) === -1){
-        	this._handlers.push(handler);
-    	}
+            this._handlers.push(handler);
+        }
         return this;
     }
     /**
@@ -43,6 +47,9 @@ export class Logger extends Filterer{
      */
     hasHandlers() {
         return this._handler.length;
+    }
+    getHandlers() {
+        return this._handlers.concat();
     }
     /**
      *
@@ -117,62 +124,56 @@ export class Logger extends Filterer{
      * @param {Error} ex
      */
     log(level, msg, ex) {
-        level = _checkLevel(level);
-        if (!this.manager || (this.manager && this.manager.mask & level)) {
-            if (this._getParentMask() & level) {
-                var record = {
-                    name: this.name,
-                    level: level,
-                    levelName: LEVEL_NAMES[level],
-                    mask: LEVEL_TO_MASK(level),
-                    msg: msg,
-                    ex: ex
-                };
-                this.handle(record);
-            }
+        level = checkLevel(level);
+        if (this._isEnabledFor(level)) {
+            this.handle({
+                name: this.name,
+                level,
+                levelName: LEVEL_NAMES[level],
+                msg,
+                ex
+            });
         }
+
     }
-    _getParentMask() {
-        var logger = this;
-        while (logger) {
-            if (logger._mask) {
-                return logger._mask;
-            }
-            logger = logger.parent;
+    _isEnabledFor(level){
+        if(this.manager && this.manager.disable > level){
+            return false;
         }
-        return LEVELS.NOTSET;
+        return level >= this._getParentLevel();
+
     }
+
     /**
      *
      * @param {Record} record
      */
     handle(record) {
-        var handler, p = this;
-        while (p) {
-            for (var i = 0, j = p._handlers.length; i < j; i++) {
-                handler = p._handlers[i];
-                if (handler.mask & record.level) {
-                    handler.handle(record);
+        if(this.filter(record)){
+            let p = this;
+            while (p) {
+                let handlers = p.getHandlers();
+                for (let handler of handlers) {
+                    if (record.level >= handler.level) {
+                        handler.handle(record);
+                    }
                 }
+                if(!p.propagate){
+                    break;
+                }
+                p = p.parent;
             }
-            p = p.propagate ? p.parent : null;
         }
     }
-}
 
-/**
-* Return level as number
-*
-* @param {Number|string} level
-* @return {Number}
-* @throw TypeError
-*/
-function _checkLevel(level) {
-    if (LEVEL_NAMES.hasOwnProperty(level)) {
-        if (typeof level === 'string') {
-            return LEVEL_NAMES[level];
+    _getParentLevel() {
+        let logger = this;
+        while (logger) {
+            if (logger.level) {
+                return logger.level;
+            }
+            logger = logger.parent;
         }
-        return level;
+        return LEVELS.NOTSET;
     }
-    throw new TypeError('Unknown level: ' + level);
 }
