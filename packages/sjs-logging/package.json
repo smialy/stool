@@ -20,8 +20,6 @@
   },
   "main": "src/index.js",
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-env": "^2.4.1",
     "karma": "^2.0.0",
     "karma-chrome-launcher": "^2.1.1",
     "karma-firefox-launcher": "^1.0.1",
@@ -29,10 +27,5 @@
     "karma-rollup-preprocessor": "^5.1.1",
     "qunit": "^2.5.1",
     "rollup": "^0.57.1"
-  },
-  "babel": {
-    "presets": [
-      "env"
-    ]
   }
 }
