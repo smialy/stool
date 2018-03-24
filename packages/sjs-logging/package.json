@@ -7,13 +7,13 @@
   ],
   "homepage": "",
   "bugs": {
-    "url": "https://github.com/smialy/sjs-logging/issues"
+    "url": "https://github.com/smialy/sjs/issues"
   },
   "license": "MIT",
   "author": "smialy",
   "repository": {
     "type": "git",
-    "url": "http://github.com/smialy/sjs-logging"
+    "url": "http://github.com/smialy/sjs"
   },
   "scripts": {
     "test": "karma start --single-run"
@@ -28,7 +28,6 @@
     "karma-qunit": "^2.0.1",
     "karma-rollup-preprocessor": "^5.1.1",
     "qunit": "^2.5.1",
-    "qunitjs": "^2.3.2",
     "rollup": "^0.57.1"
   },
   "babel": {

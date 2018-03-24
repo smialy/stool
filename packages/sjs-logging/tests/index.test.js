@@ -1,7 +1,6 @@
 import {
     LEVELS,
-    LEVEL_NAMES,
-    levelToMask
+    LEVEL_NAMES
 } from '../src/consts';
 import {
     Mask,

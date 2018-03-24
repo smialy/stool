@@ -3,14 +3,14 @@ import {Logger} from './logger';
 import {Mask} from './filter';
 import { checkLevel } from './utils';
 
-export class Manager extends Mask {
+export class Manager {
 
     constructor(root, level=LEVELS.NOTSET) {
-        super();
         this._loggers = new Map();
         this._root = root;
         this.disable = checkLevel(level);
     }
+
     setDisable(level){
         this.disable = checkLevel(level);
     }

@@ -1,5 +1,5 @@
 import {LEVELS, LEVEL_NAMES} from './consts';
-import {levelToMask, checkLevel} from './utils';
+import {checkLevel} from './utils';
 import { Handler } from './handler';
 import { Filterer } from './filter';
 
