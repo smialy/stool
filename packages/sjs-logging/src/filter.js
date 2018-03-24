@@ -1,5 +1,3 @@
-import {levelToMask} from './utils';
-
 /**
  * @typedef {Object} Record
  * @param {string} name
@@ -9,49 +7,6 @@ import {levelToMask} from './utils';
  * @param {string} msg
  * @param {Error} ex
      */
-
-/**
- * Base logger
- */
-export class Mask{
-
-    constructor(){
-        this._mask = 0;
-    }
-
-    /**
-    * Setter for level [set level()]
-    *
-    * @param {number} level
-    */
-    set level(level) {
-        this._mask = levelToMask(level);
-    }
-    /**
-    * Getter for level [get level()]
-    *
-    * @return {number} level
-    */
-    get level() {
-        return null;
-    }
-    /**
-    * Getter for mask [get mask()]
-    *
-    * @return {number} mask
-    */
-    get mask() {
-        return this._mask;
-    }
-    /**
-    * Setter for mask [set mask()]
-    *
-    * @param {number} mask
-    */
-    set mask(mask) {
-        this._mask = mask;
-    }
-}
 
 /**
  * Base class for all filters
@@ -78,6 +33,7 @@ export class Filter {
         return false;
     }
 }
+
 
 /**
  * Filters manager

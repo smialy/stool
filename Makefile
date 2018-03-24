@@ -12,3 +12,6 @@ clean:
 
 test:
 	./node_modules/.bin/lerna run test
+
+lint:
+	./node_modules/.bin/lerna run lint

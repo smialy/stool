@@ -1,7 +1,7 @@
-import {LEVELS} from './consts';
-import {Logger} from './logger';
-import {Mask} from './filter';
+import { LEVELS } from './consts';
+import { Logger } from './logger';
 import { checkLevel } from './utils';
+
 
 export class Manager {
 
@@ -45,7 +45,6 @@ export class Manager {
         if (logger.parent) {
             for (let item of this._loggers.values()) {
                 if (item.parent && item.parent === logger.parent) {
-                    let name = item.name;
                     if (item.name.substr(0, logger.name.length) === logger.name) {
                         item.parent = logger;
                     }

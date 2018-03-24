@@ -5,7 +5,7 @@ import { checkLevel } from './utils';
 
 export class Handler extends Filterer {
 
-  /**
+    /**
      * @param {number} [level=LEVELS.NOTSET]
      */
     constructor(level=LEVELS.NOTSET) {
@@ -26,7 +26,7 @@ export class Handler extends Filterer {
         return false;
     }
 
-    emit(record) {}
+    emit() {}
     flush() {}
     close() {}
 }
@@ -37,8 +37,8 @@ export class ConsoleHandler extends Handler {
      */
     emit(record) {
         console.log('[' + record.name + '] ::' + record.levelName + ':: ' + record.msg);
-        if (record.ex) {
-            console.error(record.ex);
+        if (record.exception) {
+            console.error(record.exception);
         }
     }
 }

@@ -52,12 +52,6 @@ export class Container {
     }
 }
 
-function createType(fn: Function, ...args: any[]): any {
-    let obj = Object.create(fn.prototype);
-    fn.apply(obj, args);
-    return obj;
-}
-
 function validateKey(key: any) {
     if (key === null || key === undefined) {
         throw new TypeError('Key cannot be null or undefined');

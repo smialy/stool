@@ -9,11 +9,13 @@
     "url": "git+https://github.com/smialy/sjs.git"
   },
   "scripts": {
-    "test": "karma start --single-run"
+    "test": "karma start --single-run",
+    "lint": "eslint src test"
   },
   "license": "MIT",
   "homepage": "https://github.com/smialy/sjs#readme",
   "devDependencies": {
+    "eslint": "^4.19.1",
     "karma": "^2.0.0",
     "karma-chrome-launcher": "^2.1.1",
     "karma-firefox-launcher": "^1.0.1",

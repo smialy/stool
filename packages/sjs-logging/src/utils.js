@@ -11,6 +11,10 @@ export function levelToMask(level) {
     return level === LEVELS.NOTSET ? LEVELS.NOTSET : level * 2 - 1;
 }
 
+/**
+ *
+ * @param {numbe|string} level
+ */
 export function checkLevel(level){
     let type = typeof level;
     if(type === 'number'){

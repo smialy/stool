@@ -56,33 +56,24 @@ export class Logger extends Filterer {
      * @param {string} msg
      * @param {Error} ex
      */
-    fatal(msg, ex) {
-        this.log(LEVELS.FATAL, msg, ex);
+    fatal(msg, exception) {
+        this.log(LEVELS.FATAL, msg, exception);
     }
     /**
      *
      * @param {string} msg
      * @param {Error} ex
      */
-    critical(msg, ex) {
-        this.log(LEVELS.CRITICAL, msg, ex);
+    critical(msg, exception) {
+        this.log(LEVELS.CRITICAL, msg, exception);
     }
     /**
      *
      * @param {string} msg
      * @param {Error} ex
      */
-    error(msg, ex) {
-        this.log(LEVELS.ERROR, msg, ex);
-    }
-
-    /**
-     *
-     * @param {string} msg
-     * @param {Error} ex
-     */
-    warn(msg, ex) {
-        this.log(LEVELS.WARN, msg, ex);
+    error(msg, exception) {
+        this.log(LEVELS.ERROR, msg, exception);
     }
 
     /**
@@ -90,8 +81,17 @@ export class Logger extends Filterer {
      * @param {string} msg
      * @param {Error} ex
      */
-    warning(msg, ex) {
-        this.log(LEVELS.WARN, msg, ex);
+    warn(msg, exception) {
+        this.log(LEVELS.WARN, msg, exception);
+    }
+
+    /**
+     *
+     * @param {string} msg
+     * @param {Error} ex
+     */
+    warning(msg, exception) {
+        this.log(LEVELS.WARN, msg, exception);
     }
 
     /**
@@ -114,16 +114,16 @@ export class Logger extends Filterer {
      *
      * @param {Error} ex
      */
-    exception(ex) {
-        this.log(LEVELS.ERROR, ex.message, ex);
+    exception(exception) {
+        this.log(LEVELS.ERROR, exception.message, exception);
     }
 
     /**
      * @param {number} level
      * @param {string} msg
-     * @param {Error} ex
+     * @param {Error} exception
      */
-    log(level, msg, ex) {
+    log(level, msg, exception) {
         level = checkLevel(level);
         if (this._isEnabledFor(level)) {
             this.handle({
@@ -131,7 +131,7 @@ export class Logger extends Filterer {
                 level,
                 levelName: LEVEL_NAMES[level],
                 msg,
-                ex
+                exception
             });
         }
 

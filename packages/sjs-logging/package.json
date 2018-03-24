@@ -16,10 +16,12 @@
     "url": "http://github.com/smialy/sjs"
   },
   "scripts": {
-    "test": "karma start --single-run"
+    "test": "karma start --single-run",
+    "lint": "eslint src test"
   },
   "main": "src/index.js",
   "devDependencies": {
+    "eslint": "^4.19.1",
     "karma": "^2.0.0",
     "karma-chrome-launcher": "^2.1.1",
     "karma-firefox-launcher": "^1.0.1",

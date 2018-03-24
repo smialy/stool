@@ -41,11 +41,6 @@ export class Container {
         return Reflect.construct(fn, args);
     }
 }
-function createType(fn, ...args) {
-    let obj = Object.create(fn.prototype);
-    fn.apply(obj, args);
-    return obj;
-}
 function validateKey(key) {
     if (key === null || key === undefined) {
         throw new TypeError('Key cannot be null or undefined');
