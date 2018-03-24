@@ -13,9 +13,11 @@ module.exports = function(config) {
             'src/*.js': ['rollup']
         },
         rollupPreprocessor: {
-            format: 'iife',
-            moduleName: 'events',
-            sourceMap: 'inline'
+            output: {
+                format: 'iife',
+                name: 'di',
+                sourcemap: 'inline'
+            }
         },
         reporters: ['progress'],
         // web server port
@@ -23,7 +25,7 @@ module.exports = function(config) {
         colors: true,
 
         // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-        logLevel: config.LOG_INFO,
+        logLevel: config.LOG_WARN,
         autoWatch: true,
         browsers: ['Chrome', 'Firefox']
     });
