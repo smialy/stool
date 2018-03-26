@@ -14,11 +14,12 @@ $ npm install sjs-di
 
 > repository.js
 ```js
-import {Inject} from 'sjs-di';
+import {Inject, Container} from 'sjs-di';
 import {HttpClient} from 'some-http-client';
 
+
 @Inject(HttpClient)
-export class Repository {
+class Repository {
     constructor(http){
         //...
     }
@@ -26,37 +27,20 @@ export class Repository {
         //...
     }
 }
-```
-> users.js
-```js
-import {Inject} from 'sjs-di';
-import {Repository} from './repository';
 
 @Inject(Repository)
-export class Users {
+class Users {
     constructor(repo){
         //...
     }
 }
-```
-```js
-import {Inject} from 'sjs-di';
-import {Users} from './users';
 
 @Inject(Users)
-export class App {
+class App {
     constructor(users){
         //...
     }
 }
-```
-
-and use it
-> main.js
-```js
-import {Container} from 'sjs-di';
-import {HttpClient} from 'some-http-client';
-import {App} from './app';
 
 let container = new Container();
 container.registerInstance(HttpClient, new HttpClient('/api'))
