@@ -1,23 +1,15 @@
-import { InstanceResolver, SingletonResolver, IResolver } from './resolvers';
-
-
+import { InstanceResolver, SingletonResolver } from './resolvers';
 export class Container {
-
-    private _resolvers: Map<any, any>;
-
     constructor() {
         this._resolvers = new Map();
     }
-
-    registerInstance(key: any, instance: any): IResolver {
+    registerInstance(key, instance) {
         return this.registerResolver(key, new InstanceResolver(instance));
     }
-
-    registerSingleton(key: any, fn: Function): IResolver {
+    registerSingleton(key, fn) {
         return this.registerResolver(key, new SingletonResolver(fn));
     }
-
-    registerResolver(key: any, resolver: IResolver): IResolver {
+    registerResolver(key, resolver) {
         validateKey(key);
         if (this._resolvers.has(key)) {
             throw TypeError(`Resolver for key: ${key} was already registered.`);
@@ -25,24 +17,22 @@ export class Container {
         this._resolvers.set(key, resolver);
         return resolver;
     }
-
-    unregister(key: any): void {
+    unregister(key) {
         this._resolvers.delete(key);
     }
-
-    get(key: any) {
+    get(key) {
         let resolver = this._resolvers.get(key);
         if (resolver === undefined) {
             if (typeof key === 'function') {
                 resolver = this.registerSingleton(key, key);
-            } else {
+            }
+            else {
                 resolver = this.registerInstance(key, key);
             }
         }
         return resolver.get(this, key);
     }
-
-    createInstance(fn: any) {
+    createInstance(fn) {
         const deps = getDependenciesInherit(fn);
         const args = [];
         for (let dep of deps) {
@@ -51,23 +41,20 @@ export class Container {
         return Reflect.construct(fn, args);
     }
 }
-
-function validateKey(key: any) {
+function validateKey(key) {
     if (key === null || key === undefined) {
         throw new TypeError('Key cannot be null or undefined');
     }
 }
-
-function getDependenciesInherit(fn: Function){
-    const dependencies = []
-    while(typeof fn === 'function'){
+function getDependenciesInherit(fn) {
+    const dependencies = [];
+    while (typeof fn === 'function') {
         dependencies.push(...getDependencies(fn));
         fn = Object.getPrototypeOf(fn);
     }
     return dependencies;
 }
-
-function getDependencies(fn: any) {
+function getDependencies(fn) {
     if (!fn.hasOwnProperty('inject')) {
         return [];
     }

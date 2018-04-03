@@ -14,7 +14,7 @@ export class InstanceResolver implements IResolver{
         this.instance = instance
     }
 
-    get(container: Container, key: any){
+    get(){
         return this.instance;
     }
 }
@@ -27,7 +27,7 @@ export class SingletonResolver implements IResolver{
         this.instance = null;
     }
 
-    get(container: Container, key: any){
+    get(container: Container){
         if(!this.instance){
             this.instance = container.createInstance(this.fn);
         }
