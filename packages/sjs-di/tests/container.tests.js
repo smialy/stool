@@ -1,4 +1,4 @@
-import {Container} from '../src/cointainer';
+import {Container} from '../src/container';
 
 
 QUnit.module('sjs-di :: Container');

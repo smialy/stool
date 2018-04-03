@@ -1,2 +1,2 @@
-export {Container} from './cointainer';
+export {Container} from './container';
 export {Inject} from './decorators';

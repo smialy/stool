@@ -2,7 +2,7 @@ export class InstanceResolver {
     constructor(instance) {
         this.instance = instance;
     }
-    get() {
+    get(container, key) {
         return this.instance;
     }
 }
@@ -11,7 +11,7 @@ export class SingletonResolver {
         this.fn = fn;
         this.instance = null;
     }
-    get(container) {
+    get(container, key) {
         if (!this.instance) {
             this.instance = container.createInstance(this.fn);
         }

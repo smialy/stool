@@ -1,4 +1,4 @@
-import { Container } from './cointainer';
+import { Container } from './container';
 
 
 export interface IResolver {
