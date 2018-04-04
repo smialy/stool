@@ -1,4 +1,4 @@
-import {sid, random, choice, createUID} from '../src/random'
+import {sid, random, choice, createUID} from '../src/random';
 
 QUnit.test('create sid by sid()', assert => {
     assert.ok(sid());
@@ -6,9 +6,9 @@ QUnit.test('create sid by sid()', assert => {
     for (let i = 0; i < 1000; i++) {
         let value = sid();
         if (items.has(value)) {
-            fail('Find sid: ' + value);
+            assert.fail('Find sid: ' + value);
         }
-        items.add(value)
+        items.add(value);
     }
     assert.equal(32, sid().length);
     assert.equal(100, sid(100).length);

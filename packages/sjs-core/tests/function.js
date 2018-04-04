@@ -1,16 +1,16 @@
-import * as utils from '../src/function'
+import * as utils from '../src/function';
 
 
 QUnit.test('tr(fn,...)', assert => {
-    assert.equal('test', utils.tr(assert => {
+    assert.equal('test', utils.tr(() => {
         return 'test';
     }));
-    assert.equal(null, utils.tr(assert => {
+    assert.equal(null, utils.tr(() => {
         throw new Error('test');
     }));
-    assert.equal('test2', utils.tr(assert => {
+    assert.equal('test2', utils.tr(() => {
         throw new Error('test');
-    }, assert => {
+    }, () => {
         return 'test2';
     }));
 });

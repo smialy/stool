@@ -35,12 +35,12 @@ QUnit.test('hyphenate(string)', assert => {
 
 QUnit.test('empty format()', assert => {
     const text = 'Hello {{name}}!!!';
-    const result = utils.format(text, {})
+    const result = utils.format(text, {});
     assert.equal('Hello !!!', result);
 });
 
 QUnit.test('format()', assert => {
     const text = 'Hello {{name}}!!!';
-    const result = utils.format(text, {name:'Bill'})
+    const result = utils.format(text, {name:'Bill'});
     assert.equal('Hello Bill!!!', result);
 });

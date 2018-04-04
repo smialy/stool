@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Core",
   "main": "src/index.js",
-  "types": "types/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/smialy/sjs.git"
@@ -12,7 +11,7 @@
     "test": "qunit --require babel-register tests/",
     "build": "tsc",
     "karma": "karma start --single-run",
-    "lint": "eslint src test"
+    "lint": "eslint src tests"
   },
   "license": "MIT",
   "homepage": "https://github.com/smialy/sjs#readme",

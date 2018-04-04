@@ -1,4 +1,4 @@
-import * as Types from '../src/types'
+import * as Types from '../src/types';
 
 
 QUnit.test('import', assert =>
@@ -40,7 +40,7 @@ const TYPES_MAP = {
     octs: 0o00111,
     functions: function(){},
     functionsArrow:  () => {},
-    functionsGenerator: function* gen(){ yield 1},
+    functionsGenerator: function* gen(){ yield 1;},
     functionsAsync: async function asyn(){},
     arrays: [],
     arraysObj: new Array(),
@@ -60,12 +60,10 @@ const TYPES_MAP = {
     sets: new Set(),
     maps: new Map(),
     dates: new Date()
-}
+};
 
 const TESTS = {
     isArray: ['arrays', 'arraysObj'],
-    isNumber: ['integers', 'floats', 'hex', 'bin', 'oct'],
-    isFunction: ['functions', 'functionsArrow', 'functionsAsync', 'functionsGenerator'],
     isRegExp: ['regexps', 'regexpsObj'],
     isDate: ['dates'],
     isObject: ['stringsObj', 'arrays', 'arraysObj', 'objects', 'regexps', 'regexpsObj' ,'weakmaps', 'weaksets', 'sets', 'maps', 'dates'],
@@ -80,7 +78,7 @@ const TESTS = {
     isUndefined: ['undefineds'],
     isMap: ['maps'],
     isSet: ['sets']
-}
+};
 
 QUnit.test('test type by name', assert => {
     for(let method of Object.keys(TESTS)){
@@ -98,7 +96,7 @@ QUnit.test('test type by name', assert => {
     function getMsg(method, value, type, result){
         try{
             return `${method}(${value}) => ${type} : ${result}`;
-        }catch(e){}
+        }catch(e){ /*noop*/ }
         return `${method}(symbol) => ${type} : ${result}`;
     }
 });
