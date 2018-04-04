@@ -1,4 +1,4 @@
-import {sid, random, createUID} from '../src/random'
+import {sid, random, choice, createUID} from '../src/random'
 
 QUnit.test('create sid by sid()', assert => {
     assert.ok(sid());
@@ -41,6 +41,28 @@ QUnit.test('random(min, max)', assert => {
         let r = random(10, 20);
         assert.ok(r >= min, `Excpected random number: r >= ${min} is ${r}`);
         assert.ok(r < max, `Excpected random number: r <= ${max} is ${r}`);
+    }
+});
+
+QUnit.test('choice()', assert => {
+    assert.equal(choice(), null);
+});
+
+QUnit.test('choice([1])', assert => {
+    assert.equal(choice([1]), 1);
+});
+
+QUnit.test('choice([1,2,3])', assert => {
+    const seq = [1,2,3];
+    for(let i = 0; i < 10; i += 1){
+        assert.ok(seq.includes(choice(seq)));
+    }
+});
+
+QUnit.test('choice([1,2,3])', assert => {
+    const seq = {0:'a', 1:'b', length:2};
+    for(let i = 0; i < 10; i += 1){
+        assert.ok(['a', 'b'].includes(choice(seq)));
     }
 });
 

@@ -27,6 +27,25 @@ export function random(min, max) {
     return parseInt(Math.random() * (max - min) + min, 10);
 }
 
+/**
+ * Return a random element from the non-empty sequence seq
+ *
+ * @example
+ *      > choice()
+ *      null
+ *
+ *      > choice([1,2,3])
+ *      // 1 or 2 or 3
+ *
+ * @param {ArrayLike} sequence
+ * @return {any}
+ */
+export function choice(sequence) {
+    if(sequence && sequence.length) {
+        return sequence[random(sequence.length)];
+    }
+    return null;
+}
 
 /**
  * Generate unique string
@@ -89,3 +108,4 @@ export function createUID(){
         return uid.join('');
     };
 }
+
