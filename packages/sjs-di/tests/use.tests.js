@@ -5,7 +5,7 @@ QUnit.module('sjs-di::Inject()');
 
 QUnit.test('inject service', async assert => {
     let container = new Container();
-    container.registerInstance(HttpClient, new HttpClient('/api'));
+    container.set(HttpClient, new HttpClient('/api'));
 
     let app = container.get(App);
     assert.ok(app);

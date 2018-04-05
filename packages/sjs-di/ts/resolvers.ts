@@ -2,7 +2,7 @@ import { Container } from './container';
 
 
 export interface IResolver {
-    get(container: Container, key: any): any;
+    resolve(container: Container, key: any): any;
 }
 
 
@@ -14,7 +14,7 @@ export class InstanceResolver implements IResolver{
         this.instance = instance
     }
 
-    get(){
+    resolve(){
         return this.instance;
     }
 }
@@ -27,7 +27,7 @@ export class SingletonResolver implements IResolver{
         this.instance = null;
     }
 
-    get(container: Container){
+    resolve(container: Container){
         if(!this.instance){
             this.instance = container.createInstance(this.fn);
         }

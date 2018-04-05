@@ -132,7 +132,7 @@ QUnit.test('loads using static inject() method', assert => {
     class App {
         static inject() { return [Service]; }
         constructor(service) {
-        this.service = service;
+            this.service = service;
         }
     }
 
