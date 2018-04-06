@@ -98,7 +98,7 @@ export const clone = (function() {
             return _;
         }
         return t === 'date' ? new Date(o.getTime()) : o;
-    };
+    }
     return function clone(o: any) {
         return _clone(o);
     };

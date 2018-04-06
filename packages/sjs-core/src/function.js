@@ -90,7 +90,6 @@ export const clone = (function () {
         }
         return t === 'date' ? new Date(o.getTime()) : o;
     }
-    ;
     return function clone(o) {
         return _clone(o);
     };
