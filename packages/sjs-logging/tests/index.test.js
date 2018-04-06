@@ -32,15 +32,11 @@ function _dummy(logger) {
     logger.fatal('f');
 }
 
-function _TestCase() {
-
-}
-
 QUnit.module('sjs-logging');
 
 QUnit.test('empty logger', assert => {
     let handler = new TestHandler();
-    var logger = new Logger();
+    let logger = new Logger();
     logger.addHandler(handler);
 
     _dummy(logger);
@@ -49,11 +45,10 @@ QUnit.test('empty logger', assert => {
 
 QUnit.test('log level', assert => {
     let handler = new TestHandler();
-    var logger = new Logger('test');
+    let logger = new Logger('test');
     logger.addHandler(handler);
 
     handler.reset();
-    debugger
     logger.setLevel(LEVELS.DEBUG);
     _dummy(logger);
     assert.equal('d,i,w1,w2,e,c,f', handler.result());
@@ -98,8 +93,8 @@ QUnit.test('log level', assert => {
 
 QUnit.test('manager priority', assert => {
     let handler = new TestHandler();
-    var manager = new Manager();
-    var logger = manager.getLogger('test');
+    let manager = new Manager();
+    let logger = manager.getLogger('test');
     logger.addHandler(handler);
 
     _dummy(logger);
@@ -112,17 +107,16 @@ QUnit.test('manager priority', assert => {
     manager.setDisable(LEVELS.WARN);
 
     logger.setLevel(LEVELS.INFO);
-    debugger
     _dummy(logger);
     assert.equal('w1,w2,e,c,f', handler.result());
 });
 QUnit.test('get parent level 1', assert => {
     let handler = new TestHandler();
-    var manager = new Manager();
+    let manager = new Manager();
 
-    var a = manager.getLogger('a');
-    var b = manager.getLogger('a.b');
-    var c = manager.getLogger('a.b.c');
+    let a = manager.getLogger('a');
+    manager.getLogger('a.b');
+    let c = manager.getLogger('a.b.c');
     c.addHandler(handler);
     a.setLevel(LEVELS.INFO);
 
@@ -133,11 +127,11 @@ QUnit.test('get parent level 1', assert => {
 });
 QUnit.test('get parent level 2', assert => {
     let handler = new TestHandler();
-    var manager = new Manager();
+    let manager = new Manager();
 
-    var a = manager.getLogger('a');
-    var b = manager.getLogger('a.b');
-    var c = manager.getLogger('a.b.c');
+    let a = manager.getLogger('a');
+    let b = manager.getLogger('a.b');
+    let c = manager.getLogger('a.b.c');
 
     a.setLevel(LEVELS.DEBUG);
     b.setLevel(LEVELS.INFO);
@@ -149,10 +143,10 @@ QUnit.test('get parent level 2', assert => {
 
 QUnit.test('get parent level 3', assert => {
     let handler = new TestHandler();
-    var manager = new Manager();
+    let manager = new Manager();
 
-    var a = manager.getLogger('a');
-    var c = manager.getLogger('a.b.c');
+    let a = manager.getLogger('a');
+    let c = manager.getLogger('a.b.c');
 
     a.setLevel(LEVELS.INFO);
 
@@ -161,13 +155,13 @@ QUnit.test('get parent level 3', assert => {
     assert.equal(handler.result(),'i,w1,w2,e,c,f');
 });
 QUnit.test('get parent level 4', assert => {
-    var handler = new TestHandler();
-    var manager = new Manager();
+    let handler = new TestHandler();
+    let manager = new Manager();
 
-    var a = manager.getLogger('a');
-    var c = manager.getLogger('a.b.c');
-    var d = manager.getLogger('a.b.c.d');
-    var b = manager.getLogger('a.b');
+    let a = manager.getLogger('a');
+    manager.getLogger('a.b.c');
+    let d = manager.getLogger('a.b.c.d');
+    let b = manager.getLogger('a.b');
 
     a.setLevel(LEVELS.DEBUG);
 
@@ -179,11 +173,11 @@ QUnit.test('get parent level 4', assert => {
     assert.equal(handler.result(), 'i,w1,w2,e,c,f');
 });
 QUnit.test('propagate log', assert => {
-    var handler = new TestHandler();
-    var manager = new Manager();
-    var a = manager.getLogger('a');
-    var b = manager.getLogger('a.b');
-    var c = manager.getLogger('a.b.c');
+    let handler = new TestHandler();
+    let manager = new Manager();
+    let a = manager.getLogger('a');
+    manager.getLogger('a.b');
+    let c = manager.getLogger('a.b.c');
     a.setLevel(LEVELS.DEBUG);
 
     a.addHandler(handler);
@@ -195,8 +189,8 @@ QUnit.test('propagate log', assert => {
 QUnit.module('sjs-logging - Handler');
 
 QUnit.test('handler init', assert => {
-    var handler = new TestHandler();
-    var logger = new Logger('test');
+    let handler = new TestHandler();
+    let logger = new Logger('test');
     logger.setLevel(LEVELS.NOTSET);
     logger.addHandler(handler);
 
@@ -205,8 +199,8 @@ QUnit.test('handler init', assert => {
     assert.equal('d,i,w1,w2,e,c,f', handler.result());
 });
 QUnit.test('handler level', assert => {
-    var handler = new TestHandler();
-    var logger = new Logger('test');
+    let handler = new TestHandler();
+    let logger = new Logger('test');
     logger.addHandler(handler);
 
     logger.setLevel(LEVELS.NOTSET);

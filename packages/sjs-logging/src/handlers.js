@@ -22,7 +22,9 @@ export class Handler extends Filterer {
         }
         return false;
     }
-    emit(record) { }
+    emit(record) {
+        (record);
+    }
     flush() { }
     close() { }
 }
@@ -31,7 +33,7 @@ export class ConsoleHandler extends Handler {
      * @param {Record} record Log object with all collected data
      */
     emit(record) {
-        console.log('[' + record.name + '] ::' + record.levelName + ':: ' + record.msg);
+        console.log(`[${record.name}]::${record.levelName}:: ${record.msg}`);
         if (record.exception) {
             console.error(record.exception);
         }

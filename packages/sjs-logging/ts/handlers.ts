@@ -27,7 +27,9 @@ export abstract class Handler extends Filterer implements IHandler {
         }
         return false;
     }
-    emit(record: IRecord) {}
+    emit(record: IRecord) { // eslint-disable-line no-unused-vars
+        (record);
+    }
     flush() {}
     close() {}
 }
@@ -37,7 +39,7 @@ export class ConsoleHandler extends Handler {
      * @param {Record} record Log object with all collected data
      */
     emit(record: IRecord): void {
-        console.log('[' + record.name + '] ::' + record.levelName + ':: ' + record.msg);
+        console.log(`[${record.name}]::${record.levelName}:: ${record.msg}`);
         if (record.exception) {
             console.error(record.exception);
         }
