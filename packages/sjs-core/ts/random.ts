@@ -16,17 +16,17 @@
  * @param {Number} max
  * @returns {Number}
  */
-export function random(min, max = 0) {
+export function random(min: number, max: number = 0) {
     let l = arguments.length;
     if (l === 0) {
         return Math.random();
-    }
-    else if (l === 1) {
+    } else if (l === 1) {
         max = min;
         min = 0;
     }
-    return parseInt('' + (Math.random() * (max - min) + min), 10);
+    return parseInt(''+(Math.random() * (max - min) + min), 10);
 }
+
 /**
  * Return a random element from the non-empty sequence seq
  *
@@ -40,12 +40,13 @@ export function random(min, max = 0) {
  * @param {ArrayLike} sequence
  * @return {any}
  */
-export function choice(sequence) {
-    if (sequence && sequence.length) {
+export function choice(sequence: Array<any>) {
+    if(sequence && sequence.length) {
         return sequence[random(sequence.length)];
     }
     return null;
 }
+
 /**
  * Generate unique string
  *
@@ -60,7 +61,7 @@ export function choice(sequence) {
  * @param {Number} [len=32] Hash length
  * @return {String}
  */
-export function sid(len = 32) {
+export function sid(len: number = 32) {
     //start from letter (can be use as DOM id)
     let sid = String.fromCharCode(Math.floor((Math.random() * 25) + 65));
     while (sid.length < len) {
@@ -72,6 +73,7 @@ export function sid(len = 32) {
     }
     return sid;
 }
+
 /**
  * Genereate sequense hash
  *
@@ -86,7 +88,7 @@ export function sid(len = 32) {
  * @method uid
  * @return {String}
  */
-export function createUID() {
+export function createUID(): Function {
     const uid = ['0'];
     return () => {
         let i = uid.length;
@@ -97,8 +99,7 @@ export function createUID() {
             }
             if (uid[i] === 'Z') {
                 uid[i] = '1';
-            }
-            else {
+            } else {
                 uid[i] = String.fromCharCode(uid[i].charCodeAt(0) + 1);
                 return uid.join('');
             }
@@ -107,3 +108,4 @@ export function createUID() {
         return uid.join('');
     };
 }
+

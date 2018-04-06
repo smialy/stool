@@ -8,6 +8,7 @@
     "url": "git+https://github.com/smialy/sjs.git"
   },
   "scripts": {
+    "build": "tsc",
     "test": "qunit --require babel-register tests/",
     "karma": "karma start --single-run",
     "lint": "eslint src tests"
@@ -24,7 +25,8 @@
     "karma-qunit": "^2.0.1",
     "karma-rollup-preprocessor": "^5.1.1",
     "qunit": "^2.6.0",
-    "rollup": "^0.57.1"
+    "rollup": "^0.57.1",
+    "typescript": "^2.8.1"
   },
   "babel": {
     "plugins": [

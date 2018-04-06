@@ -9,9 +9,7 @@
  * @param {String} text
  * @return {String}
  */
-export function camelCase(text) {
-    return text.replace(/-(.)/g, (_, char) => char.toUpperCase());
-}
+export declare function camelCase(text: string): string;
 /**
  * Hyphenate text
  *
@@ -23,9 +21,7 @@ export function camelCase(text) {
  * @param {String} text
  * @return {String}
  */
-export function hyphenate(text) {
-    return text.replace(/[A-Z]/g, match => '-' + match.charAt(0).toLowerCase());
-}
+export declare function hyphenate(text: string): string;
 /**
  * Format string
  *
@@ -37,6 +33,6 @@ export function hyphenate(text) {
  * @param {String} text
  * @param {Object} data
  */
-export function format(text, data) {
-    return text.replace(/\{\{(.+?)\}\}/g, (_, name) => data[name] || '');
-}
+export declare function format(text: string, data: {
+    [index: string]: any;
+}): string;

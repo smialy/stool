@@ -1,6 +1,10 @@
-import { getType } from './types';
-import { sid } from './random';
-export const noop = () => { };
+import {getType} from './types';
+import {sid} from './random';
+
+
+export const noop = () => {};
+
+
 /*
  * Pick first value without error
  *
@@ -14,17 +18,19 @@ export const noop = () => { };
  * @method tr
  * @return {Object}
  */
-export function tr(...args) {
+export function tr(...args: any[]) {
     for (let fn of args) {
         try {
             return fn();
-        }
-        catch (e) {
+        } catch (e) {
             //noop
         }
     }
     return null;
 }
+
+
+
 /**
  * Clone object
  *
@@ -42,9 +48,10 @@ export function tr(...args) {
  * @param {Object} obj
  * @return {Object}
  */
-export const clone = (function () {
+export const clone = (function() {
     const MARKER = '~~clone~~marker~~';
-    function _clone(o, m = null) {
+    function _clone(o: any, m: any=null): any {
+
         if (!o) {
             return o;
         }
@@ -52,6 +59,7 @@ export const clone = (function () {
         if (t === 'date') {
             return new Date(o.getTime());
         }
+
         if (t === 'array' || t === 'object') {
             if (o[MARKER]) {
                 return m[o[MARKER]];
@@ -61,7 +69,7 @@ export const clone = (function () {
             let _sid = sid();
             o[MARKER] = _sid;
             m[_sid] = o;
-            let _;
+            let _: any;
             switch (t) {
                 case 'array':
                     _ = [];
@@ -78,20 +86,20 @@ export const clone = (function () {
                     }
                     break;
             }
+
             if (clear) {
                 for (let key of Object.keys(m)) {
                     if (m[key][MARKER]) {
                         m[key][MARKER] = null;
-                        delete m[_sid][MARKER];
+                        delete m[key][MARKER];
                     }
                 }
             }
             return _;
         }
         return t === 'date' ? new Date(o.getTime()) : o;
-    }
-    ;
-    return function clone(o) {
+    };
+    return function clone(o: any) {
         return _clone(o);
     };
 })();
