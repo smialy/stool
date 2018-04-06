@@ -9,7 +9,6 @@
   },
   "scripts": {
     "test": "qunit --require babel-register tests/",
-    "build": "tsc",
     "karma": "karma start --single-run",
     "lint": "eslint src tests"
   },
@@ -25,9 +24,7 @@
     "karma-qunit": "^2.0.1",
     "karma-rollup-preprocessor": "^5.1.1",
     "qunit": "^2.6.0",
-    "rollup": "^0.57.1",
-    "ts-node": "^5.0.1",
-    "typescript": "^2.8.1"
+    "rollup": "^0.57.1"
   },
   "babel": {
     "plugins": [
