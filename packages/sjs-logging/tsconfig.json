@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "allowJs": false,
+        "target": "esnext",
+        "noImplicitAny": true,
+        "removeComments": false,
+        "preserveConstEnums": true,
+        "experimentalDecorators": true,
+        "sourceMap": false,
+        "strict": true,
+        "listEmittedFiles": true,
+        "outDir": "./src",
+        "declaration": true,
+        "declarationDir":"./types"
+    },
+    "files": [
+        "ts/index.ts",
+        "ts/consts.ts",
+        "ts/filter.ts",
+        "ts/handlers.ts",
+        "ts/logger.ts",
+        "ts/manager.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "src/*"
+    ]
+}

@@ -1,8 +1,4 @@
 import {
-    LEVELS,
-    LEVEL_NAMES
-} from '../src/consts';
-import {
     Filter,
     Filterer
 } from '../src/filter';

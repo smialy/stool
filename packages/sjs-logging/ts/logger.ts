@@ -1,32 +1,43 @@
+import { IHandler, IRecord } from './interfaces';
 import { LEVELS, LEVEL_NAMES } from './consts';
 import { checkLevel } from './utils';
 import { Handler } from './handlers';
 import { Filterer } from './filter';
+
+
 export class Logger extends Filterer {
+
+    private level: number;
+    private propagate: boolean = true;
+    private _handlers: Set<IHandler>;
+    public name: string;
+    public manager?: any;
+    public parent?: Logger;
+
     /**
      * @param {string} name
      * @param {number} [level=LEVELS.NOTSET] level
      */
-    constructor(name, level = LEVELS.NOTSET) {
+    constructor(name: string, level=LEVELS.NOTSET){
         super();
-        this.propagate = true;
         this.name = name;
         this.level = checkLevel(level);
         this.propagate = true;
         this._handlers = new Set();
     }
-    setLevel(level) {
+
+    setLevel(level: number){
         this.level = checkLevel(level);
     }
     /**
      *
      * @param {Handler} handler
      */
-    addHandler(handler) {
+    addHandler(handler: IHandler) {
         if (!(handler instanceof Handler)) {
             throw new Error('Expected sjs-logging.Handler');
         }
-        if (!this._handlers.has(handler)) {
+        if(!this._handlers.has(handler)){
             this._handlers.add(handler);
         }
         return this;
@@ -34,7 +45,7 @@ export class Logger extends Filterer {
     /**
      * @param {Handler} handler
      */
-    removeHandler(handler) {
+    removeHandler(handler: IHandler) {
         this._handlers.delete(handler);
         return this;
     }
@@ -44,7 +55,7 @@ export class Logger extends Filterer {
     hasHandlers() {
         return this._handlers.size;
     }
-    getHandlers() {
+    getHandlers(): Array<IHandler> {
         return Array.from(this._handlers);
     }
     /**
@@ -52,7 +63,7 @@ export class Logger extends Filterer {
      * @param {string} msg
      * @param {Error} ex
      */
-    fatal(msg, exception) {
+    fatal(msg: string, exception?: any) {
         this.log(LEVELS.FATAL, msg, exception);
     }
     /**
@@ -60,7 +71,7 @@ export class Logger extends Filterer {
      * @param {string} msg
      * @param {Error} ex
      */
-    critical(msg, exception) {
+    critical(msg: string, exception?: any) {
         this.log(LEVELS.CRITICAL, msg, exception);
     }
     /**
@@ -68,76 +79,85 @@ export class Logger extends Filterer {
      * @param {string} msg
      * @param {Error} ex
      */
-    error(msg, exception) {
+    error(msg: string, exception?: any) {
         this.log(LEVELS.ERROR, msg, exception);
     }
+
     /**
      *
      * @param {string} msg
      * @param {Error} ex
      */
-    warn(msg, exception) {
+    warn(msg: string, exception?: any) {
         this.log(LEVELS.WARN, msg, exception);
     }
+
     /**
      *
      * @param {string} msg
      * @param {Error} ex
      */
-    warning(msg, exception) {
+    warning(msg: string, exception?: any) {
         this.log(LEVELS.WARN, msg, exception);
     }
+
     /**
      *
      * @param {string} msg
      */
-    info(msg) {
+    info(msg: string) {
         this.log(LEVELS.INFO, msg);
     }
+
     /**
      *
      * @param {string} msg
      */
-    debug(msg) {
+    debug(msg: string) {
         this.log(LEVELS.DEBUG, msg);
     }
+
     /**
      *
      * @param {Error} ex
      */
-    exception(exception) {
+    exception(exception: any) {
         this.log(LEVELS.ERROR, exception.message, exception);
     }
+
     /**
      * @param {number} level
      * @param {string} msg
      * @param {Error} exception
      */
-    log(level, msg, exception) {
+    log(level: number, msg: string, exception?: any) {
         level = checkLevel(level);
         if (this._isEnabledFor(level)) {
             this.handle({
                 name: this.name,
                 level,
-                levelName: LEVEL_NAMES[level],
+                levelName: <string>LEVEL_NAMES[level],
                 msg,
                 exception
             });
         }
+
     }
-    _isEnabledFor(level) {
-        if (this.manager && this.manager.disable > level) {
+    _isEnabledFor(level: number){
+        if(this.manager && this.manager.disable > level){
             return false;
         }
         return level >= this._getParentLevel();
+
     }
+
     /**
      *
      * @param {Record} record
      */
-    handle(record) {
-        if (this.filter(record)) {
-            let p = this;
+    handle(record: IRecord) {
+        if(this.filter(record)){
+            let p = <Logger>this;
             while (p) {
                 let handlers = p.getHandlers();
                 for (let handler of handlers) {
@@ -145,20 +165,21 @@ export class Logger extends Filterer {
                         handler.handle(record);
                     }
                 }
-                if (!p.propagate) {
+                if(!p.propagate){
                     break;
                 }
-                p = p.parent;
+                p = <Logger>p.parent;
             }
         }
     }
+
     _getParentLevel() {
-        let logger = this;
+        let logger = <Logger>this;
         while (logger) {
             if (logger.level) {
                 return logger.level;
             }
-            logger = logger.parent;
+            logger = <Logger>logger.parent;
         }
         return LEVELS.NOTSET;
     }

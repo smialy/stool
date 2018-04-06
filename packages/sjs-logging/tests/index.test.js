@@ -1,15 +1,9 @@
 import {
-    LEVELS,
-    LEVEL_NAMES
+    LEVELS
 } from '../src/consts';
-import {
-    Mask,
-    Filter,
-    Filterer
-} from '../src/filter';
-import {Manager} from '../src/manager';
-import {Handler, ConsoleHandler} from '../src/handler';
-import {Logger} from '../src/logger';
+import { Manager } from '../src/manager';
+import { Handler } from '../src/handlers';
+import { Logger } from '../src/logger';
 
 class TestHandler extends Handler {
     constructor() {
