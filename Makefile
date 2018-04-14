@@ -8,7 +8,6 @@ init:
 
 bootstrap:
 	npm install --no-package-lock
-	make clean
 	./node_modules/.bin/lerna bootstrap -- --no-package-lock
 
 build:
