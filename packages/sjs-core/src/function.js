@@ -82,7 +82,7 @@ export const clone = (function () {
                 for (let key of Object.keys(m)) {
                     if (m[key][MARKER]) {
                         m[key][MARKER] = null;
-                        delete m[_sid][MARKER];
+                        delete m[key][MARKER];
                     }
                 }
             }
