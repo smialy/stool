@@ -1,14 +1,12 @@
+export declare const random: () => number;
 /**
  * Generate random number
  *
  * @example
- *      > random();
- *      0.21633313838851365
- *
- *      > random(10)
+ *      > randomInt(10)
  *      [0..10)
  *
- *      > random(5, 10)
+ *      > randomInt(5, 10)
  *      [5..10)
  *
  * @method random
@@ -16,7 +14,7 @@
  * @param {Number} max
  * @returns {Number}
  */
-export declare function random(min: number, max?: number): number;
+export declare function randomInt(min: number, max?: number): number;
 /**
  * Return a random element from the non-empty sequence seq
  *

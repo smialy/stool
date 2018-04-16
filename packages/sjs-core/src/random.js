@@ -1,14 +1,12 @@
+export const random = Math.random;
 /**
  * Generate random number
  *
  * @example
- *      > random();
- *      0.21633313838851365
- *
- *      > random(10)
+ *      > randomInt(10)
  *      [0..10)
  *
- *      > random(5, 10)
+ *      > randomInt(5, 10)
  *      [5..10)
  *
  * @method random
@@ -16,12 +14,8 @@
  * @param {Number} max
  * @returns {Number}
  */
-export function random(min, max = 0) {
-    let l = arguments.length;
-    if (l === 0) {
-        return Math.random();
-    }
-    else if (l === 1) {
+export function randomInt(min, max = 0) {
+    if (max === 0) {
         max = min;
         min = 0;
     }
@@ -42,7 +36,7 @@ export function random(min, max = 0) {
  */
 export function choice(sequence) {
     if (sequence && sequence.length) {
-        return sequence[random(sequence.length)];
+        return sequence[randomInt(sequence.length)];
     }
     return null;
 }
