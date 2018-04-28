@@ -71,8 +71,7 @@ export default class Listeners {
     emit(...args: any[]): void {
         if (!this._isFire) {
             this._isFire = true;
-            for (let i = 0, len = this._listeners.length; i < len; ++i) {
-                let {listener, bind} = this._listeners[i];
+            for (let {listener, bind} of this._listeners) {
                 if (listener.apply(bind, args) === false) {
                     this._isFire = false;
                     return;
@@ -93,8 +92,7 @@ export default class Listeners {
      * @param {Object} bind
      */
     _find(listener: Function, bind: any) {
-        let l;
-        for (let i = 0, len = this._listeners.length; i < len; ++i) {
+        for (let i = 0, len = this._listeners.length; i < len; i+=1) {
             let info = this._listeners[i];
             if (info.listener === listener && info.bind === bind) {
                 return i;
