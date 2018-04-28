@@ -1,21 +1,24 @@
 export default class Listeners {
-    constructor(bind = null) {
-        /**
-         * @param {Object} bind - Default context
-         */
-        this._listeners = [];
-        this._isFire = false;
+    /**
+     * @param {Object} bind - Default context
+     */
+    private _listeners: Array<{listener: Function, bind: any}> = [];
+    private _isFire: boolean = false;
+    private _bind: any;
+
+    constructor(bind: any = null) {
         // this._listeners = [];
         // this._isFire = false;
         this._bind = bind;
     }
+
     /**
      * Add listener
      *
      * @param {function} fn
      * @param {Object} bind Context
      */
-    add(listener, bind) {
+    add(listener: Function, bind: any) {
         bind = bind || this._bind;
         if (this._find(listener, bind) === -1) {
             this._listeners.push({
@@ -30,7 +33,7 @@ export default class Listeners {
      * @param {function} fn
      * @param {Object} bind - New context
      */
-    remove(listener, bind) {
+    remove(listener: Function, bind: any): void {
         bind = bind || this._bind;
         let i = this._find(listener, bind);
         if (i !== -1) {
@@ -57,7 +60,7 @@ export default class Listeners {
      * @param {function} fn
      * @param {Object} bind - New context
      */
-    has(listener, bind) {
+    has(listener: Function, bind: any): boolean {
         return this._find(listener, bind || this._bind) !== -1;
     }
     /**
@@ -65,11 +68,11 @@ export default class Listeners {
      *
      * @param {...Object} args
      */
-    emit(...args) {
+    emit(...args: any[]): void {
         if (!this._isFire) {
             this._isFire = true;
             for (let i = 0, len = this._listeners.length; i < len; ++i) {
-                let { listener, bind } = this._listeners[i];
+                let {listener, bind} = this._listeners[i];
                 if (listener.apply(bind, args) === false) {
                     this._isFire = false;
                     return;
@@ -81,7 +84,7 @@ export default class Listeners {
     /**
      * {@link Listeners.emit}
      */
-    dispatch(...args) {
+    dispatch(...args: any[]){
         this.emit(...args);
     }
     /**
@@ -89,7 +92,7 @@ export default class Listeners {
      * @param {function} fn
      * @param {Object} bind
      */
-    _find(listener, bind) {
+    _find(listener: Function, bind: any) {
         let l;
         for (let i = 0, len = this._listeners.length; i < len; ++i) {
             let info = this._listeners[i];
