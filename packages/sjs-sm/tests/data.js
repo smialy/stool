@@ -13,7 +13,7 @@ export const Actions = {
 
 export const CONFIG = {
     init: States.OPENED,
-    transitions: [{
+    states: [{
         name: States.CLOSED,
         transitions: [
             { action: Actions.OPEN, target: States.OPENED },

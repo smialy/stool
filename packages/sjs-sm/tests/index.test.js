@@ -1,4 +1,4 @@
-import StateMachine from '../src/index';
+import StateMachine from '../src/machine';
 import State from '../src/state';
 import { Actions, States } from './data';
 

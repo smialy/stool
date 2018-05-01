@@ -11,7 +11,7 @@ $ npm install sjs-sm
 ### 2 Using
 
 ```js
-import StateMachine from 'sjs-sm';
+import {StateMachine, State} from 'sjs-sm';
 
 const States = {
     CLOSED: 'CLOSED',
