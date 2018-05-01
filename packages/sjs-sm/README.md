@@ -13,6 +13,7 @@ $ npm install sjs-sm
 ```js
 import {StateMachine, State} from 'sjs-sm';
 
+
 const States = {
     CLOSED: 'CLOSED',
     OPENED: 'OPENED',
@@ -42,6 +43,48 @@ door.goto(Actions.LOCK) // raise error
 
 door.goto(Actions.OPEN); // try open it
 assert(door.currentState().name === States.OPENED);
+```
+
+```js
+import {StateMachine, State} from 'sjs-sm';
+
+
+const States = {
+    CLOSED: 'CLOSED',
+    OPENED: 'OPENED',
+    LOCKED: 'LOCKED'
+};
+
+const Actions = {
+    CLOSE: 'CLOSE',
+    OPEN: 'OPEN',
+    LOCK: 'LOCK',
+    UNLOCK: 'UNLOCK'
+};
+
+const CONFIG = {
+    init: States.OPENED,
+    states: [{
+        name: States.CLOSED,
+        transitions: [
+            { action: Actions.OPEN, target: States.OPENED },
+            { action: Actions.LOCK, target: States.LOCKED }
+        ]
+    },
+    {
+        name: States.OPENED,
+        transitions: [
+            { action: Actions.CLOSE, target: States.CLOSED }
+        ]
+    },
+    {
+        name: States.LOCKED,
+        transitions: [
+            { action: Actions.UNLOCK, target: States.CLOSED }
+        ]
+    }]
+};
+let door = factory(CONFIG);
 ```
 
 ## License
