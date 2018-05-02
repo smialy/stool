@@ -7,8 +7,8 @@ init:
 	make build
 
 bootstrap:
-	npm install --no-package-lock
-	./node_modules/.bin/lerna bootstrap -- --no-package-lock
+	yarn --no-lockfile
+	./node_modules/.bin/lerna bootstrap
 
 build:
 	./node_modules/.bin/lerna run build
