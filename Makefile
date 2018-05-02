@@ -1,10 +1,6 @@
 test-ci:
-	make init
+	yarn --no-lockfile
 	make test
-
-init:
-	make bootstrap
-	make build
 
 bootstrap:
 	yarn --no-lockfile
