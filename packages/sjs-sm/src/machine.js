@@ -40,7 +40,7 @@ export default class StateMachine {
         return this._states.get(name);
     }
     get states() {
-        return Array.from(this._states.values());
+        return Array.from(this._states);
     }
     removeState(name) {
         return this._states.delete(name);
