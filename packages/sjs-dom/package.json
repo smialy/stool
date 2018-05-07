@@ -1,7 +1,7 @@
 {
-  "name": "@sjs/core",
+  "name": "sjs-dom",
   "version": "1.0.0",
-  "description": "Core",
+  "description": "DOM",
   "main": "src/index.js",
   "repository": {
     "type": "git",
