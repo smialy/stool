@@ -1,0 +1,40 @@
+{
+  "name": "sjs-drag",
+  "version": "0.1.0",
+  "description": "Drag",
+  "main": "src/index.js",
+  "types": "types/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smialy/sjs.git"
+  },
+  "scripts": {
+    "test": "qunit --require babel-register tests/",
+    "build": "tsc",
+    "karma": "karma start --single-run",
+    "lint": "eslint src test"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/smialy/sjs#readme",
+  "devDependencies": {
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
+    "babel-register": "^6.26.0",
+    "eslint": "^4.19.1",
+    "karma": "^2.0.0",
+    "karma-chrome-launcher": "^2.1.1",
+    "karma-firefox-launcher": "^1.0.1",
+    "karma-qunit": "^2.0.1",
+    "karma-rollup-preprocessor": "^6.0.0",
+    "qunit": "^2.6.0",
+    "rollup": "^0.58.2",
+    "typescript": "^2.8.3"
+  },
+  "babel": {
+    "plugins": [
+      "transform-es2015-modules-commonjs"
+    ]
+  },
+  "dependencies": {
+    "sjs-stream": "^0.1.0"
+  }
+}
