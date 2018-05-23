@@ -33,8 +33,5 @@
     "plugins": [
       "transform-es2015-modules-commonjs"
     ]
-  },
-  "dependencies": {
-    "zen-observable": "^0.8.8"
   }
 }
