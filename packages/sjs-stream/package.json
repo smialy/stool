@@ -9,9 +9,7 @@
     "url": "git+https://github.com/smialy/sjs.git"
   },
   "scripts": {
-    "test": "qunit --require babel-register tests/",
     "build": "tsc",
-    "karma": "karma start --single-run",
     "lint": "eslint src test"
   },
   "license": "MIT",
