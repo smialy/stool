@@ -14,3 +14,13 @@ export function ready(): Promise<any> {
         }
     });
 }
+
+export function findParent(element: HTMLElement, selector: string): HTMLElement|null {
+    while(element !== document.body) {
+        if(element.classList.contains(selector)) {
+            return element;
+        }
+        element = <HTMLElement>element.parentNode;
+    }
+    return null;
+}
