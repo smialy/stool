@@ -24,3 +24,30 @@ export function findParent(element: HTMLElement, selector: string): HTMLElement|
     }
     return null;
 }
+
+export function classNames(...args: any[]): string {
+    const classes: any[] = [];
+    for(let arg of args){
+        if(!arg){
+            continue;
+        }
+        let type = typeof arg;
+        if (type === 'string' || type === 'number') {
+            classes.push(arg);
+        }else if(Array.isArray(arg)){
+            let cn = classNames(...arg);
+            if(cn){
+                classes.push(cn);
+            }
+        }else if(type === 'object') {
+            for(let [key, value] of Object.entries(arg)) {
+                if(value){
+                    classes.push(key);
+                }
+            }
+        }
+    }
+    return classes.join(' ');
+}
+
+export function dataset()
