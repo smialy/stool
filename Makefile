@@ -1,6 +1,6 @@
 test-ci:
-	make bootstrap
-	make test
+	npm install --no-save babel-register qunit
+	./node_modules/.bin/qunit --require babel-register packages/**/tests
 
 bootstrap:
 	yarn --no-lockfile
