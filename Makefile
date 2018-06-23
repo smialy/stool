@@ -1,5 +1,5 @@
 test-ci:
-	npm install --no-save babel-register qunit
+	npm install --no-save babel-register babel-plugin-transform-es2015-modules-commonjs qunit
 	./node_modules/.bin/qunit --require babel-register packages/**/tests
 
 bootstrap:
