@@ -2,6 +2,7 @@ language: node_js
 node_js:
   - "10"
 install:
-  - npm install --no-save qunit@2.6.1 babel-register@6.26.0 babel-plugin-transform-es2015-modules-commonjs@6.26.2
+  - npm install --no-save qunit@2.6.1 eslint@5.0.0 babel-register@6.26.0 babel-plugin-transform-es2015-modules-commonjs@6.26.2
 script:
   - ./node_modules/.bin/qunit --require babel-register packages/**/tests/
+  - ./node_modules/.bin/eslint packages/**/src/ packages/**/tests/
