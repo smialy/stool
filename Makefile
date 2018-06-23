@@ -1,6 +1,6 @@
 test-ci:
-	npm install --no-save babel-register babel-plugin-transform-es2015-modules-commonjs qunit
-	./node_modules/.bin/qunit --require babel-register packages/**/tests
+	npm install --no-save qunit@2.6.1 babel-register@6.26.0 babel-plugin-transform-es2015-modules-commonjs@6.26.2
+	./node_modules/.bin/qunit --require babel-register packages/**/tests/
 
 bootstrap:
 	yarn --no-lockfile

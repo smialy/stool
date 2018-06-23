@@ -5,6 +5,8 @@ cache:
   yarn: true
   directories:
     - node_modules
-
+install:
+  - npm install -g qunit@2.6.1
+  - npm install --no-save babel-register@6.26.0 babel-plugin-transform-es2015-modules-commonjs@6.26.2
 script:
-  - make test-ci
+  - qunit --require babel-register packages/**/tests/
