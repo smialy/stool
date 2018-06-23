@@ -25,12 +25,6 @@ export function fromItem(input: any){
     }
 }
 
-declare global {
-    interface SymbolConstructor {
-        observable: symbol;
-    }
-}
-
 function isPromise(value: any): value is Promise<any> {
     return value && typeof (value as any).then === 'function';
 }

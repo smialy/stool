@@ -1,4 +1,4 @@
-import { States, Actions, CONFIG } from './data';
+import { States, CONFIG } from './data';
 import { factory } from '../src/builder';
 
 

@@ -31,35 +31,35 @@ let ITEMS = [{
     sex:'woman'
 }];
 
-QUnit.test("catch all", assert => {
+QUnit.test('catch all', assert => {
     assert.ok(filter('*').length === 5, '(*)');
 });
-QUnit.test("age <= 30", assert => {
+QUnit.test('age <= 30', assert => {
     let young = filter('age<=30');
     assert.equal(young.length, 3);
     assert.equal(young[0].name, 'Jon');
     assert.equal(young[1].name, 'Sansa');
     assert.equal(young[2].name, 'Daenerys');
 });
-QUnit.test("Stark family", assert => {
+QUnit.test('Stark family', assert => {
     let stark = filter('|(surname=Stark)(&(name=Jon)(surname=Snow))');
     assert.equal(stark.length, 3);
     assert.equal(stark[0].name, 'Jon');
     assert.equal(stark[1].name, 'Eddard');
     assert.equal(stark[2].name, 'Sansa');
 });
-QUnit.test("no Stark name", assert => {
+QUnit.test('no Stark name', assert => {
     assert.equal(filter('!(surname=Stark)').length, 3, '(!(name~=Stark))');
 });
-QUnit.test("Stark childs - string query", assert => {
+QUnit.test('Stark childs - string query', assert => {
     assert.equal(filter('|(name=Jon)(name=Sansa)').length, 2);
 });
-QUnit.test("Stark - Jon and Sansa - object query", assert => {
+QUnit.test('Stark - Jon and Sansa - object query', assert => {
     assert.equal(filter({name:['Jon', 'Sansa']}).length, 2);
 });
-QUnit.test("Stark and man - string query", assert => {
+QUnit.test('Stark and man - string query', assert => {
     assert.equal(filter('&(sex=man)(surname=Stark)').length, 1);
 });
-QUnit.test("Stark and man - object query", assert => {
+QUnit.test('Stark and man - object query', assert => {
     assert.equal(filter({sex:'man', surname:'Stark'}).length, 1);
 });

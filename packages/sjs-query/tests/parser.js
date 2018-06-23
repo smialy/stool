@@ -2,7 +2,7 @@ import squery from '../src/index';
 
 QUnit.module('squery()');
 
-QUnit.test("incorect syntax of query", assert => {
+QUnit.test('incorect syntax of query', assert => {
     assert.throws(function() {
         squery();
     }, 'squery()');

@@ -1,4 +1,4 @@
-import {Inject, Container} from '../src/index';
+import {Container} from '../src/index';
 
 
 QUnit.module('sjs-di::Inject()');

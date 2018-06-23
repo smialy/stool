@@ -2,11 +2,16 @@ import { runMethod } from './utils';
 import { Stream, BufferStreamSubscription } from './stream';
 const STATE_INIT = 1;
 const STATE_CLOSED = 2;
+const defaultOptions = {
+    onListen() { },
+    onCancel() { }
+};
 export class StreamController {
-    constructor(_options) {
-        this._options = _options;
+    constructor(options = {}) {
         this._state = STATE_INIT;
         this._subscription = null;
+        this._options = {};
+        this._options = Object.assign({}, options, defaultOptions);
     }
     add(value) {
         if (this._state & STATE_CLOSED) {
@@ -37,7 +42,7 @@ export class StreamController {
     }
     _subscribe(listener) {
         if (this._subscription !== null) {
-            throw new Error("Stream has already was listen.");
+            throw new Error('Stream has already was listen.');
         }
         this._subscription = new BufferStreamSubscription(listener, () => {
             this._subscription = null;
@@ -48,10 +53,11 @@ export class StreamController {
     }
 }
 export class EventController {
-    constructor(_options) {
-        this._options = _options;
+    constructor(options) {
         this._state = STATE_INIT;
         this._subscriptions = new Set();
+        this._options = {};
+        this._options = Object.assign({}, options, defaultOptions);
     }
     add(value) {
         if (this._state & STATE_CLOSED) {

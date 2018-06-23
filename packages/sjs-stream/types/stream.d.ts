@@ -1,7 +1,7 @@
 import { IStream, IStreamSubscription, IObserverListener } from './interfaces';
 export declare class BufferStreamSubscription<T> implements IStreamSubscription {
     private _listener;
-    private _cancelHandler;
+    private _cancelHandler?;
     private _state;
     private _buff;
     constructor(_listener: IObserverListener<T>, _cancelHandler?: ((sub: any) => void) | undefined);

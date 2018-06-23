@@ -3,10 +3,6 @@
   "license": "MIT",
   "devDependencies": {
     "lerna": "^2.11.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
-    "babel-register": "^6.26.0",
-    "eslint": "^4.19.1",
-    "qunit": "^2.6.0",
-    "typescript": "^2.8.3"
+    "yarn": "^1.7.0"
   }
 }

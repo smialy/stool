@@ -102,7 +102,7 @@ QUnit.test('flow door actions', assert => {
     assert.equal(closeListener.size(), 0);
 
     // global listener
-    door.addListener(listener)
+    door.addListener(listener);
     // state listener
     opened.addListener(openListener);
     closed.addListener(closeListener);
@@ -137,19 +137,19 @@ QUnit.test('flow door actions', assert => {
 
     assert.equal(closeListener.size(), 1);
 
-    event = closeListener.events[0]
+    event = closeListener.events[0];
     assert.equal(event.name, 'onExit');
     assert.equal(event.event.action, Actions.OPEN);
     assert.equal(event.event.payload, null);
 
     assert.equal(openListener.size(), 2);
 
-    event = openListener.events[0]
+    event = openListener.events[0];
     assert.equal(event.name, 'onEnter');
     assert.equal(event.event.action, Actions.OPEN);
     assert.equal(event.event.payload, null);
 
-    event = openListener.events[1]
+    event = openListener.events[1];
     assert.equal(event.name, 'onChange');
     assert.equal(event.event.action, Actions.OPEN);
     assert.equal(event.event.payload, null);
@@ -177,19 +177,19 @@ QUnit.test('flow door actions', assert => {
 
     assert.equal(openListener.size(), 3);
 
-    event = openListener.events[2]
+    event = openListener.events[2];
     assert.equal(event.name, 'onExit');
     assert.equal(event.event.action, Actions.CLOSE);
     assert.equal(event.event.payload, null);
 
     assert.equal(closeListener.size(), 3);
 
-    event = closeListener.events[1]
+    event = closeListener.events[1];
     assert.equal(event.name, 'onEnter');
     assert.equal(event.event.action, Actions.CLOSE);
     assert.equal(event.event.payload, null);
 
-    event = closeListener.events[2]
+    event = closeListener.events[2];
     assert.equal(event.name, 'onChange');
     assert.equal(event.event.action, Actions.CLOSE);
     assert.equal(event.event.payload, null);
@@ -203,13 +203,13 @@ class StateListener {
         this.events = [];
     }
     onEnter(event){
-        this.events.push({name: 'onEnter', event})
+        this.events.push({name: 'onEnter', event});
     }
     onExit(event){
-        this.events.push({name: 'onExit', event})
+        this.events.push({name: 'onExit', event});
     }
     onChange(event){
-        this.events.push({name: 'onChange', event})
+        this.events.push({name: 'onChange', event});
     }
     size(){
         return this.events.length;

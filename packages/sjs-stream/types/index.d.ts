@@ -3,11 +3,6 @@ import { Stream } from './stream';
 import { EventController, StreamController } from './controller';
 export { Stream, StreamController, EventController };
 export declare function fromItem(input: any): IStream<{}> | undefined;
-declare global  {
-    interface SymbolConstructor {
-        observable: symbol;
-    }
-}
 export declare function fromFunction<T>(subscriber: (controller: StreamController<T>) => (Function | void)): IStream<T>;
 export declare function fromObservable<T>(input: any): IStream<T>;
 export declare function fromArray<T>(array: ArrayLike<T>): IStream<{}>;

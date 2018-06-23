@@ -4,7 +4,7 @@ import * as Types from '../src/types';
 QUnit.test('import', assert =>
     assert.ok(typeof Types === 'object'));
 
-QUnit.test('test type dectect sjs.type()', assert => {
+QUnit.test('test type dectect sjs.type()', function(assert) {
     let type = Types.getType;
     assert.equal(type(null), 'null');
     assert.equal(type([]), 'array');

@@ -1,9 +1,9 @@
 import { IStream, IControlerSubscribe, IStreamSubscription, IControllerOptions, IObserverListener } from './interfaces';
 export declare class StreamController<T> implements IControlerSubscribe<T> {
-    private _options;
     private _state;
     private _subscription;
-    constructor(_options: IControllerOptions);
+    private _options;
+    constructor(options?: IControllerOptions);
     add(value: T): void;
     addError(error: any): void;
     close(): void;
@@ -11,10 +11,10 @@ export declare class StreamController<T> implements IControlerSubscribe<T> {
     _subscribe(listener: IObserverListener<T>): IStreamSubscription;
 }
 export declare class EventController<T> implements IControlerSubscribe<T> {
-    private _options;
     private _state;
     private _subscriptions;
-    constructor(_options: IControllerOptions);
+    private _options;
+    constructor(options: IControllerOptions);
     add(value: T): void;
     addError(error: any): void;
     close(): void;

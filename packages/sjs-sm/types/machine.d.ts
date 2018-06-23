@@ -17,9 +17,9 @@ export default class StateMachine implements IStateListeners {
     addListener(listener: IStateListener): void;
     removeListener(listener: IStateListener): void;
     resetListeners(): void;
-    private _transition(nextState, action, payload?);
-    private _beginTransition();
-    private _endTransition();
+    private _transition;
+    private _beginTransition;
+    private _endTransition;
     isPending(): boolean;
-    private _next();
+    private _next;
 }

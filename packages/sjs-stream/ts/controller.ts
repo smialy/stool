@@ -6,14 +6,19 @@ import { Stream, BufferStreamSubscription } from './stream';
 const STATE_INIT = 1;
 const STATE_CLOSED = 2;
 
+const defaultOptions = {
+    onListen(){},
+    onCancel(){}
+}
 
 export class StreamController<T> implements IControlerSubscribe<T> {
 
     private _state: number = STATE_INIT;
     private _subscription: BufferStreamSubscription<T> | null = null;
+    private _options: IControllerOptions={};
 
-    constructor(private _options: IControllerOptions) {
-
+    constructor(options: IControllerOptions={}) {
+        this._options = Object.assign({}, options, defaultOptions);
     }
 
     add(value: T){
@@ -49,7 +54,7 @@ export class StreamController<T> implements IControlerSubscribe<T> {
 
     _subscribe(listener: IObserverListener<T>): IStreamSubscription {
         if(this._subscription !== null){
-            throw new Error("Stream has already was listen.");
+            throw new Error('Stream has already was listen.');
         }
         this._subscription = new BufferStreamSubscription(listener, () => {
             this._subscription = null;
@@ -64,9 +69,10 @@ export class EventController<T> implements IControlerSubscribe<T> {
 
     private _state: number = STATE_INIT;
     private _subscriptions: Set<BufferStreamSubscription<T>> = new Set();
+    private _options: IControllerOptions={}
 
-    constructor(private _options: IControllerOptions) {
-
+    constructor(options: IControllerOptions) {
+        this._options = Object.assign({}, options, defaultOptions);
     }
 
     add(value: T){

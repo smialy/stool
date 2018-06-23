@@ -4,7 +4,7 @@ import squery from '../src/index';
 
 let check = (query, obj) => squery(query).match(obj);
 
-QUnit.test("simple check", assert => {
+QUnit.test('simple check', assert => {
     assert.ok(check('*', {name: 'Jon Snow'}) === true, 1);
     assert.ok(check('name=*', {name: 'Jon Snow'}) === true, 2);
     assert.ok(check('name=Jon', {name: 'Jon Snow'}) === false, 3);
