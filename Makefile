@@ -1,5 +1,5 @@
 test-ci:
-	yarn --no-lockfile
+	make bootstrap
 	make test
 
 bootstrap:
