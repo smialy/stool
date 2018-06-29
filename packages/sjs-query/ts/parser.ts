@@ -18,8 +18,10 @@ export default function parse(query) {
     if (!filter) {
         throw new TypeError('Incorrect query type.');
     }
-    if (filter.value && filter.value.length === 1) {
-        filter = filter.value[0];
+    if(filter.opt === consts.AND || filter.opt === consts.OR){
+        if (Array.isArray(filter.value) && filter.value.length === 1) {
+            filter = filter.value[0];
+        }
     }
     return filter;
 }

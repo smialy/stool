@@ -91,13 +91,13 @@ QUnit.test('filter: not (!(name=value))', assert =>  {
     assert.equal(filter.name, '', 'Expect empty filter name');
     assert.equal(filter.opt, 'not', 'Incorect filter opt: $ldap.NOT');
 });
-QUnit.test('filter: and (&(name=value))', assert =>  {
+QUnit.test('filter: eq (&(name=value))', assert =>  {
     let filter = squery('(&(name=value))');
-    assert.equal(filter.opt, 'and', 'Incorect filter opt: $ldap.AND');
+    assert.equal(filter.opt, 'eq', 'Incorect filter opt: $ldap.AND');
 });
-QUnit.test('filter: or (|(name=value))', assert =>  {
+QUnit.test('filter: eq (|(name=value))', assert =>  {
     let filter = squery('(|(name=value))');
-    assert.equal(filter.opt, 'or', 'Incorect filter opt: $ldap.OR');
+    assert.equal(filter.opt, 'eq', 'Incorect filter opt: $ldap.OR');
 });
 
 QUnit.test('complex: (&(&(name1=value1)(name3=value3))(name2<=value2))', assert =>  {
