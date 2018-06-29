@@ -2,11 +2,35 @@ import {Filter} from './filters';
 import * as consts from './consts';
 
 
-export function prepare(query){
+export default function parse(query) {
+    let filter;
+    if(Array.isArray(query)) {
+        filter = prepareArray(query);
+    } else {
+        if (query instanceof Filter) {
+            filter = query;
+        } else if(typeof query === 'string') {
+            filter = parseString(query);
+        }else if(typeof query === 'object') {
+            filter = prepareObject(query);
+        }
+    }
+    if (!filter) {
+        throw new TypeError('Incorrect query type.');
+    }
+    if (filter.value && filter.value.length === 1) {
+        filter = filter.value[0];
+    }
+    return filter;
+}
+
+function prepareArray(query){
+    return new Filter(consts.AND, query);
+}
+
+function prepareObject(query){
     let filter = new Filter(consts.AND, []);
-    let names = Object.keys(query);
-    for(let a = 0; a < names.length;a+=1){
-        let name = names[a];
+    for(let name of Object.keys(query)){
         let values = query[name];
         if(Array.isArray(values)){
             let subfilter = new Filter(consts.OR, []);
@@ -22,19 +46,10 @@ export function prepare(query){
             filter.value.push(new Filter(consts.EQ, values, name));
         }
     }
-    if (filter.value.length === 1) {
-        return filter.value[0];
-    }
     return filter;
 }
 
-export function parse(query) {
-    if (query instanceof Filter) {
-        return query;
-    }
-    if (typeof query !== 'string') {
-        throw new TypeError('Incorrect query type. String expected.');
-    }
+function parseString(query){
     query = query.trim();
     if (!query) {
         throw new TypeError('Empty query.');
