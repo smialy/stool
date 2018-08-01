@@ -3,7 +3,7 @@ test-ci:
 	./node_modules/.bin/qunit --require babel-register packages/**/tests/
 
 bootstrap:
-	yarn --no-lockfile
+	npm install --no-package-lock
 	./node_modules/.bin/lerna bootstrap
 
 build:

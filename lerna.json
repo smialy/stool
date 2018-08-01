@@ -4,8 +4,7 @@
     "packages/*"
   ],
   "version": "independent",
-  "npmClient": "yarn",
   "npmClientArgs": [
-    "--no-lockfile"
+    "--no-package-lock"
   ]
 }
