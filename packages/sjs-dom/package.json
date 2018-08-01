@@ -22,8 +22,8 @@
     "karma-qunit": "^2.0.1",
     "karma-rollup-preprocessor": "^6.0.0",
     "qunit": "^2.6.0",
-    "rollup": "^0.61.2",
-    "typescript": "^2.8.1"
+    "rollup": "^0.63.5",
+    "typescript": "^3.0.1"
   },
   "babel": {
     "plugins": [
