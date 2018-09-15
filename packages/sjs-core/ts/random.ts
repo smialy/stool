@@ -5,10 +5,10 @@ export const random = Math.random;
  *
  * @example
  *      > randomInt(10)
- *      [0..10)
+ *      [0..9]
  *
  *      > randomInt(5, 10)
- *      [5..10)
+ *      [5..9]
  *
  * @method random
  * @param {Number} min
@@ -84,8 +84,7 @@ export function sid(len: number = 32) {
  * @method uid
  * @return {String}
  */
-export function createUID(): Function {
-    const uid = ['0'];
+export function createUID(uid:[string] = ['0']): Function {
     return () => {
         let i = uid.length;
         while (i--) {

@@ -48,58 +48,53 @@ export function tr(...args: any[]) {
  * @param {Object} obj
  * @return {Object}
  */
-export const clone = (function() {
-    const MARKER = '~~clone~~marker~~';
-    function _clone(o: any, m: any=null): any {
+const MARKER = Symbol('clone-marker');
 
-        if (!o) {
-            return o;
+function cloneInner(o: any, m: any=null): any {
+
+    if (!o) {
+        return o;
+    }
+    let t = getType(o);
+    if (t === 'date') {
+        return new Date(o.getTime());
+    }
+
+    if (t === 'array' || t === 'object') {
+        if (o[MARKER]) {
+            return m[o[MARKER]];
         }
-        let t = getType(o);
-        if (t === 'date') {
-            return new Date(o.getTime());
+        let clear = !m;
+        m = m || {};
+        let _sid = sid();
+        o[MARKER] = _sid;
+        m[_sid] = o;
+        let _: any;
+        switch (t) {
+            case 'array':
+                _ = [];
+                for (let i = 0, l = o.length; i < l; ++i) {
+                    _.push(cloneInner(o[i], m));
+                }
+                break;
+            case 'object':
+                _ = {};
+                for (let key of Object.keys(o)) {
+                    _[key] = cloneInner(o[key], m);
+                }
+                break;
         }
 
-        if (t === 'array' || t === 'object') {
-            if (o[MARKER]) {
-                return m[o[MARKER]];
-            }
-            let clear = !m;
-            m = m || {};
-            let _sid = sid();
-            o[MARKER] = _sid;
-            m[_sid] = o;
-            let _: any;
-            switch (t) {
-                case 'array':
-                    _ = [];
-                    for (let i = 0, l = o.length; i < l; ++i) {
-                        _.push(_clone(o[i], m));
-                    }
-                    break;
-                case 'object':
-                    _ = {};
-                    for (let key of Object.keys(o)) {
-                        if (key !== MARKER) {
-                            _[key] = _clone(o[key], m);
-                        }
-                    }
-                    break;
-            }
-
-            if (clear) {
-                for (let key of Object.keys(m)) {
-                    if (m[key][MARKER]) {
-                        m[key][MARKER] = null;
-                        delete m[key][MARKER];
-                    }
+        if (clear) {
+            for (let key of Object.keys(m)) {
+                if (m[key][MARKER]) {
+                    m[key][MARKER] = null;
+                    delete m[key][MARKER];
                 }
             }
-            return _;
         }
-        return t === 'date' ? new Date(o.getTime()) : o;
+        return _;
     }
-    return function clone(o: any) {
-        return _clone(o);
-    };
-})();
+    return t === 'date' ? new Date(o.getTime()) : o;
+}
+export const clone = (o: any): any => cloneInner(o);

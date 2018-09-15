@@ -4,10 +4,10 @@ export declare const random: () => number;
  *
  * @example
  *      > randomInt(10)
- *      [0..10)
+ *      [0..9]
  *
  *      > randomInt(5, 10)
- *      [5..10)
+ *      [5..9]
  *
  * @method random
  * @param {Number} min
@@ -58,4 +58,4 @@ export declare function sid(len?: number): string;
  * @method uid
  * @return {String}
  */
-export declare function createUID(): Function;
+export declare function createUID(uid?: [string]): Function;
