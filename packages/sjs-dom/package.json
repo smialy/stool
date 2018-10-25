@@ -13,21 +13,22 @@
   "license": "MIT",
   "homepage": "https://github.com/smialy/sjs#readme",
   "devDependencies": {
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
-    "babel-register": "^6.26.0",
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-transform-modules-commonjs": "^7.1.0",
+    "@babel/register": "^7.0.0",
     "eslint": "^5.0.0",
-    "karma": "^2.0.0",
+    "karma": "^3.1.1",
     "karma-chrome-launcher": "^2.1.1",
     "karma-firefox-launcher": "^1.0.1",
     "karma-qunit": "^2.0.1",
     "karma-rollup-preprocessor": "^6.0.0",
     "qunit": "^2.6.0",
-    "rollup": "^0.63.5",
+    "rollup": "^0.66.6",
     "typescript": "^3.0.1"
   },
   "babel": {
     "plugins": [
-      "transform-es2015-modules-commonjs"
+      "@babel/plugin-transform-modules-commonjs"
     ]
   }
 }

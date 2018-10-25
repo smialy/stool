@@ -1,6 +1,7 @@
 test-ci:
-	npm install --no-save qunit@2.6.1 babel-register@6.26.0 babel-plugin-transform-es2015-modules-commonjs@6.26.2
-	./node_modules/.bin/qunit --require babel-register packages/**/tests/
+	npm install --no-save qunit@2.7.1 @babel/register@7.0.0 \
+		@babel/core@7.1.2 @babel/plugin-transform-modules-commonjs@^7.1.0
+	./node_modules/.bin/lerna run test
 
 bootstrap:
 	npm install --no-package-lock
