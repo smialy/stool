@@ -8,7 +8,8 @@
     "url": "git+https://github.com/smialy/sjs.git"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "eslint src"
   },
   "license": "MIT",
   "homepage": "https://github.com/smialy/sjs#readme",
