@@ -2,7 +2,10 @@
   "name": "sjs-dom",
   "version": "2.0.0",
   "description": "DOM",
+  "license": "MIT",
   "main": "src/index.js",
+  "types": "types/index.d.ts",
+  "homepage": "https://github.com/smialy/sjs#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/smialy/sjs.git"
@@ -11,8 +14,11 @@
     "build": "tsc",
     "lint": "eslint src"
   },
-  "license": "MIT",
-  "homepage": "https://github.com/smialy/sjs#readme",
+  "files": [
+    "README.md",
+    "src/*.js",
+    "types/*.ts"
+  ],
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "@babel/plugin-transform-modules-commonjs": "^7.1.0",

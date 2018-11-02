@@ -2,8 +2,10 @@
   "name": "sjs-query",
   "version": "2.0.0",
   "description": "LDAP Query Helper",
+  "license": "MIT",
   "main": "src/index.js",
   "types": "ts/index.d.ts",
+  "homepage": "https://github.com/smialy/sjs#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/smialy/sjs.git"
@@ -14,8 +16,11 @@
     "karma": "karma start --single-run",
     "lint": "eslint src tests"
   },
-  "license": "MIT",
-  "homepage": "https://github.com/smialy/sjs#readme",
+  "files": [
+    "README.md",
+    "src/*.js",
+    "types/*.ts"
+  ],
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "@babel/plugin-transform-modules-commonjs": "^7.1.0",

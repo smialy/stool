@@ -2,6 +2,7 @@
   "name": "sjs-events",
   "version": "2.0.0",
   "description": "Events",
+  "license": "MIT",
   "main": "src/index.js",
   "types": "ts/index.d.ts",
   "repository": {
@@ -14,7 +15,11 @@
     "karma": "karma start --single-run",
     "lint": "eslint src tests"
   },
-  "license": "MIT",
+  "files": [
+    "README.md",
+    "src/*.js",
+    "types/*.ts"
+  ],
   "homepage": "https://github.com/smialy/sjs#readme",
   "devDependencies": {
     "@babel/core": "^7.1.2",

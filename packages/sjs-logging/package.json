@@ -2,15 +2,10 @@
   "name": "sjs-logging",
   "version": "2.0.0",
   "description": "Logger",
-  "keywords": [
-    "www"
-  ],
-  "homepage": "",
-  "bugs": {
-    "url": "https://github.com/smialy/sjs/issues"
-  },
   "license": "MIT",
-  "author": "smialy",
+  "main": "src/index.js",
+  "types": "types/index.d.ts",
+  "homepage": "https://github.com/smialy/sjs",
   "repository": {
     "type": "git",
     "url": "http://github.com/smialy/sjs"
@@ -21,8 +16,11 @@
     "karma": "karma start --single-run",
     "lint": "eslint src tests"
   },
-  "main": "src/index.js",
-  "types": "types/index.d.ts",
+  "files": [
+    "README.md",
+    "src/*.js",
+    "types/*.ts"
+  ],
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "@babel/plugin-transform-modules-commonjs": "^7.1.0",
