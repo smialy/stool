@@ -1,3 +1,8 @@
+declare global {
+    interface SymbolConstructor {
+        observable: symbol;
+    }
+}
 export interface IObserver<T> {
     next(value: T): void;
     error(error: any): void;

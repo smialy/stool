@@ -6,7 +6,6 @@ export {
     Stream, StreamController, EventController
 };
 
-
 export function fromItem(input: any){
     if(isPromise(input)) {
         return fromPromise(input);
