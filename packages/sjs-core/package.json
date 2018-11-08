@@ -3,8 +3,8 @@
   "version": "2.0.0",
   "description": "Core",
   "license": "MIT",
-  "main": "src/index.js",
-  "main:ts": "ts/index.ts",
+  "main": "dist/node/index.js",
+  "module": "dist/esm/index.js",
   "types": "types/index.d.ts",
   "homepage": "https://github.com/smialy/sjs#readme",
   "repository": {
@@ -12,20 +12,20 @@
     "url": "git+https://github.com/smialy/sjs.git"
   },
   "scripts": {
-    "build": "tsc",
-    "test": "qunit --require @babel/register tests/",
+    "build": "npm run build:clean && npm run build:tsc && npm run build:exts",
+    "build:clean": "rm -rf dist/ && rm -rf types",
+    "build:tsc": "tsc && tsc -p tsconfig.esm.json",
+    "build:exts": "renamer --path-element ext --find js --replace mjs dist/esm/*",
+    "test": "qunit --require ts-node/register tests/*",
     "karma": "karma start --single-run",
-    "lint": "eslint src tests"
+    "lint": "eslint tests && tslint src/*"
   },
   "files": [
     "README.md",
-    "src/*.js",
+    "dist/*.js",
     "types/*.ts"
   ],
   "devDependencies": {
-    "@babel/core": "^7.1.2",
-    "@babel/plugin-transform-modules-commonjs": "^7.1.0",
-    "@babel/register": "^7.0.0",
     "eslint": "^5.7.0",
     "karma": "^3.1.1",
     "karma-chrome-launcher": "^2.2.0",
@@ -34,11 +34,15 @@
     "karma-rollup-preprocessor": "^6.1.0",
     "qunit": "^2.7.1",
     "rollup": "^0.66.6",
-    "typescript": "^3.1.3"
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-typescript": "^1.0.0",
+    "ts-node": "^7.0.1",
+    "tslib": "^1.9.3",
+    "typescript": "^3.1.6",
+    "renamer": "^1.1.0"
   },
-  "babel": {
-    "plugins": [
-      "@babel/plugin-transform-modules-commonjs"
-    ]
+  "dependencies": {
+    "tslint": "^5.11.0"
   }
 }

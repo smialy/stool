@@ -1,10 +1,6 @@
-import {getType} from './types';
-import {sid} from './random';
-
-
-export const noop = () => {};
-
-
+import { getType } from './types';
+import { sid } from './random';
+export const noop = () => { };
 /*
  * Pick first value without error
  *
@@ -18,19 +14,17 @@ export const noop = () => {};
  * @method tr
  * @return {Object}
  */
-export function tr(...args: any[]) {
+export function tr(...args) {
     for (let fn of args) {
         try {
             return fn();
-        } catch (e) {
+        }
+        catch (e) {
             //noop
         }
     }
     return null;
 }
-
-
-
 /**
  * Clone object
  *
@@ -48,10 +42,8 @@ export function tr(...args: any[]) {
  * @param {Object} obj
  * @return {Object}
  */
-const MARKER = Symbol('clone-marker');
-
-function cloneInner(o: any, m: any=null): any {
-
+const MARKER = Symbol('~~clone-marker~~');
+function cloneInner(o, m = null) {
     if (!o) {
         return o;
     }
@@ -59,7 +51,6 @@ function cloneInner(o: any, m: any=null): any {
     if (t === 'date') {
         return new Date(o.getTime());
     }
-
     if (t === 'array' || t === 'object') {
         if (o[MARKER]) {
             return m[o[MARKER]];
@@ -69,7 +60,7 @@ function cloneInner(o: any, m: any=null): any {
         let _sid = sid();
         o[MARKER] = _sid;
         m[_sid] = o;
-        let _: any;
+        let _;
         switch (t) {
             case 'array':
                 _ = [];
@@ -84,7 +75,6 @@ function cloneInner(o: any, m: any=null): any {
                 }
                 break;
         }
-
         if (clear) {
             for (let key of Object.keys(m)) {
                 if (m[key][MARKER]) {
@@ -97,4 +87,4 @@ function cloneInner(o: any, m: any=null): any {
     }
     return t === 'date' ? new Date(o.getTime()) : o;
 }
-export const clone = (o: any): any => cloneInner(o);
+export const clone = (o) => cloneInner(o);

@@ -1,6 +1,8 @@
-import { getType } from './types';
-import { sid } from './random';
-export const noop = () => { };
+import { sid as randomSid } from './random';
+import {getType} from './types';
+
+export const noop = () => {}; // tslint:disable-line
+
 /*
  * Pick first value without error
  *
@@ -14,17 +16,17 @@ export const noop = () => { };
  * @method tr
  * @return {Object}
  */
-export function tr(...args) {
-    for (let fn of args) {
+export function tr(...args: any[]) {
+    for (const fn of args) {
         try {
             return fn();
-        }
-        catch (e) {
-            //noop
+        } catch (e) {
+            // noop
         }
     }
     return null;
 }
+
 /**
  * Clone object
  *
@@ -42,25 +44,28 @@ export function tr(...args) {
  * @param {Object} obj
  * @return {Object}
  */
-const MARKER = Symbol('clone-marker');
-function cloneInner(o, m = null) {
+const MARKER = Symbol('~~clone-marker~~');
+
+function cloneInner(o: any, m: any= null): any {
+
     if (!o) {
         return o;
     }
-    let t = getType(o);
+    const t = getType(o);
     if (t === 'date') {
         return new Date(o.getTime());
     }
+
     if (t === 'array' || t === 'object') {
         if (o[MARKER]) {
             return m[o[MARKER]];
         }
-        let clear = !m;
+        const clear = !m;
         m = m || {};
-        let _sid = sid();
-        o[MARKER] = _sid;
-        m[_sid] = o;
-        let _;
+        const sid = randomSid();
+        o[MARKER] = sid;
+        m[sid] = o;
+        let _: any;
         switch (t) {
             case 'array':
                 _ = [];
@@ -70,13 +75,14 @@ function cloneInner(o, m = null) {
                 break;
             case 'object':
                 _ = {};
-                for (let key of Object.keys(o)) {
+                for (const key of Object.keys(o)) {
                     _[key] = cloneInner(o[key], m);
                 }
                 break;
         }
+
         if (clear) {
-            for (let key of Object.keys(m)) {
+            for (const key of Object.keys(m)) {
                 if (m[key][MARKER]) {
                     m[key][MARKER] = null;
                     delete m[key][MARKER];
@@ -87,4 +93,4 @@ function cloneInner(o, m = null) {
     }
     return t === 'date' ? new Date(o.getTime()) : o;
 }
-export const clone = (o) => cloneInner(o);
+export const clone = (o: any): any => cloneInner(o);

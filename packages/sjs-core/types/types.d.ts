@@ -1,8 +1,7 @@
 /**
  * Detect object type
  *
- * @method sjs.type
- * @return {Mixed} [null,undefined,string,number,array,function,regexp,date,boolean,object]
+ * @return {string} [null,undefined,string,number,array,function,regexp,date,boolean,object]
  */
 export declare function getType(o: any): string;
 export declare const isNull: (o: any) => boolean;

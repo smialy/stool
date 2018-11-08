@@ -20,7 +20,7 @@ export function randomInt(min: number, max: number = 0) {
         max = min;
         min = 0;
     }
-    return parseInt(''+(Math.random() * (max - min) + min), 10);
+    return parseInt('' + (Math.random() * (max - min) + min), 10);
 }
 
 /**
@@ -36,8 +36,8 @@ export function randomInt(min: number, max: number = 0) {
  * @param {ArrayLike} sequence
  * @return {any}
  */
-export function choice(sequence: Array<any>) {
-    if(sequence && sequence.length) {
+export function choice(sequence: any[]) {
+    if (sequence && sequence.length) {
         return sequence[randomInt(sequence.length)];
     }
     return null;
@@ -58,16 +58,16 @@ export function choice(sequence: Array<any>) {
  * @return {String}
  */
 export function sid(len: number = 32) {
-    //start from letter (can be use as DOM id)
-    let sid = String.fromCharCode(Math.floor((Math.random() * 25) + 65));
-    while (sid.length < len) {
+    // start from letter (can be use as DOM id)
+    let id = String.fromCharCode(Math.floor((Math.random() * 25) + 65));
+    while (id.length < len) {
         // between [48,57](number) + [65,90](ascii)
-        let code = Math.floor((Math.random() * 42) + 48);
+        const code = Math.floor((Math.random() * 42) + 48);
         if (code < 58 || code > 64) {
-            sid += String.fromCharCode(code);
+            id += String.fromCharCode(code);
         }
     }
-    return sid;
+    return id;
 }
 
 /**
@@ -84,7 +84,7 @@ export function sid(len: number = 32) {
  * @method uid
  * @return {String}
  */
-export function createUID(uid:[string] = ['0']): Function {
+export function createUID(uid: [string] = ['0']): () => string {
     return () => {
         let i = uid.length;
         while (i--) {
@@ -103,4 +103,3 @@ export function createUID(uid:[string] = ['0']): Function {
         return uid.join('');
     };
 }
-

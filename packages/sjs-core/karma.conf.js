@@ -1,4 +1,5 @@
 // Karma configuration
+const typescript = require('rollup-plugin-typescript');
 
 module.exports = function(config) {
     config.set({
@@ -13,6 +14,9 @@ module.exports = function(config) {
             'src/*.js': ['rollup']
         },
         rollupPreprocessor: {
+            plugins: [
+                typescript()
+            ],
             output: {
                 format: 'iife',
                 name: 'events',
