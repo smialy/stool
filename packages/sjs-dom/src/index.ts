@@ -1,9 +1,9 @@
-export function ready() {
-    return new Promise(resolve => {
+
+export function ready(): Promise<any> {
+    return new Promise((resolve) => {
         if (document.readyState === 'complete') {
             resolve();
-        }
-        else {
+        } else {
             document.addEventListener('DOMContentLoaded', loaded, false);
             window.addEventListener('load', loaded, false);
         }
@@ -14,33 +14,33 @@ export function ready() {
         }
     });
 }
-export function findParent(element, selector) {
+
+export function findParent(element: HTMLElement, selector: string): HTMLElement|null {
     while (element !== document.body) {
         if (element.classList.contains(selector)) {
             return element;
         }
-        element = element.parentNode;
+        element = element.parentNode as HTMLElement;
     }
     return null;
 }
-export function classNames(...args) {
-    const classes = [];
-    for (let arg of args) {
+
+export function classNames(...args: any[]): string {
+    const classes: any[] = [];
+    for (const arg of args) {
         if (!arg) {
             continue;
         }
-        let type = typeof arg;
+        const type = typeof arg;
         if (type === 'string' || type === 'number') {
             classes.push(arg);
-        }
-        else if (Array.isArray(arg)) {
-            let cn = classNames(...arg);
+        } else if (Array.isArray(arg)) {
+            const cn = classNames(...arg);
             if (cn) {
                 classes.push(cn);
             }
-        }
-        else if (type === 'object') {
-            for (let [key, value] of Object.entries(arg)) {
+        } else if (type === 'object') {
+            for (const [key, value] of Object.entries(arg)) {
                 if (value) {
                     classes.push(key);
                 }
