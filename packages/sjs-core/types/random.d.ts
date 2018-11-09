@@ -28,7 +28,7 @@ export declare function randomInt(min: number, max?: number): number;
  * @param {ArrayLike} sequence
  * @return {any}
  */
-export declare function choice(sequence: Array<any>): any;
+export declare function choice(sequence: any[]): any;
 /**
  * Generate unique string
  *
@@ -58,4 +58,4 @@ export declare function sid(len?: number): string;
  * @method uid
  * @return {String}
  */
-export declare function createUID(uid?: [string]): Function;
+export declare function createUID(uid?: [string]): () => string;

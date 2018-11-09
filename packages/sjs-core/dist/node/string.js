@@ -27,7 +27,7 @@ exports.camelCase = camelCase;
  * @return {String}
  */
 function hyphenate(text) {
-    return text.replace(/[A-Z]/g, match => '-' + match.charAt(0).toLowerCase());
+    return text.replace(/[A-Z]/g, (match) => '-' + match.charAt(0).toLowerCase());
 }
 exports.hyphenate = hyphenate;
 /**

@@ -41,9 +41,9 @@ export function getType(o) {
     }
     return map[getTag(o)] || 'object';
 }
-const prepareType = expectType => o => map[getTag(o)] === expectType;
-export const isNull = o => o === null;
-export const isUndefined = o => o === undefined;
+const prepareType = (expectType) => (o) => map[getTag(o)] === expectType;
+export const isNull = (o) => o === null;
+export const isUndefined = (o) => o === undefined;
 /**
  * @type {Function}
  * @return {Boolean}
@@ -63,58 +63,71 @@ export const isDate = prepareType('date');
  * @method sjs.isObject
  * @return {Boolean}
  */
-export const isObject = o => o != null && typeof o === 'object';
+export const isObject = (o) => o != null && typeof o === 'object';
 /**
  * @method sjs.isNumber
  * @return {Boolean}
  */
-export const isNumber = o => typeof o === 'number';
+export const isNumber = (o) => typeof o === 'number';
 /**
  * @method sjs.isString
  * @return {Boolean}
  */
-export const isString = o => getType(o) === 'string';
+export const isString = (o) => getType(o) === 'string';
 /**
  * @method sjs.isFunction
  * @return {Boolean}
  */
-export const isFunction = o => typeof o === 'function';
-export const isGenerator = o => getTag(o) === '[object GeneratorFunction]';
-export const isAsync = o => getTag(o) === '[object AsyncFunction]';
-export const isSymbol = o => getType(o) === 'symbol';
-export const isSet = o => getTag(o) === '[object Set]';
-export const isMap = o => getTag(o) === '[object Map]';
+export const isFunction = (o) => typeof o === 'function';
+export const isGenerator = (o) => getTag(o) === '[object GeneratorFunction]';
+export const isAsync = (o) => getTag(o) === '[object AsyncFunction]';
+export const isSymbol = (o) => getType(o) === 'symbol';
+export const isSet = (o) => getTag(o) === '[object Set]';
+export const isMap = (o) => getTag(o) === '[object Map]';
 /**
  * @method sjs.isBoolean
  * @return {Boolean}
  */
-export const isBoolean = o => typeof o === 'boolean';
+export const isBoolean = (o) => typeof o === 'boolean';
 /**
  * @method sjs.isElement
  * @return {Boolean}
  */
-export const isElement = o => getType(o) === 'element';
+export const isElement = (o) => getType(o) === 'element';
 /**
  * @method sjs.isTextnode
  * @return {Boolean}
  */
-export const isTextnode = o => getType(o) === 'textnode';
+export const isTextnode = (o) => getType(o) === 'textnode';
 /**
  * @method sjs.isWhitespace
  * @return {Boolean}
  */
-export const isWhitespace = o => getType(o) === 'whitespace';
+export const isWhitespace = (o) => getType(o) === 'whitespace';
 /**
  * @method sjs.isCollection
  * @return {Boolean}
  */
-export const isCollection = o => getType(o) === 'collection';
+export const isCollection = (o) => getType(o) === 'collection';
 function buildTypesMap() {
-    const map = {};
-    let names = ['Number', 'String', 'Function', 'AsyncFunction', 'GeneratorFunction', 'Array', 'Object', 'Date', 'RegExp', 'Boolean', 'Arguments', 'Symbol'];
+    const types = {};
+    const names = [
+        'Number',
+        'String',
+        'Function',
+        'AsyncFunction',
+        'GeneratorFunction',
+        'Array',
+        'Object',
+        'Date',
+        'RegExp',
+        'Boolean',
+        'Arguments',
+        'Symbol',
+    ];
     for (const name of names) {
-        map['[object ' + name + ']'] = name.toLowerCase();
+        types['[object ' + name + ']'] = name.toLowerCase();
     }
-    map['[object AsyncFunction]'] = 'async';
-    return map;
+    types['[object AsyncFunction]'] = 'async';
+    return types;
 }

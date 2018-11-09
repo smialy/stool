@@ -33,16 +33,16 @@
     "karma-qunit": "^2.1.0",
     "karma-rollup-preprocessor": "^6.1.0",
     "qunit": "^2.7.1",
+    "renamer": "^1.1.0",
     "rollup": "^0.66.6",
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-typescript": "^1.0.0",
     "ts-node": "^7.0.1",
     "tslib": "^1.9.3",
-    "typescript": "^3.1.6",
-    "renamer": "^1.1.0"
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.6"
   },
   "dependencies": {
-    "tslint": "^5.11.0"
   }
 }

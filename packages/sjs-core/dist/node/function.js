@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const types_1 = require("./types");
 const random_1 = require("./random");
-exports.noop = () => { };
+const types_1 = require("./types");
+exports.noop = () => { }; // tslint:disable-line
 /*
  * Pick first value without error
  *
@@ -17,12 +17,12 @@ exports.noop = () => { };
  * @return {Object}
  */
 function tr(...args) {
-    for (let fn of args) {
+    for (const fn of args) {
         try {
             return fn();
         }
         catch (e) {
-            //noop
+            // noop
         }
     }
     return null;
@@ -50,7 +50,7 @@ function cloneInner(o, m = null) {
     if (!o) {
         return o;
     }
-    let t = types_1.getType(o);
+    const t = types_1.getType(o);
     if (t === 'date') {
         return new Date(o.getTime());
     }
@@ -58,11 +58,11 @@ function cloneInner(o, m = null) {
         if (o[MARKER]) {
             return m[o[MARKER]];
         }
-        let clear = !m;
+        const clear = !m;
         m = m || {};
-        let _sid = random_1.sid();
-        o[MARKER] = _sid;
-        m[_sid] = o;
+        const sid = random_1.sid();
+        o[MARKER] = sid;
+        m[sid] = o;
         let _;
         switch (t) {
             case 'array':
@@ -73,13 +73,13 @@ function cloneInner(o, m = null) {
                 break;
             case 'object':
                 _ = {};
-                for (let key of Object.keys(o)) {
+                for (const key of Object.keys(o)) {
                     _[key] = cloneInner(o[key], m);
                 }
                 break;
         }
         if (clear) {
-            for (let key of Object.keys(m)) {
+            for (const key of Object.keys(m)) {
                 if (m[key][MARKER]) {
                     m[key][MARKER] = null;
                     delete m[key][MARKER];

@@ -59,16 +59,16 @@ exports.choice = choice;
  * @return {String}
  */
 function sid(len = 32) {
-    //start from letter (can be use as DOM id)
-    let sid = String.fromCharCode(Math.floor((Math.random() * 25) + 65));
-    while (sid.length < len) {
+    // start from letter (can be use as DOM id)
+    let id = String.fromCharCode(Math.floor((Math.random() * 25) + 65));
+    while (id.length < len) {
         // between [48,57](number) + [65,90](ascii)
-        let code = Math.floor((Math.random() * 42) + 48);
+        const code = Math.floor((Math.random() * 42) + 48);
         if (code < 58 || code > 64) {
-            sid += String.fromCharCode(code);
+            id += String.fromCharCode(code);
         }
     }
-    return sid;
+    return id;
 }
 exports.sid = sid;
 /**

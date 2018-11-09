@@ -1,6 +1,6 @@
+import { sid as randomSid } from './random';
 import { getType } from './types';
-import { sid } from './random';
-export const noop = () => { };
+export const noop = () => { }; // tslint:disable-line
 /*
  * Pick first value without error
  *
@@ -15,12 +15,12 @@ export const noop = () => { };
  * @return {Object}
  */
 export function tr(...args) {
-    for (let fn of args) {
+    for (const fn of args) {
         try {
             return fn();
         }
         catch (e) {
-            //noop
+            // noop
         }
     }
     return null;
@@ -47,7 +47,7 @@ function cloneInner(o, m = null) {
     if (!o) {
         return o;
     }
-    let t = getType(o);
+    const t = getType(o);
     if (t === 'date') {
         return new Date(o.getTime());
     }
@@ -55,11 +55,11 @@ function cloneInner(o, m = null) {
         if (o[MARKER]) {
             return m[o[MARKER]];
         }
-        let clear = !m;
+        const clear = !m;
         m = m || {};
-        let _sid = sid();
-        o[MARKER] = _sid;
-        m[_sid] = o;
+        const sid = randomSid();
+        o[MARKER] = sid;
+        m[sid] = o;
         let _;
         switch (t) {
             case 'array':
@@ -70,13 +70,13 @@ function cloneInner(o, m = null) {
                 break;
             case 'object':
                 _ = {};
-                for (let key of Object.keys(o)) {
+                for (const key of Object.keys(o)) {
                     _[key] = cloneInner(o[key], m);
                 }
                 break;
         }
         if (clear) {
-            for (let key of Object.keys(m)) {
+            for (const key of Object.keys(m)) {
                 if (m[key][MARKER]) {
                     m[key][MARKER] = null;
                     delete m[key][MARKER];
