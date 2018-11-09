@@ -1,5 +1,6 @@
 import { IState, IStateListener, IStateListeners } from './interfaces';
 export default class StateMachine implements IStateListeners {
+    readonly states: [string, IState][];
     private _states;
     private _currentState;
     private _previousState;
@@ -11,15 +12,14 @@ export default class StateMachine implements IStateListeners {
     goto(action: string, payload?: any): void;
     addState(state: IState): void;
     getState(name: string): IState | undefined;
-    readonly states: [string, IState][];
     removeState(name: string): boolean;
     currentState(): IState | null;
     addListener(listener: IStateListener): void;
     removeListener(listener: IStateListener): void;
     resetListeners(): void;
+    isPending(): boolean;
     private _transition;
     private _beginTransition;
     private _endTransition;
-    isPending(): boolean;
     private _next;
 }

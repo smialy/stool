@@ -1,23 +1,23 @@
-export declare type StateEvent = {
+export interface IStateEvent {
     action: string;
     payload: any;
-};
-export declare type IConfigTransition = {
+}
+export interface IConfigTransition {
     action: string;
     target: string;
-};
-export declare type IConfig = {
+}
+export interface IConfig {
     init?: string;
-    transitions: Array<IConfigTransition>;
+    transitions: IConfigTransition[];
     events: {
         name: (event: any) => {};
     };
-};
-export declare type IStateEvent = {
+}
+export interface IStateEvent {
     state: IState;
     action: string;
     payload: any;
-};
+}
 export interface IStateListener {
     onEnter(event: IStateEvent): void;
     onExit(event: IStateEvent): void;

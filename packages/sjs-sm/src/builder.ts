@@ -1,6 +1,8 @@
+import { IState, IStateListener } from './interfaces';
 import StateMachine from './machine';
 import State from './state';
-export function factory(config) {
+
+export function factory(config: any) {
     const sm = createMachine();
     for (const data of config.states) {
         sm.addState(createState(data));
@@ -10,12 +12,14 @@ export function factory(config) {
     }
     return sm;
 }
+
 export function createMachine() {
     return new StateMachine();
 }
-export function createState(config) {
-    let state = new State(config.name);
-    for (let transition of config.transitions) {
+
+export function createState(config: any): IState {
+    const state = new State(config.name);
+    for (const transition of config.transitions) {
         state.addTransition(transition.action, transition.target);
     }
     if (config.listeners) {
@@ -23,11 +27,12 @@ export function createState(config) {
     }
     return state;
 }
-function prepareStateListener(listener) {
-    const noop = () => { };
+
+function prepareStateListener(listener: any): IStateListener {
+    const noop = () => {/* noop */};
     return {
         onEnter: listener.onEnter || noop,
         onExit: listener.onExit || noop,
-        onChange: listener.onChange || noop
+        onChange: listener.onChange || noop,
     };
 }
