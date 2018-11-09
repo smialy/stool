@@ -3,41 +3,44 @@
   "version": "2.0.0",
   "description": "Logger",
   "license": "MIT",
-  "main": "src/index.js",
+  "main": "dist/node/index.js",
+  "module": "dist/esm/index.js",
   "types": "types/index.d.ts",
-  "homepage": "https://github.com/smialy/sjs",
+  "homepage": "https://github.com/smialy/sjs#readme",
   "repository": {
     "type": "git",
-    "url": "http://github.com/smialy/sjs"
+    "url": "git+https://github.com/smialy/sjs.git"
   },
   "scripts": {
-    "test": "qunit --require @babel/register tests/",
-    "build": "tsc",
+    "build": "npm run build:clean && npm run build:tsc && npm run build:exts",
+    "build:clean": "rm -rf dist/ && rm -rf types",
+    "build:tsc": "tsc && tsc -p tsconfig.esm.json",
+    "build:exts": "renamer --path-element ext --find js --replace mjs dist/esm/*",
+    "test": "qunit --require ts-node/register tests/*",
     "karma": "karma start --single-run",
-    "lint": "eslint src tests"
+    "lint": "eslint tests && tslint src/*"
   },
   "files": [
     "README.md",
-    "src/*.js",
+    "dist/*.js",
     "types/*.ts"
   ],
   "devDependencies": {
-    "@babel/core": "^7.1.2",
-    "@babel/plugin-transform-modules-commonjs": "^7.1.0",
-    "@babel/register": "^7.0.0",
-    "eslint": "^5.0.0",
+    "eslint": "^5.7.0",
     "karma": "^3.1.1",
-    "karma-chrome-launcher": "^2.1.1",
-    "karma-firefox-launcher": "^1.0.1",
-    "karma-qunit": "^2.0.1",
-    "karma-rollup-preprocessor": "^6.0.0",
-    "qunit": "^2.6.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-firefox-launcher": "^1.1.0",
+    "karma-qunit": "^2.1.0",
+    "karma-rollup-preprocessor": "^6.1.0",
+    "qunit": "^2.7.1",
+    "renamer": "^1.1.0",
     "rollup": "^0.66.6",
-    "typescript": "^3.0.1"
-  },
-  "babel": {
-    "plugins": [
-      "@babel/plugin-transform-modules-commonjs"
-    ]
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-typescript": "^1.0.0",
+    "ts-node": "^7.0.1",
+    "tslib": "^1.9.3",
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.6"
   }
 }

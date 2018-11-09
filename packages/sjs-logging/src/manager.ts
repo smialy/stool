@@ -1,43 +1,52 @@
 import { LEVELS } from './consts';
 import { Logger } from './logger';
 import { checkLevel } from './utils';
+
 export class Manager {
-    constructor(root = null, level = LEVELS.NOTSET) {
+    public disable: number;
+
+    private _loggers: Map<string, Logger>;
+    private _root: Logger|null;
+
+    constructor(root= null, level= LEVELS.NOTSET) {
         this._root = root;
         this._loggers = new Map();
         this.disable = checkLevel(level);
     }
-    setDisable(level) {
+
+    public setDisable(level: number) {
         this.disable = checkLevel(level);
     }
+
     /**
      * Find logger by name. Create is not exits
      *
      * @param {string} [name='root'] name
      * @return {Logger}
      */
-    getLogger(name = 'root') {
+    public getLogger(name= 'root'): Logger {
         if (!this._loggers.has(name)) {
-            let logger = new Logger(name);
+            const logger = new Logger(name);
             this._fixTree(logger);
             logger.manager = this;
             this._loggers.set(name, logger);
         }
-        return this._loggers.get(name);
+        return this._loggers.get(name) as Logger;
     }
-    _fixTree(logger) {
-        let parts = logger.name.split('.');
+
+    public _fixTree(logger: Logger) {
+        const parts = logger.name.split('.');
         while (parts.length) {
             parts.pop();
-            let name = parts.join('.') || 'root';
-            let parent = this._loggers.get(name);
+            const name = parts.join('.') || 'root';
+            const parent = this._loggers.get(name);
             if (parent) {
                 logger.parent = parent;
                 break;
             }
         }
         if (logger.parent) {
-            for (let item of this._loggers.values()) {
+            for (const item of this._loggers.values()) {
                 if (item.parent && item.parent === logger.parent) {
                     if (item.name.substr(0, logger.name.length) === logger.name) {
                         item.parent = logger;

@@ -1,6 +1,5 @@
 import {LEVELS} from './consts';
 
-
 const NAMES = Object.keys(LEVELS);
 
 /**
@@ -16,14 +15,14 @@ export function levelToMask(level: number) {
  * @param {numbe|string} level
  */
 export function checkLevel(level: number|string): number {
-    let type = typeof level;
-    if(type === 'number'){
-        return <number>level;
-    }else if(type === 'string'){
-        if(NAMES.includes(''+level)){
-            return <number>LEVELS[level];
+    const type = typeof level;
+    if (type === 'number') {
+        return level as number;
+    } else if (type === 'string') {
+        if (NAMES.includes('' + level)) {
+            return LEVELS[level] as number;
         }
     }
-    let msg = `Level not number or valid string: "${level}" [${NAMES}]`;
+    const msg = `Level not number or valid string: "${level}" [${NAMES}]`;
     throw TypeError(msg);
 }

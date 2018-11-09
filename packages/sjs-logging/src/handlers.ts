@@ -1,46 +1,41 @@
-import { IRecord, IFilter, IHandler } from './interfaces';
 import { LEVELS } from './consts';
 import { Filterer } from './filter';
+import { IFilter, IHandler, IRecord } from './interfaces';
 import { checkLevel } from './utils';
-
 
 export abstract class Handler extends Filterer implements IHandler {
 
     public level: number;
-    /**
-     * @param {number} [level=LEVELS.NOTSET]
-     */
-    constructor(level=LEVELS.NOTSET) {
+
+    constructor(level = LEVELS.NOTSET) {
         super();
         this.level = checkLevel(level);
     }
-    setLevel(level: number){
+    public setLevel(level: number) {
         this.level = checkLevel(level);
     }
-    /**
-    * @param {Record} record
-    */
-    handle(record: IRecord) {
-        if(this.filter(record)){
+    public handle(record: IRecord) {
+        if (this.filter(record)) {
             this.emit(record);
             return true;
         }
         return false;
     }
-    emit(record: IRecord) { // eslint-disable-line no-unused-vars
-        (record);
+    public emit(record: IRecord) { // eslint-disable-line no-unused-vars
     }
-    flush() {}
-    close() {}
+    public flush() { /* noopa */ }
+    public close() { /* noopa */}
 }
 
 export class ConsoleHandler extends Handler {
     /**
      * @param {Record} record Log object with all collected data
      */
-    emit(record: IRecord): void {
+    public emit(record: IRecord): void {
+        /* tslint:disable-next-line */
         console.log(`[${record.name}]::${record.levelName}:: ${record.msg}`);
         if (record.exception) {
+            /* tslint:disable-next-line */
             console.error(record.exception);
         }
     }

@@ -11,7 +11,6 @@ export interface IFilter {
     filter(record: IRecord): boolean;
 }
 
-
 export interface IHandler {
     readonly level: number;
     handle(record: IRecord): void;

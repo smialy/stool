@@ -1,11 +1,10 @@
-import {Manager} from './manager';
 import { Logger } from './logger';
+import {Manager} from './manager';
 
 const manager = new Manager();
 
 const logger = manager.getLogger();
 export default logger;
-
 
 export function getLogger(name: string): Logger {
     return manager.getLogger(name);
