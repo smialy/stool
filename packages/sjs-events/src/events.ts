@@ -1,4 +1,5 @@
 import Listeners from './listeners';
+
 export default class Events {
     /**
      * Add event listener
@@ -7,7 +8,7 @@ export default class Events {
      * @param {function} fn Callback
      * @param {Object} bind Custom context for callback
      */
-    on(name, fn, bind) {
+    public on(name: string, fn: () => void, bind: any): void {
         name = name.toLowerCase();
         storage(this).get(name).add(fn, bind);
     }
@@ -18,10 +19,10 @@ export default class Events {
      * @param {function} fn Callback
      * @param {Object} bind Custom context for callback
      */
-    once(name, fn, bind) {
+    public once(name: string, fn: () => void, bind: any): void {
         name = name.toLowerCase();
-        let listeners = storage(this).get(name);
-        let _fn = (...args) => {
+        const listeners = storage(this).get(name);
+        const _fn = (...args: any[]) => {
             listeners.remove(_fn, bind);
             if (!listeners.size()) {
                 this.removeListeners(name);
@@ -37,10 +38,10 @@ export default class Events {
      * @param {function} fn
      * @param {Object} bind - New context
      */
-    off(name, fn, bind) {
+    public off(name: string, fn: () => void, bind: any): void {
         name = name.toLowerCase();
-        let types = storage(this);
-        let listeners = types.get(name);
+        const types = storage(this);
+        const listeners = types.get(name);
         listeners.remove(fn, bind);
         if (listeners.size() === 0) {
             types.remove(name);
@@ -51,7 +52,7 @@ export default class Events {
      *
      * @param {string} name
      */
-    offs(name) {
+    public offs(name: string): void {
         name = name.toLowerCase();
         storage(this).remove(name);
     }
@@ -60,9 +61,9 @@ export default class Events {
      *
      * @param {...Object} args
      */
-    emit(...args) {
-        let name = args.shift().toLowerCase();
-        let types = storage(this);
+    public emit(...args: any[]): void {
+        const name = args.shift().toLowerCase();
+        const types = storage(this);
         if (types.has(name)) {
             types.get(name).emit(...args);
         }
@@ -70,7 +71,7 @@ export default class Events {
     /**
      * {@link Events.emit}
      */
-    dispatch(...args) {
+    public dispatch(...args: any[]): void {
         this.emit(...args);
     }
     /**
@@ -78,25 +79,25 @@ export default class Events {
      *
      * @param {string} name - Event name
      */
-    removeListeners(name) {
+    public removeListeners(name: string): void {
         this.offs(name);
     }
     /**
      * Remove all listeners
      */
-    removeAllListeners() {
+    public removeAllListeners(): void {
         storage(this).removeAll();
     }
     /**
      * {@link Events.off}
      */
-    removeListener(name, fn, bind) {
+    public removeListener(name: string, fn: () => void, bind: any): void {
         this.off(name, fn, bind);
     }
     /**
      * {@link Events.on}
      */
-    addListener(name, fn, bind) {
+    public addListener(name: string, fn: () => void, bind: any): void {
         this.on(name, fn, bind);
     }
     /**
@@ -106,38 +107,42 @@ export default class Events {
      * @param {function} fn
      * @param {Object} bind - New context
      */
-    hasListeners(name, fn, bind) {
+    public hasListeners(name: string, fn: () => void, bind: any): boolean {
         name = name.toLowerCase();
-        let types = storage(this);
+        const types = storage(this);
         if (typeof fn === 'undefined') {
             return types.has(name);
         }
         return types.has(name) && types.get(name).has(fn, bind);
     }
 }
+
 class ListenersTypes {
+    private _map: Map<string, Listeners>;
     constructor() {
         this._map = new Map();
     }
-    get(name) {
+    public get(name: string): Listeners | undefined {
         if (!this._map.has(name)) {
             this._map.set(name, new Listeners());
         }
         return this._map.get(name);
     }
-    has(name) {
+    public has(name: string): boolean {
         return this._map.has(name);
     }
-    remove(name) {
+    public remove(name: string): void {
         this._map.delete(name);
     }
-    removeAll() {
-        this._map.forEach(listeners => listeners.clear());
+    public removeAll(): void {
+        this._map.forEach((listeners) => listeners.clear());
         this._map.clear();
     }
 }
-let eventsMap = new WeakMap();
-function storage(obj) {
+
+const eventsMap = new WeakMap();
+
+function storage(obj: any): any {
     if (!eventsMap.has(obj)) {
         eventsMap.set(obj, new ListenersTypes());
     }

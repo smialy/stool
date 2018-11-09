@@ -6,7 +6,7 @@ export default class Events {
      * @param {function} fn Callback
      * @param {Object} bind Custom context for callback
      */
-    on(name: string, fn: Function, bind: any): void;
+    on(name: string, fn: () => void, bind: any): void;
     /**
      * Add event and remove it after fire
      *
@@ -14,7 +14,7 @@ export default class Events {
      * @param {function} fn Callback
      * @param {Object} bind Custom context for callback
      */
-    once(name: string, fn: Function, bind: any): void;
+    once(name: string, fn: () => void, bind: any): void;
     /**
      * Remove event
      *
@@ -22,7 +22,7 @@ export default class Events {
      * @param {function} fn
      * @param {Object} bind - New context
      */
-    off(name: string, fn: Function, bind: any): void;
+    off(name: string, fn: () => void, bind: any): void;
     /**
      * Remove listeners
      *
@@ -52,11 +52,11 @@ export default class Events {
     /**
      * {@link Events.off}
      */
-    removeListener(name: string, fn: Function, bind: any): void;
+    removeListener(name: string, fn: () => void, bind: any): void;
     /**
      * {@link Events.on}
      */
-    addListener(name: string, fn: Function, bind: any): void;
+    addListener(name: string, fn: () => void, bind: any): void;
     /**
      * Has event
      *
@@ -64,5 +64,5 @@ export default class Events {
      * @param {function} fn
      * @param {Object} bind - New context
      */
-    hasListeners(name: string, fn: Function, bind: any): boolean;
+    hasListeners(name: string, fn: () => void, bind: any): boolean;
 }

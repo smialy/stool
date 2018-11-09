@@ -12,14 +12,14 @@ export default class Listeners {
      * @param {function} fn
      * @param {Object} bind Context
      */
-    add(listener: Function, bind: any): void;
+    add(listener: () => void, bind: any): void;
     /**
      * Remove listener
      *
      * @param {function} fn
      * @param {Object} bind - New context
      */
-    remove(listener: Function, bind: any): void;
+    remove(listener: () => void, bind: any): void;
     /**
      * Get nubmer of listeners
      *
@@ -36,7 +36,7 @@ export default class Listeners {
      * @param {function} fn
      * @param {Object} bind - New context
      */
-    has(listener: Function, bind: any): boolean;
+    has(listener: () => void, bind: any): boolean;
     /**
      * Notify event for listeners
      *
@@ -52,5 +52,5 @@ export default class Listeners {
      * @param {function} fn
      * @param {Object} bind
      */
-    _find(listener: Function, bind: any): number;
+    _find(listener: () => void, bind: any): number;
 }
