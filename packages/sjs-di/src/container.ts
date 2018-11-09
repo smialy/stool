@@ -1,30 +1,39 @@
-import { InstanceResolver, SingletonResolver } from './resolvers';
+import { Inject } from './decorators';
+import { InstanceResolver, IResolver, SingletonResolver } from './resolvers';
+
 export class Container {
+
+    private _resolvers: Map<any, IResolver>;
+
     constructor() {
         this._resolvers = new Map();
     }
-    set(key, instance) {
+
+    public set(key: any, instance: any): void {
         this._resolvers.set(key, new InstanceResolver(instance));
     }
-    get(key) {
+
+    public get(key: any): any {
         let resolver = this._resolvers.get(key);
         if (resolver === undefined) {
             if (typeof key === 'function') {
                 resolver = this.registerSingleton(key, key);
-            }
-            else {
+            } else {
                 resolver = this.registerInstance(key, key);
             }
         }
         return resolver.resolve(this, key);
     }
-    registerInstance(key, instance) {
+
+    public registerInstance(key: any, instance: any): IResolver {
         return this.registerResolver(key, new InstanceResolver(instance));
     }
-    registerSingleton(key, fn) {
+
+    public registerSingleton(key: any, fn: () => void): IResolver {
         return this.registerResolver(key, new SingletonResolver(fn));
     }
-    registerResolver(key, resolver) {
+
+    public registerResolver(key: any, resolver: IResolver): IResolver {
         validateKey(key);
         if (this._resolvers.has(key)) {
             throw TypeError(`Resolver for key: ${key} was already registered.`);
@@ -32,19 +41,22 @@ export class Container {
         this._resolvers.set(key, resolver);
         return resolver;
     }
-    unregisterResolver(key) {
+
+    public unregisterResolver(key: any): void {
         this._resolvers.delete(key);
     }
-    createInstance(fn) {
+
+    public createInstance(fn: any) {
         const deps = getDependenciesInherit(fn);
-        const args = [];
-        for (let dep of deps) {
-            args.push(this.get(dep));
+        const args: any[] = [];
+        for (const dep of deps) {
+            args.push(this.get(dep)); /* ts:disable-line */
         }
         return createType(fn, args);
     }
 }
-function createType(target, args) {
+
+function createType(target: any, args: any[]): any {
     if (Reflect && Reflect.construct) {
         return Reflect.construct(target, args);
     }
@@ -57,20 +69,28 @@ function createType(target, args) {
     }
     return new (Function.bind.apply(target, [null].concat(args)))();
 }
-function validateKey(key) {
+
+function validateKey(key: any) {
     if (key === null || key === undefined) {
         throw new TypeError('Key cannot be null or undefined');
     }
 }
-function getDependenciesInherit(fn) {
-    const dependencies = [];
+
+interface InjectFunction {
+    inject: () => any[];
+}
+
+function getDependenciesInherit(fn: InjectFunction): any[] {
+    const dependencies: any[] = [];
     while (typeof fn === 'function') {
-        dependencies.push(...getDependencies(fn));
+        const items = getDependencies(fn);
+        dependencies.push(...items);
         fn = Object.getPrototypeOf(fn);
     }
     return dependencies;
 }
-function getDependencies(fn) {
+
+function getDependencies(fn: InjectFunction): any[] {
     if (!fn.hasOwnProperty('inject')) {
         return [];
     }

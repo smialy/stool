@@ -1,6 +1,6 @@
 
 export function Inject(...args: any[]): any {
-    return function (target: any, key: string, descriptor: any) {
+    return (target: any, key: string, descriptor: any): void => {
         // is function, not class constructor
         if (descriptor) {
             const fn = descriptor.value;
@@ -9,5 +9,5 @@ export function Inject(...args: any[]): any {
             // class
             target.inject = args;
         }
-    }
+    };
 }

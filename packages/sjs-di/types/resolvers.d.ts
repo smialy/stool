@@ -10,6 +10,6 @@ export declare class InstanceResolver implements IResolver {
 export declare class SingletonResolver implements IResolver {
     private fn;
     private instance;
-    constructor(fn: Function);
+    constructor(fn: () => void);
     resolve(container: Container): any;
 }

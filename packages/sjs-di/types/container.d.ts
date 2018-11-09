@@ -5,7 +5,7 @@ export declare class Container {
     set(key: any, instance: any): void;
     get(key: any): any;
     registerInstance(key: any, instance: any): IResolver;
-    registerSingleton(key: any, fn: Function): IResolver;
+    registerSingleton(key: any, fn: () => void): IResolver;
     registerResolver(key: any, resolver: IResolver): IResolver;
     unregisterResolver(key: any): void;
     createInstance(fn: any): any;

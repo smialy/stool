@@ -1,12 +1,13 @@
 {
     "compilerOptions": {
-        "allowJs": true,
+        "allowJs": false,
         "target": "esnext",
-        "module": "commonjs",
         "noImplicitAny": false,
         "removeComments": false,
         "strict": true,
-        "outDir": "./dist/node",
+        "outDir": "./dist/esm/",
+        "declaration": true,
+        "declarationDir":"./types"
     },
     "files": [
         "src/index.ts"
