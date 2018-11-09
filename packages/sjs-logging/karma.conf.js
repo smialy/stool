@@ -6,7 +6,7 @@ module.exports = function(config) {
         basePath: '',
         frameworks: ['qunit'],
         files: [
-            "tests/*.js",
+            'tests/*.js',
             'src/*.js'
         ],
         preprocessors: {
