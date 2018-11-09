@@ -1,18 +1,16 @@
-import { Filter } from './filters';
 import * as consts from './consts';
+import {Filter} from './filters';
+
 export default function parse(query) {
     let filter;
     if (Array.isArray(query)) {
         filter = prepareArray(query);
-    }
-    else {
+    } else {
         if (query instanceof Filter) {
             filter = query;
-        }
-        else if (typeof query === 'string') {
+        } else if (typeof query === 'string') {
             filter = parseString(query);
-        }
-        else if (typeof query === 'object') {
+        } else if (typeof query === 'object') {
             filter = prepareObject(query);
         }
     }
@@ -26,31 +24,32 @@ export default function parse(query) {
     }
     return filter;
 }
+
 function prepareArray(query) {
     return new Filter(consts.AND, query);
 }
+
 function prepareObject(query) {
-    let filter = new Filter(consts.AND, []);
-    for (let name of Object.keys(query)) {
-        let values = query[name];
+    const filter = new Filter(consts.AND, []);
+    for (const name of Object.keys(query)) {
+        const values = query[name];
         if (Array.isArray(values)) {
-            let subfilter = new Filter(consts.OR, []);
+            const subfilter = new Filter(consts.OR, []);
             for (let v = 0; v < values.length; v += 1) {
                 subfilter.value.push(new Filter(consts.EQ, values[v], name));
             }
             if (subfilter.value.length === 1) {
                 filter.value.push(subfilter.value[0]);
-            }
-            else {
+            } else {
                 filter.value.push(subfilter);
             }
-        }
-        else {
+        } else {
             filter.value.push(new Filter(consts.EQ, values, name));
         }
     }
     return filter;
 }
+
 function parseString(query) {
     query = query.trim();
     if (!query) {
@@ -65,8 +64,10 @@ function parseString(query) {
     if (query.charAt(query.length - 1) !== ')') {
         throw new TypeError('Miss ending: )');
     }
+
     let pos = -1;
-    let len = query.length;
+    const len = query.length;
+
     function skipWhitespace() {
         while (pos < len) {
             if (!/\s/.test(query[pos])) {
@@ -76,14 +77,18 @@ function parseString(query) {
         }
         pos = -1;
     }
-    let sf = null;
+
+    let sf: any = null;
+
     let isEscaped = false;
-    let stack = [];
+    const stack: Array<Filter | number> = [];
     while (++pos < len) {
+
         if (isEscaped) {
             isEscaped = false;
             continue;
         }
+
         if (query.charAt(pos) === '(') {
             skipWhitespace();
             switch (query.charAt(pos + 1)) {
@@ -99,41 +104,38 @@ function parseString(query) {
                 default:
                     stack.push(pos + 1);
             }
-        }
-        else if (query.charAt(pos) === ')') {
-            let top = stack.pop() || null;
-            let head = stack[stack.length - 1];
+        } else if (query.charAt(pos) === ')') {
+            const top = stack.pop() || null;
+            const head = stack[stack.length - 1];
             if (top instanceof Filter) {
                 if (head instanceof Filter) {
                     head.value.push(top);
-                }
-                else {
+                } else {
                     sf = top;
                 }
-            }
-            else if (head instanceof Filter) {
+            } else if (head instanceof Filter) {
                 head.value.push(subquery(query, top, pos - 1));
-            }
-            else {
+            } else {
                 sf = subquery(query, top, pos - 1);
             }
-        }
-        else if (!isEscaped && query.charAt(pos) === '\\') {
+        } else if (!isEscaped && query.charAt(pos) === '\\') {
             isEscaped = true;
         }
+
     }
     if (sf === null) {
         throw new Error('Incorect query: ' + query);
     }
     return sf;
 }
+
 function subquery(query, start, end) {
-    let checkEqual = pos => {
+    const checkEqual = (pos) => {
         if (query.charAt(pos) !== '=') {
             throw new Error('Expected <= in query: ' + sub);
         }
     };
-    let sub = query.substring(start, end + 1);
+    const sub = query.substring(start, end + 1);
     if (sub === '*') {
         return new Filter(consts.MATCH_ALL);
     }
@@ -145,6 +147,7 @@ function subquery(query, start, end) {
     }
     let opt = '';
     let endName = start;
+
     while (endName < end) {
         if ('=<>~'.indexOf(query.charAt(endName)) > -1) {
             break;
@@ -154,7 +157,7 @@ function subquery(query, start, end) {
     if (start === endName) {
         throw new Error('Not found query name: ' + sub);
     }
-    let name = query.substring(start, endName);
+    const name = query.substring(start, endName);
     start = endName;
     switch (query.charAt(start)) {
         case '=':
@@ -186,8 +189,7 @@ function subquery(query, start, end) {
     if (opt === consts.EQ) {
         if (value === '*') {
             opt = consts.PRESENT;
-        }
-        else if (value.indexOf('*') !== -1) {
+        } else if (value.indexOf('*') !== -1) {
             opt = consts.SUBSTRING;
             value = new RegExp('^' + value.split('*').join('.*?') + '$');
         }

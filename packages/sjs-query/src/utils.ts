@@ -1,19 +1,22 @@
-export function addSlashes(str) {
+
+export function addSlashes(str: string) {
     return str.replace(/\\/g, '\\\\').
-        replace(/\t/g, '\\t').
-        replace(/\n/g, '\\n').
-        replace(/\f/g, '\\f').
-        replace(/\r/g, '\\r').
-        replace(/'/g, '\\\'').
-        replace(/"/g, '\\"');
+    replace(/\t/g, '\\t').
+    replace(/\n/g, '\\n').
+    replace(/\f/g, '\\f').
+    replace(/\r/g, '\\r').
+    replace(/'/g, '\\\'').
+    replace(/"/g, '\\"');
 }
-export function escape(name) {
-    let sb = [];
+
+export function escape(name: string) {
+    const sb: string[] = [];
     if ((name.length > 0) && ((name.charAt(0) === ' ') || (name.charAt(0) === '#'))) {
         sb.push('\\');
     }
+
     for (let i = 0; i < name.length; i++) {
-        let curChar = name.charAt(i);
+        const curChar = name.charAt(i);
         switch (curChar) {
             case '\\':
                 sb.push('\\\\');

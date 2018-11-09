@@ -1,21 +1,25 @@
 // Karma configuration
+const typescript = require('rollup-plugin-typescript');
 
 module.exports = function(config) {
     config.set({
         basePath: '',
         frameworks: ['qunit'],
         files: [
-            "tests/*.js",
-            'src/*.js'
+            'tests/*.js',
+            'src/*.js',
         ],
         preprocessors: {
             'tests/*.js': ['rollup'],
             'src/*.js': ['rollup']
         },
         rollupPreprocessor: {
+            plugins: [
+                typescript()
+            ],
             output: {
                 format: 'iife',
-                name: 'di',
+                name: 'events',
                 sourcemap: 'inline'
             }
         },
