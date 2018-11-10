@@ -3,5 +3,8 @@
   "license": "MIT",
   "devDependencies": {
     "lerna": "^3.4.2"
+  },
+  "dependencies": {
+    "user": "0.0.0"
   }
 }

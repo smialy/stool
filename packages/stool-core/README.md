@@ -1,0 +1,5 @@
+# @stool/core
+
+
+## License
+MIT

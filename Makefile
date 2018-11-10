@@ -19,6 +19,7 @@ build:
 
 clean:
 	./node_modules/.bin/lerna clean --yes
+	./node_modules/.bin/lerna exec -- rm -rf dist
 
 test:
 	./node_modules/.bin/lerna run test

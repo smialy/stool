@@ -1,0 +1,5 @@
+# @stool/stream
+
+
+## License
+MIT

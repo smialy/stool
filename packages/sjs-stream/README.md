@@ -1,5 +1,0 @@
-# sjs-stream
-
-
-## License
-MIT

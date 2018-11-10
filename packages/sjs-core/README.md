@@ -1,5 +1,0 @@
-# sjs-core
-
-
-## License
-MIT
