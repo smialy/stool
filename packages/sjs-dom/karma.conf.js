@@ -7,11 +7,11 @@ module.exports = function(config) {
         frameworks: ['qunit'],
         files: [
             'tests/*.js',
-            'src/*.js'
+            'src/*.ts'
         ],
         preprocessors: {
             'tests/*.js': ['rollup'],
-            'src/*.js': ['rollup']
+            'src/*.ts': ['rollup']
         },
         rollupPreprocessor: {
             plugins: [

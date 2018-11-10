@@ -1,4 +1,3 @@
-
 export function ready(): Promise<any> {
     return new Promise((resolve) => {
         if (document.readyState === 'complete') {
@@ -26,26 +25,27 @@ export function findParent(element: HTMLElement, selector: string): HTMLElement|
 }
 
 export function classNames(...args: any[]): string {
-    const classes: any[] = [];
-    for (const arg of args) {
+    const classes = new Set<string>();
+    for (let i = 0; i < args.length; i += 1) {
+        const arg = args[i];
         if (!arg) {
             continue;
         }
         const type = typeof arg;
         if (type === 'string' || type === 'number') {
-            classes.push(arg);
+            classes.add(arg);
         } else if (Array.isArray(arg)) {
             const cn = classNames(...arg);
             if (cn) {
-                classes.push(cn);
+                classes.add(cn);
             }
         } else if (type === 'object') {
-            for (const [key, value] of Object.entries(arg)) {
-                if (value) {
-                    classes.push(key);
+            for (const key of Object.keys(arg)) {
+                if (arg[key]) {
+                    classes.add(key);
                 }
             }
         }
     }
-    return classes.join(' ');
+    return [...classes].join(' ').trim();
 }
