@@ -23,7 +23,7 @@
   },
   "files": [
     "README.md",
-    "dist/*.js",
+    "dist/**/*.js",
     "types/*.ts"
   ],
   "devDependencies": {
