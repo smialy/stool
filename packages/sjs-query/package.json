@@ -18,7 +18,8 @@
     "build:exts": "renamer --path-element ext --find js --replace mjs dist/esm/*",
     "test": "qunit --require ts-node/register tests/*",
     "karma": "karma start --single-run",
-    "lint": "eslint tests && tslint src/*"
+    "lint": "eslint tests && tslint src/*",
+    "prepare": "npm run build"
   },
   "files": [
     "README.md",

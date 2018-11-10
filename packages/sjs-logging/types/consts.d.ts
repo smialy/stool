@@ -1,8 +1,8 @@
-export declare type LevelsType = {
+export interface ILevelsType {
     [key: string]: number;
-};
-export declare const LEVELS: LevelsType;
-export interface LevelsNamesType {
+}
+export declare const LEVELS: ILevelsType;
+export interface ILevelsNamesType {
     [index: number]: string;
 }
-export declare const LEVEL_NAMES: LevelsNamesType;
+export declare const LEVEL_NAMES: ILevelsNamesType;

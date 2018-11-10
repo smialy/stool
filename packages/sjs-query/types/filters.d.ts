@@ -22,7 +22,7 @@ export declare class Filter {
      * @param {Array} list
      * @return {Array}
      */
-    filter(list: Array<any>): Array<any>;
+    filter(list: any[]): any[];
     tostring(): string;
     eq(params: any): boolean;
     lte(params: any): boolean;

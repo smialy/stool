@@ -1,8 +1,8 @@
 import { Logger } from './logger';
 export declare class Manager {
+    disable: number;
     private _loggers;
     private _root;
-    disable: number;
     constructor(root?: null, level?: number);
     setDisable(level: number): void;
     /**

@@ -1,12 +1,12 @@
-import { IHandler, IRecord } from './interfaces';
 import { Filterer } from './filter';
+import { IHandler, IRecord } from './interfaces';
 export declare class Logger extends Filterer {
-    private level;
-    private propagate;
-    private _handlers;
     name: string;
     manager?: any;
     parent?: Logger;
+    private level;
+    private propagate;
+    private _handlers;
     /**
      * @param {string} name
      * @param {number} [level=LEVELS.NOTSET] level
@@ -26,7 +26,7 @@ export declare class Logger extends Filterer {
      * @return {boolean}
      */
     hasHandlers(): number;
-    getHandlers(): Array<IHandler>;
+    getHandlers(): IHandler[];
     /**
      *
      * @param {string} msg

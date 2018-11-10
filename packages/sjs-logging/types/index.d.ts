@@ -1,5 +1,5 @@
-import { Manager } from './manager';
 import { Logger } from './logger';
+import { Manager } from './manager';
 declare const logger: Logger;
 export default logger;
 export declare function getLogger(name: string): Logger;

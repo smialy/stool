@@ -16,7 +16,8 @@
     "build:clean": "rm -rf dist/ && rm -rf types",
     "build:tsc": "tsc && tsc -p tsconfig.esm.json",
     "build:exts": "renamer --path-element ext --find js --replace mjs dist/esm/*",
-    "lint": "tslint src/*"
+    "lint": "tslint src/*",
+    "prepare": "npm run build"
   },
   "files": [
     "README.md",
