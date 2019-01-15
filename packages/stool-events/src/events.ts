@@ -28,7 +28,7 @@ export default class Events {
                 this.removeListeners(name);
             }
             // @ts-ignore
-            return fn.apply(this, args);  
+            return fn.apply(this, args);
         };
         listeners.add(_fn, bind);
     }
