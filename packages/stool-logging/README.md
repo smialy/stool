@@ -1,18 +1,16 @@
 # @stool/logging
 
-## Getting Started
-
-#### 1. Install:
+## Install:
 
 ```sh
-$ npm install @stool/logging
+npm install @stool/logging
 ```
 
-#### 2.1 Using
+### Using
 ```js
 import logging from '@stool/logging';
-//...
-var logger = logging.getLogger();
+
+const logger = logging.getLogger('app');
 
 logger.fatal('...');
 logger.error('...');
@@ -21,6 +19,8 @@ logger.info('...');
 logger.debug('...');
 logger.exception(e);
 
+// create app child logger
+const dbLogger = logging.getLogger('app.db');
 ```
 
 ## License
