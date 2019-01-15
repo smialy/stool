@@ -1,14 +1,19 @@
 # @stool/dom
 
-### Install
+DOM helpers.
+
+## Install
 
 ```sh
-npm install @stool/dom
+npm install @stool/dom;
 ```
 
-### Using
+## Using
 
-#### ready()
+### ready() 
+
+> Waiting for DOM ready.
+
 ```typescript
 declare function ready(): Promise<any>;
 ```
@@ -21,7 +26,10 @@ async function boot(){
     // ...
 }
 ```
-#### classNames()
+### classNames()
+
+> Conditionally joining classNames together.
+
 ```typescript
 declare function findParent(element: HTMLElement, selector: string): HTMLElement | null;
 ```
@@ -35,9 +43,14 @@ classNames(null, false, 'foo', undefined, 0, 1, { baz: null }, ''); // 'foo 1'
 ```
 
 #### findParentNode()
-```typescript
-declare function classNames(...args: any[]): string;
-```
+ 
+ > Find parent of element using selector.
 
+```typescript
+declare function findParent(element: HTMLElement, selector: string): HTMLElement|null;
+```
+```js
+const container = findParent(element, '.container');
+```
 ## License
 MIT

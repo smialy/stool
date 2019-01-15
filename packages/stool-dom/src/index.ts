@@ -14,16 +14,6 @@ export function ready(): Promise<any> {
     });
 }
 
-export function findParent(element: HTMLElement, selector: string): HTMLElement|null {
-    while (element !== document.body) {
-        if (element.classList.contains(selector)) {
-            return element;
-        }
-        element = element.parentNode as HTMLElement;
-    }
-    return null;
-}
-
 export function classNames(...args: any[]): string {
     const classes = new Set<string>();
     for (let i = 0; i < args.length; i += 1) {
@@ -48,4 +38,14 @@ export function classNames(...args: any[]): string {
         }
     }
     return [...classes].join(' ').trim();
+}
+
+export function findParent(element: HTMLElement, selector: string): HTMLElement|null {
+    while (element !== document.body) {
+        if (element.classList.contains(selector)) {
+            return element;
+        }
+        element = element.parentNode as HTMLElement;
+    }
+    return null;
 }

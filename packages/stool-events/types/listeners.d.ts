@@ -42,11 +42,11 @@ export default class Listeners {
      *
      * @param {...Object} args
      */
-    emit(...args: any[]): void;
+    emit(...args: []): void;
     /**
      * {@link Listeners.emit}
      */
-    dispatch(...args: any[]): void;
+    dispatch(...args: []): void;
     /**
      * @access private
      * @param {function} fn

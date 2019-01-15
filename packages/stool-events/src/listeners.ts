@@ -2,7 +2,7 @@ export default class Listeners {
     /**
      * @param {Object} bind - Default context
      */
-    private _listeners: Array<{listener: () => void, bind: any}> = [];
+    private _listeners: Array<{listener: () => any, bind: any}> = [];
     private _isFire: boolean = false;
     private _bind: any;
 
@@ -68,7 +68,7 @@ export default class Listeners {
      *
      * @param {...Object} args
      */
-    public emit(...args: any[]): void {
+    public emit(...args: []): void {
         if (!this._isFire) {
             this._isFire = true;
             for (const {listener, bind} of this._listeners) {
@@ -83,7 +83,7 @@ export default class Listeners {
     /**
      * {@link Listeners.emit}
      */
-    public dispatch(...args: any[]) {
+    public dispatch(...args: []) {
         this.emit(...args);
     }
     /**

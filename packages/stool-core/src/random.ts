@@ -36,7 +36,7 @@ export function randomInt(min: number, max: number = 0) {
  * @param {ArrayLike} sequence
  * @return {any}
  */
-export function choice(sequence: any[]) {
+export function choice(sequence: any[]): any {
     if (sequence && sequence.length) {
         return sequence[randomInt(sequence.length)];
     }

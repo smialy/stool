@@ -15,7 +15,7 @@
     "build": "npm run build:clean && npm run build:tsc && npm run build:exts",
     "build:clean": "rm -rf dist/ && rm -rf types",
     "build:tsc": "tsc && tsc -p tsconfig.esm.json",
-    "build:exts": "renamer --path-element ext --find js --replace mjs dist/esm/*",
+    "build:exts": "renamer --path-element ext --find js --replace mjs ./dist/esm/*",
     "test": "qunit --require ts-node/register tests/*",
     "karma": "karma start --single-run",
     "lint": "eslint tests && tslint src/*",

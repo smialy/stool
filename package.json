@@ -1,5 +1,5 @@
 {
-  "name": "sjs",
+  "name": "stool",
   "license": "MIT",
   "devDependencies": {
     "lerna": "^3.4.2"
