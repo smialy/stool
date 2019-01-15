@@ -1,14 +1,14 @@
-# State Machine
+# @stool/sm
 
-## Getting Started
+Simple State Machine.
 
-### 1. Install:
+### Install:
 
 ```sh
-$ npm install @stool/sm
+npm install @stool/sm
 ```
 
-### 2 Using
+### Using
 
 ```js
 import {StateMachine, State} from '@stool/sm';

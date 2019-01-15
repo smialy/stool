@@ -1,11 +1,11 @@
 # @stool/core
 
-Js tools.
+JavaScript core tools.
 
 ## Install
 
 ```sh
-npm install @stool/core;
+npm install @stool/core
 ```
 
 ## Using

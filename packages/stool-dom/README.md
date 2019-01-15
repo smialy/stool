@@ -5,7 +5,7 @@ DOM helpers.
 ## Install
 
 ```sh
-npm install @stool/dom;
+npm install @stool/dom
 ```
 
 ## Using
