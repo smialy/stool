@@ -1,6 +1,6 @@
 {
   "name": "@stool/logging",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Logger",
   "license": "MIT",
   "main": "dist/node/index.js",
@@ -23,7 +23,8 @@
   },
   "files": [
     "README.md",
-    "dist/**/*.js",
+    "dist/node/*.js",
+    "dist/esm/*.mjs",
     "types/*.ts"
   ],
   "devDependencies": {

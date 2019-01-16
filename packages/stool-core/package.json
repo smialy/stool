@@ -1,10 +1,10 @@
 {
   "name": "@stool/core",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Core",
   "license": "MIT",
   "main": "dist/node/index.js",
-  "module": "dist/esm/index.js",
+  "module": "dist/esm/index.mjs",
   "types": "types/index.d.ts",
   "homepage": "https://github.com/smialy/stool#readme",
   "repository": {
@@ -23,7 +23,8 @@
   },
   "files": [
     "README.md",
-    "dist/**/*.js",
+    "dist/node/*.js",
+    "dist/esm/*.mjs",
     "types/*.ts"
   ],
   "devDependencies": {
