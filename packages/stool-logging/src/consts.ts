@@ -1,6 +1,7 @@
 
-export interface ILevelsType { [key: string]: number; }
-/* tslint:disable */
+export interface ILevelsType {
+    [key: string]: number;
+}
 export const LEVELS: ILevelsType = {
     CRITICAL: 16,
     FATAL:    16,
@@ -11,7 +12,6 @@ export const LEVELS: ILevelsType = {
     DEBUG:    1,
     NOTSET:   0,
 };
-/* tslint:enable */
 export interface ILevelsNamesType {
     [index: number]: string;
 }

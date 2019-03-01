@@ -5,33 +5,24 @@ import { IHandler, IRecord } from './interfaces';
 import { checkLevel } from './utils';
 
 export class Logger extends Filterer {
-    public name: string;
     public manager?: any;
     public parent?: Logger;
 
-    private level: number;
-    private propagate: boolean = true;
+    private _propagate: boolean;
     private _handlers: Set<IHandler>;
 
-    /**
-     * @param {string} name
-     * @param {number} [level=LEVELS.NOTSET] level
-     */
-    constructor(name: string, level= LEVELS.NOTSET) {
+    constructor(public readonly name: string, private level= LEVELS.NOTSET) {
         super();
         this.name = name;
         this.level = checkLevel(level);
-        this.propagate = true;
         this._handlers = new Set();
+        this._propagate = true;
     }
 
     public setLevel(level: number) {
         this.level = checkLevel(level);
     }
-    /**
-     *
-     * @param {Handler} handler
-     */
+
     public addHandler(handler: IHandler) {
         if (!(handler instanceof Handler)) {
             throw new Error('Expected @stool/logging.Handler');
@@ -41,94 +32,51 @@ export class Logger extends Filterer {
         }
         return this;
     }
-    /**
-     * @param {Handler} handler
-     */
+
     public removeHandler(handler: IHandler) {
         this._handlers.delete(handler);
         return this;
     }
-    /**
-     * @return {boolean}
-     */
+
     public hasHandlers() {
         return this._handlers.size;
     }
+
     public getHandlers(): IHandler[] {
         return Array.from(this._handlers);
     }
-    /**
-     *
-     * @param {string} msg
-     * @param {Error} ex
-     */
+
     public fatal(msg: string, exception?: any) {
         this.log(LEVELS.FATAL, msg, exception);
     }
-    /**
-     *
-     * @param {string} msg
-     * @param {Error} ex
-     */
     public critical(msg: string, exception?: any) {
         this.log(LEVELS.CRITICAL, msg, exception);
     }
-    /**
-     *
-     * @param {string} msg
-     * @param {Error} ex
-     */
+
     public error(msg: string, exception?: any) {
         this.log(LEVELS.ERROR, msg, exception);
     }
 
-    /**
-     *
-     * @param {string} msg
-     * @param {Error} ex
-     */
     public warn(msg: string, exception?: any) {
         this.log(LEVELS.WARN, msg, exception);
     }
 
-    /**
-     *
-     * @param {string} msg
-     * @param {Error} ex
-     */
     public warning(msg: string, exception?: any) {
         this.log(LEVELS.WARN, msg, exception);
     }
 
-    /**
-     *
-     * @param {string} msg
-     */
     public info(msg: string) {
         this.log(LEVELS.INFO, msg);
     }
 
-    /**
-     *
-     * @param {string} msg
-     */
     public debug(msg: string) {
         this.log(LEVELS.DEBUG, msg);
     }
 
-    /**
-     *
-     * @param {Error} ex
-     */
     public exception(exception: any) {
         this.log(LEVELS.ERROR, exception.message, exception);
     }
 
-    /**
-     * @param {number} level
-     * @param {string} msg
-     * @param {Error} exception
-     */
     public log(level: number, msg: string, exception?: any) {
         level = checkLevel(level);
         if (this._isEnabledFor(level)) {
@@ -142,6 +90,7 @@ export class Logger extends Filterer {
         }
 
     }
+
     public _isEnabledFor(level: number) {
         if (this.manager && this.manager.disable > level) {
             return false;
@@ -150,10 +99,6 @@ export class Logger extends Filterer {
 
     }
 
-    /**
-     *
-     * @param {Record} record
-     */
     public handle(record: IRecord) {
         if (this.filter(record)) {
             let p = this as Logger;
@@ -164,7 +109,7 @@ export class Logger extends Filterer {
                         handler.handle(record);
                     }
                 }
-                if (!p.propagate) {
+                if (!p._propagate) {
                     break;
                 }
                 p = p.parent as Logger;

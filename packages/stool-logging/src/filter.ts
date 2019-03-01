@@ -2,18 +2,12 @@ import { IFilter, IRecord } from './interfaces';
 
 export type FilterFunction = (record: IRecord) => boolean;
 
-export type FilterType = FilterFunction & IFilter;
+export type FilterType = IFilter | FilterFunction;
 
 export class Filter implements IFilter {
 
-    private _name: string;
+    constructor(private _name: string) {}
 
-    constructor(name: string) {
-        this._name = name;
-    }
-    /**
-     * @param {Record} record
-     */
     public filter(record: IRecord) {
         if (!this._name) {
             return true;
@@ -40,11 +34,11 @@ export class Filterer {
     }
 
     public addFilter(filter: FilterType): boolean {
-        if (filter && (filter.filter || typeof filter === 'function')) {
+        if (filter && (typeof filter === 'function' || filter.filter)) {
             this._filters.add(filter);
             return true;
         }
-        throw new Error('Expected Filter');
+        throw new Error('Expected Filter()');
     }
 
     public removeFilter(filter: FilterType): void {
@@ -54,7 +48,7 @@ export class Filterer {
     public filter(record: IRecord): boolean {
         const status = true;
         for (const filter of this._filters) {
-            const result = filter.filter ? filter.filter(record) : filter(record);
+            const result = typeof filter === 'function' ? filter(record) : filter.filter(record);
             if (!result) {
                 return false;
             }

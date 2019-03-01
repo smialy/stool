@@ -1,13 +1,11 @@
 import { LEVELS } from './consts';
 import { Filterer } from './filter';
-import { IFilter, IHandler, IRecord } from './interfaces';
+import { IHandler, IRecord } from './interfaces';
 import { checkLevel } from './utils';
 
 export abstract class Handler extends Filterer implements IHandler {
 
-    public level: number;
-
-    constructor(level = LEVELS.NOTSET) {
+    constructor(public level = LEVELS.NOTSET) {
         super();
         this.level = checkLevel(level);
     }
@@ -28,9 +26,6 @@ export abstract class Handler extends Filterer implements IHandler {
 }
 
 export class ConsoleHandler extends Handler {
-    /**
-     * @param {Record} record Log object with all collected data
-     */
     public emit(record: IRecord): void {
         /* tslint:disable-next-line */
         console.log(`[${record.name}]::${record.levelName}:: ${record.msg}`);

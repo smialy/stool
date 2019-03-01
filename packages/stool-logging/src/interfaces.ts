@@ -1,10 +1,10 @@
 
 export interface IRecord {
     readonly name: string;
-    readonly levelName: string;
     readonly level: number;
-    readonly msg: string;
-    readonly exception: any;
+    readonly levelName?: string;
+    readonly msg?: string;
+    readonly exception?: any;
 }
 
 export interface IFilter {

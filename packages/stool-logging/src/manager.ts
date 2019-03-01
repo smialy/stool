@@ -20,9 +20,6 @@ export class Manager {
 
     /**
      * Find logger by name. Create is not exits
-     *
-     * @param {string} [name='root'] name
-     * @return {Logger}
      */
     public getLogger(name= 'root'): Logger {
         if (!this._loggers.has(name)) {

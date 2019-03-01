@@ -6,15 +6,16 @@ import { Handler } from '../src/handlers';
 import { Logger } from '../src/logger';
 
 class TestHandler extends Handler {
+    private _body: Array<any>;
     constructor() {
         super();
         this._body = [];
     }
-    emit(record) {
+    emit(record: any) {
         this._body.push(record.msg);
     }
-    result(sep) {
-        return this._body.join(sep || ',');
+    result(sep=',') {
+        return this._body.join(sep);
     }
     reset() {
         this.setLevel(LEVELS.NOTSET);
@@ -22,7 +23,7 @@ class TestHandler extends Handler {
     }
 }
 
-function _dummy(logger) {
+function _dummy(logger: any) {
     logger.debug('d');
     logger.info('i');
     logger.warn('w1');
@@ -36,7 +37,7 @@ QUnit.module('@stool/logging');
 
 QUnit.test('empty logger', assert => {
     let handler = new TestHandler();
-    let logger = new Logger();
+    let logger = new Logger('test');
     logger.addHandler(handler);
 
     _dummy(logger);
