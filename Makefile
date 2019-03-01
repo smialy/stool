@@ -3,7 +3,7 @@ test-ci:
 	make test-ci-run
 
 test-ci-install:
-	npm install --no-save lerna@3.4.2 qunit@2.7.1 ts-node@7.0.1 typescript@3.1.6 tslint@5.11.0 eslint@5.0.0
+	npm install --no-save lerna@3.4.2 qunit@2.7.1 ts-node@7.0.1 typescript@3.1.6 tslint@5.11.0 eslint@5.0.0 @types/qunit@2.5.4
 
 test-ci-run:
 	./node_modules/.bin/lerna run test
