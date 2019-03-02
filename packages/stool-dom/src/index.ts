@@ -1,5 +1,5 @@
 export function ready(): Promise<any> {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
         if (document.readyState === 'complete') {
             resolve();
         } else {

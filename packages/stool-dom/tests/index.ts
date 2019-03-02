@@ -1,10 +1,12 @@
 import { ready, classNames } from '../src/index';
 
 
-QUnit.test('ready()', async assert => {
-    await ready();
-    assert.equal(document.readyState, 'complete');
-});
+if (typeof window !== 'undefined') {
+    QUnit.test('ready()', async assert => {
+        await ready();
+        assert.equal(document.readyState, 'complete');
+    });
+}
 
 QUnit.test('classNames() and object keys', assert => {
     assert.equal(classNames({

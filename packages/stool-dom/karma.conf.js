@@ -1,33 +1,23 @@
-// Karma configuration
-const typescript = require('rollup-plugin-typescript');
-
 module.exports = function(config) {
     config.set({
         basePath: '',
-        frameworks: ['qunit'],
+        frameworks: ['qunit', 'karma-typescript'],
         files: [
-            'tests/*.js',
-            'src/*.ts'
+            'src/*.ts',
+            'tests/*.ts',
         ],
         preprocessors: {
-            'tests/*.js': ['rollup'],
-            'src/*.ts': ['rollup']
+            '**/*.ts': ['karma-typescript'],
         },
-        rollupPreprocessor: {
-            plugins: [
-                typescript()
-            ],
-            output: {
-                format: 'iife',
-                name: 'events',
-                sourcemap: 'inline'
-            }
+        karmaTypescriptConfig: {
+            tsconfig: "./tsconfig.json",
+            coverageOptions: {
+                instrumentation: false,
+            },
         },
-        reporters: ['progress'],
-        // web server port
+        reporters: ['progress', "karma-typescript"],
         port: 9876,
         colors: true,
-
         // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
         logLevel: config.LOG_WARN,
         autoWatch: true,
