@@ -3,6 +3,14 @@ import {getType} from './types';
 
 export const noop = () => {}; // tslint:disable-line
 
+export function debounce(fn: () => void, wait: number): () => void {
+    let timer: any;
+    return function(this: any, ...args: any) {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn.apply(this, args), wait);
+    };
+}
+
 /*
  * Pick first value without error
  *
