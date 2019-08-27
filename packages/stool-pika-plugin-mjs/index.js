@@ -14,6 +14,9 @@ function replaceExtension(dir) {
 }
 
 function manifest(pkg) {
+    if (pkg.source) {
+        pkg.source = pkg.source.replace(/^dist-src\/(.+)\.js$/i, 'dist-src/$1.mjs');
+    }
     if (pkg.module) {
         pkg.module = pkg.module.replace(/^dist-web\/(.+)\.js$/i, 'dist-web/$1.mjs');
     }
@@ -22,7 +25,7 @@ function manifest(pkg) {
 }
 
 function afterJob(buildOptions) {
-    ['dist-web'].forEach(dir => {
+    ['dist-src', 'dist-web'].forEach(dir => {
         const root = path.join(buildOptions.out, dir);
         if (fs.existsSync(root)) {
             replaceExtension(root);

@@ -3,7 +3,7 @@
 
 ## Install
 
-Rename file `*.js` to `*.mjs` in `/dist-web/`.
+Rename file `*.js` to `*.mjs` in `pkg/dist-web/` and `pkg/dist-src/`.
 
 ```sh
 # npm:
