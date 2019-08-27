@@ -1,49 +1,50 @@
 {
   "name": "@stool/dom",
-  "version": "2.2.0",
+  "version": "2.4.0",
   "description": "DOM",
   "license": "MIT",
-  "main": "dist/node/index.js",
-  "module": "dist/esm/index.js",
-  "types": "types/index.d.ts",
   "homepage": "https://github.com/smialy/stool#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/smialy/stool.git"
   },
   "scripts": {
-    "build": "pack build",
+    "build": "pika build",
     "test": "qunit --require ts-node/register tests/*.ts",
     "karma": "karma start --single-run",
     "lint": "tslint src/*",
     "prepare": "npm run build"
   },
   "devDependencies": {
-    "@types/qunit": "^2.5.4",
-    "@pika/pack": "^0.3.3",
-    "@pika/plugin-build-node": "^0.3.12",
-    "@pika/plugin-build-types": "^0.3.12",
-    "@pika/plugin-build-web": "^0.3.12",
-    "@pika/plugin-standard-pkg": "^0.3.12",
-    "karma": "^4.0.1",
-    "karma-chrome-launcher": "^2.2.0",
-    "karma-firefox-launcher": "^1.1.0",
-    "karma-qunit": "^3.0.0",
-    "karma-typescript": "^4.0.0",
-    "qunit": "^2.7.1",
-    "ts-node": "^8.0.2",
-    "tslint": "^5.11.0"
+    "@stool/pika-plugin-mjs": "1.0.1",
+    "@pika/pack": "^0.5.0",
+    "@pika/plugin-build-node": "^0.6.0",
+    "@pika/plugin-build-web": "^0.6.0",
+    "@pika/plugin-ts-standard-pkg": "^0.6.0",
+    "@types/qunit": "^2.9.0",
+    "karma": "^4.3.0",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-firefox-launcher": "^1.2.0",
+    "karma-qunit": "^4.0.0",
+    "karma-typescript": "^4.1.1",
+    "qunit": "^2.9.2",
+    "ts-node": "^8.3.0",
+    "tslint": "^5.19.0",
+    "typescript": "^3.5.3"
   },
   "@pika/pack": {
     "pipeline": [
       [
-        "@pika/plugin-standard-pkg"
+        "@pika/plugin-ts-standard-pkg"
       ],
       [
-        "@pika/plugin-build-web"
+        "@pika/plugin-build-web",
+        {
+          "sourcemap": false
+        }
       ],
       [
-        "@pika/plugin-build-types"
+        "@stool/pika-plugin-mjs"
       ]
     ]
   }
