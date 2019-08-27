@@ -1,9 +1,15 @@
 {
-    "compilerOptions": {
-        "target": "esnext",
-        "module": "commonjs",
-        "noImplicitAny": false,
-        "removeComments": false,
-        "strict": true,
-    }
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "noImplicitAny": false,
+    "strict": true,
+  },
+  "files": [
+      "src/function.ts",
+      "src/index.ts",
+      "src/random.ts",
+      "src/string.ts",
+      "src/types.ts"
+  ]
 }
