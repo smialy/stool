@@ -13,6 +13,10 @@ module.exports = function(config) {
             coverageOptions: {
                 instrumentation: false,
             },
+            compilerOptions: {
+                module: "commonjs",
+                target: "esnext",
+            },
         },
         reporters: ['progress', "karma-typescript"],
         port: 9876,
