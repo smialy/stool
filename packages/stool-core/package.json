@@ -16,7 +16,7 @@
     "prepare": "npm run build"
   },
   "devDependencies": {
-    "@stool/pika-plugin-mjs": "1.0.0",
+    "@stool/pika-plugin-mjs": "1.0.1",
     "@pika/pack": "^0.5.0",
     "@pika/plugin-build-node": "^0.6.0",
     "@pika/plugin-build-web": "^0.6.0",
@@ -41,7 +41,10 @@
         "@pika/plugin-build-node"
       ],
       [
-        "@pika/plugin-build-web", { "sourcemap": false }
+        "@pika/plugin-build-web",
+        {
+          "sourcemap": false
+        }
       ],
       [
         "@stool/pika-plugin-mjs"
