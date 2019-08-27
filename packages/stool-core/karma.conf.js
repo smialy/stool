@@ -10,9 +10,12 @@ module.exports = function(config) {
             '**/*.ts': ['karma-typescript'],
         },
         karmaTypescriptConfig: {
-            tsconfig: "./tsconfig.json",
             coverageOptions: {
                 instrumentation: false,
+            },
+            compilerOptions: {
+                module: "commonjs",
+                target: "esnext",
             },
         },
         reporters: ['progress', "karma-typescript"],
