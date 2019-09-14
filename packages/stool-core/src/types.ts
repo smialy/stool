@@ -45,11 +45,13 @@ export function getType(o: any): string {
     return map[getTag(o)] || 'object';
 }
 
-const prepareType = (expectType) => (o) => map[getTag(o)] === expectType;
+const prepareType = (expectType: string) => (o: any) => map[getTag(o)] === expectType;
 
-export const isNull = (o) => o === null;
+export const isNull = (o: any) => o === null;
 
-export const isUndefined = (o) => o === undefined;
+export const isUndefined = (o: any) => o === undefined;
+
+export const isNil = (o: any) => o === null || o === undefined;
 
 /**
  * @type {Function}
@@ -73,63 +75,63 @@ export const isDate = prepareType('date');
  * @method stool.isObject
  * @return {Boolean}
  */
-export const isObject = (o) => o != null && typeof o === 'object';
+export const isObject = (o: any) => o != null && typeof o === 'object';
 
 /**
  * @method stool.isNumber
  * @return {Boolean}
  */
-export const isNumber = (o) => typeof o === 'number';
+export const isNumber = (o: any) => typeof o === 'number';
 /**
  * @method stool.isString
  * @return {Boolean}
  */
-export const isString = (o) => getType(o) === 'string';
+export const isString = (o: any) => getType(o) === 'string';
 /**
  * @method stool.isFunction
  * @return {Boolean}
  */
-export const isFunction = (o) => typeof o === 'function';
+export const isFunction = (o: any) => typeof o === 'function';
 
-export const isGenerator = (o) => getTag(o) === '[object GeneratorFunction]';
+export const isGenerator = (o: any) => getTag(o) === '[object GeneratorFunction]';
 
-export const isAsync = (o) => getTag(o) === '[object AsyncFunction]';
+export const isAsync = (o: any) => getTag(o) === '[object AsyncFunction]';
 
-export const isSymbol = (o) => getType(o) === 'symbol';
+export const isSymbol = (o: any) => getType(o) === 'symbol';
 
-export const isSet = (o) => getTag(o) === '[object Set]';
+export const isSet = (o: any) => getTag(o) === '[object Set]';
 
-export const isMap = (o) => getTag(o) === '[object Map]';
+export const isMap = (o: any) => getTag(o) === '[object Map]';
 
 /**
  * @method stool.isBoolean
  * @return {Boolean}
  */
-export const isBoolean = (o) => typeof o === 'boolean';
+export const isBoolean = (o: any) => typeof o === 'boolean';
 
 /**
  * @method stool.isElement
  * @return {Boolean}
  */
-export const isElement = (o) => getType(o) === 'element';
+export const isElement = (o: any) => getType(o) === 'element';
 
 /**
  * @method stool.isTextnode
  * @return {Boolean}
  */
-export const isTextnode = (o) => getType(o) === 'textnode';
+export const isTextnode = (o: any) => getType(o) === 'textnode';
 
 /**
  * @method stool.isWhitespace
  * @return {Boolean}
  */
-export const isWhitespace = (o) => getType(o) === 'whitespace';
+export const isWhitespace = (o: any) => getType(o) === 'whitespace';
 
 /**
  * @method stool.isCollection
  * @return {Boolean}
  */
-export const isCollection = (o) => getType(o) === 'collection';
+export const isCollection = (o: any) => getType(o) === 'collection';
 
 function buildTypesMap(): {[index: string]: string} {
     const types = {};

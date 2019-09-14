@@ -1,6 +1,5 @@
 import * as utils from '../src/function';
 
-debugger
 QUnit.test('tr(fn,...)', assert => {
     assert.equal('test', utils.tr(() => {
         return 'test';

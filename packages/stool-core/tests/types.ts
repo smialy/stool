@@ -76,8 +76,9 @@ const TESTS = {
     isBoolean: ['boolTrue', 'boolFalse'],
     isNull: ['nulls'],
     isUndefined: ['undefineds'],
+    isNil: ['nulls', 'undefineds'],
     isMap: ['maps'],
-    isSet: ['sets']
+    isSet: ['sets'],
 };
 
 QUnit.test('test type by name', assert => {

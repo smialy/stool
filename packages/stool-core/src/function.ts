@@ -3,11 +3,15 @@ import {getType} from './types';
 
 export const noop = () => {}; // tslint:disable-line
 
-export function debounce(fn: () => void, wait: number): () => void {
+export interface DebounceHandler {
+    (self: any, ...args: any[]): void;
+}
+
+export function debounce(fn: Function, wait: number): DebounceHandler {
     let timer: any;
-    return function(this: any, ...args: any) {
+    return (self: any, ...args: any): void => {
         clearTimeout(timer);
-        timer = setTimeout(() => fn.apply(this, args), wait);
+        timer = setTimeout(() => fn.apply(self, args), wait);
     };
 }
 
@@ -24,7 +28,7 @@ export function debounce(fn: () => void, wait: number): () => void {
  * @method tr
  * @return {Object}
  */
-export function tr(...args: any[]) {
+export function tr(...args: Function[]) {
     for (const fn of args) {
         try {
             return fn();
