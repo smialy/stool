@@ -1,6 +1,6 @@
 {
   "name": "@stool/core",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "description": "Core",
   "license": "MIT",
   "homepage": "https://github.com/smialy/stool#readme",
@@ -10,10 +10,12 @@
   },
   "scripts": {
     "build": "pika build",
+    "publish": "pika build && pika publish",
     "test": "qunit --require ts-node/register tests/*.ts",
     "karma": "karma start --single-run",
     "lint": "tslint src/*",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "version": "npm run build"
   },
   "devDependencies": {
     "@stool/pika-plugin-mjs": "1.0.1",
