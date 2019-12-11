@@ -25,7 +25,7 @@ export class Filter implements IFilter {
 /**
  * Filters manager
  */
-export class Filterer {
+export class Filterer implements IFilter {
 
     private _filters: Set<FilterType>;
 

@@ -1,13 +1,12 @@
 import { LEVEL_NAMES, LEVELS } from './consts';
 import { Filterer } from './filter';
-import { Handler } from './handlers';
-import { IHandler, IRecord } from './interfaces';
+import { IHandler, ILogger, IRecord } from './interfaces';
 import { checkLevel } from './utils';
 
-export class Logger extends Filterer {
+export class Logger extends Filterer implements ILogger {
     public manager?: any;
-    public parent?: Logger;
 
+    private _parent?: ILogger;
     private _propagate: boolean;
     private _handlers: Set<IHandler>;
 
@@ -18,28 +17,30 @@ export class Logger extends Filterer {
         this._handlers = new Set();
         this._propagate = true;
     }
-
+    public get parent() {
+        return this._parent;
+    }
+    public setParent(parent: ILogger): void {
+        this._parent = parent;
+    }
     public setLevel(level: number) {
         this.level = checkLevel(level);
     }
 
-    public addHandler(handler: IHandler) {
-        if (!(handler instanceof Handler)) {
-            throw new Error('Expected @stool/logging.Handler');
-        }
+    public addHandler(handler: IHandler): ILogger {
         if (!this._handlers.has(handler)) {
             this._handlers.add(handler);
         }
         return this;
     }
 
-    public removeHandler(handler: IHandler) {
+    public removeHandler(handler: IHandler): ILogger {
         this._handlers.delete(handler);
         return this;
     }
 
-    public hasHandlers() {
-        return this._handlers.size;
+    public hasHandlers(): boolean {
+        return this._handlers.size > 0;
     }
 
     public getHandlers(): IHandler[] {
@@ -88,7 +89,6 @@ export class Logger extends Filterer {
                 exception,
             });
         }
-
     }
 
     public _isEnabledFor(level: number) {

@@ -1,6 +1,6 @@
 {
   "name": "@stool/logging",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Logger",
   "license": "MIT",
   "homepage": "https://github.com/smialy/stool#readme",
@@ -18,19 +18,19 @@
   "devDependencies": {
     "@stool/pika-plugin-mjs": "1.0.1",
     "@pika/pack": "^0.5.0",
-    "@pika/plugin-build-node": "^0.6.0",
-    "@pika/plugin-build-web": "^0.6.0",
-    "@pika/plugin-ts-standard-pkg": "^0.6.0",
+    "@pika/plugin-build-node": "^0.8.1",
+    "@pika/plugin-build-web": "^0.8.1",
+    "@pika/plugin-ts-standard-pkg": "^0.8.1",
     "@types/qunit": "^2.9.0",
-    "karma": "^4.3.0",
+    "karma": "^4.4.1",
     "karma-chrome-launcher": "^3.1.0",
     "karma-firefox-launcher": "^1.2.0",
     "karma-qunit": "^4.0.0",
     "karma-typescript": "^4.1.1",
-    "qunit": "^2.9.2",
-    "ts-node": "^8.3.0",
-    "tslint": "^5.19.0",
-    "typescript": "^3.5.3"
+    "qunit": "^2.9.3",
+    "ts-node": "^8.5.4",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.3"
   },
   "@pika/pack": {
     "pipeline": [
