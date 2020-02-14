@@ -3,7 +3,7 @@ import { Filterer } from './filter';
 import { IHandler, IRecord } from './interfaces';
 import { checkLevel } from './utils';
 
-export abstract class Handler extends Filterer implements IHandler {
+export abstract class BaseHandler extends Filterer implements IHandler {
 
     constructor(public level = LEVELS.NOTSET) {
         super();
@@ -19,13 +19,14 @@ export abstract class Handler extends Filterer implements IHandler {
         }
         return false;
     }
-    public emit(record: IRecord) { // eslint-disable-line no-unused-vars
+    public emit(record: IRecord) {
+        throw new Error('Not implemented');
     }
     public flush() { /* noopa */ }
     public close() { /* noopa */}
 }
 
-export class ConsoleHandler extends Handler {
+export class ConsoleHandler extends BaseHandler {
     public emit(record: IRecord): void {
         /* tslint:disable-next-line */
         console.log(`[${record.name}]::${record.levelName}:: ${record.msg}`);

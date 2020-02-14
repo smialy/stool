@@ -8,9 +8,9 @@ npm install @stool/logging
 
 ### Using
 ```js
-import logging from '@stool/logging';
+import { getLogger } from '@stool/logging';
 
-const logger = logging.getLogger('app');
+const logger = getLogger('app');
 
 logger.fatal('...');
 logger.error('...');
@@ -20,7 +20,7 @@ logger.debug('...');
 logger.exception(e);
 
 // create app child logger
-const dbLogger = logging.getLogger('app.db');
+const dbLogger = getLogger('app.db');
 ```
 
 ## License

@@ -2,10 +2,10 @@ import {
     LEVELS
 } from '../src/consts';
 import { Manager } from '../src/manager';
-import { Handler } from '../src/handlers';
+import { BaseHandler } from '../src/handlers';
 import { Logger } from '../src/logger';
 
-class TestHandler extends Handler {
+class TestHandler extends BaseHandler {
     private _body: Array<any>;
     constructor() {
         super();

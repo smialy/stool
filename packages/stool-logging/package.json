@@ -1,6 +1,6 @@
 {
   "name": "@stool/logging",
-  "version": "2.4.0",
+  "version": "3.0.0",
   "description": "Logger",
   "license": "MIT",
   "homepage": "https://github.com/smialy/stool#readme",
@@ -8,47 +8,39 @@
     "type": "git",
     "url": "git+https://github.com/smialy/stool.git"
   },
+  "source": "src/index.ts",
+  "main": "dist/logging.js",
+  "module": "dist/logging.mjs",
+  "types": "dist/logging.d.ts",
   "scripts": {
-    "build": "pika build",
+    "build": "microbundle build --target node --tsconfig tsconfig.build.json -f es,cjs --no-compress --no-sourcemap",
     "test": "qunit --require ts-node/register tests/*.ts",
     "karma": "karma start --single-run",
     "lint": "tslint src/*",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "version": "npm run build"
+  },
+  "exports": {
+    ".": {
+      "default": "./dist/logging.mjs",
+      "require": "./dist/logging.js"
+    }
   },
   "devDependencies": {
-    "@stool/pika-plugin-mjs": "1.0.1",
-    "@pika/pack": "^0.5.0",
-    "@pika/plugin-build-node": "^0.8.1",
-    "@pika/plugin-build-web": "^0.8.1",
-    "@pika/plugin-ts-standard-pkg": "^0.8.1",
     "@types/qunit": "^2.9.0",
     "karma": "^4.4.1",
     "karma-chrome-launcher": "^3.1.0",
-    "karma-firefox-launcher": "^1.2.0",
+    "karma-firefox-launcher": "^1.3.0",
     "karma-qunit": "^4.0.0",
     "karma-typescript": "^4.1.1",
+    "microbundle": "^v0.12.0-next.7",
     "qunit": "^2.9.3",
-    "ts-node": "^8.5.4",
-    "tslint": "^5.20.1",
-    "typescript": "^3.7.3"
+    "ts-node": "^8.6.2",
+    "tslint": "^6.0.0",
+    "typescript": "^3.7.5"
   },
-  "@pika/pack": {
-    "pipeline": [
-      [
-        "@pika/plugin-ts-standard-pkg"
-      ],
-      [
-        "@pika/plugin-build-node"
-      ],
-      [
-        "@pika/plugin-build-web",
-        {
-          "sourcemap": false
-        }
-      ],
-      [
-        "@stool/pika-plugin-mjs"
-      ]
-    ]
-  }
+  "files": [
+    "dist/*.*",
+    "README.md"
+  ]
 }
