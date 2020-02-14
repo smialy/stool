@@ -1,6 +1,6 @@
 {
   "name": "@stool/logging",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Logger",
   "license": "MIT",
   "homepage": "https://github.com/smialy/stool#readme",
@@ -22,8 +22,8 @@
   },
   "exports": {
     ".": {
-      "default": "./dist/logging.mjs",
-      "require": "./dist/logging.js"
+      "require": "./dist/logging.js",
+      "default": "./dist/logging.mjs"
     }
   },
   "devDependencies": {

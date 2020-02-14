@@ -142,6 +142,30 @@ QUnit.test('get parent level 2', assert => {
     assert.equal(handler.result(), 'i,w1,w2,e,c,f');
 });
 
+QUnit.test('get logger in revers order', assert => {
+    let handler = new TestHandler();
+    let manager = new Manager();
+
+    let b = manager.getLogger('a.b');
+    let a = manager.getLogger('a');
+    a.addHandler(handler);
+
+    _dummy(b);
+    assert.equal(handler.result(), 'd,i,w1,w2,e,c,f');
+});
+
+QUnit.test('missing level', assert => {
+    let handler = new TestHandler();
+    let manager = new Manager();
+
+    let c = manager.getLogger('a.b.c');
+    let a = manager.getLogger('a');
+    a.addHandler(handler);
+
+    _dummy(c);
+    assert.equal(handler.result(), 'd,i,w1,w2,e,c,f');
+});
+
 QUnit.test('get parent level 3', assert => {
     let handler = new TestHandler();
     let manager = new Manager();

@@ -12,6 +12,7 @@ export class Manager {
     constructor(root = null, level = LEVELS.NOTSET) {
         this._root = root;
         this._loggers = new Map();
+        this._loggers.set('root', new Logger('root'));
         this.disable = checkLevel(level);
     }
 
