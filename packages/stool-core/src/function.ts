@@ -26,7 +26,7 @@ export function debounce(fn: () => void, wait: number): IDebounceHandler {
  * @method tr
  * @return {Object}
  */
-export function tr(...args: Array<() => void>) {
+export function tr(...args: (() => void)[]) {
     for (const fn of args) {
         try {
             return fn();

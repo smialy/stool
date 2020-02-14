@@ -33,3 +33,21 @@ export const CONFIG = {
         ]
     }]
 };
+// const ConnectionState = {
+//     CLOSED: 'CLOSED',
+//     ETABLISHING: 'ETABLISHING',
+//     ESTABLISHED: 'ETABLISHED',
+//     CLOSING: 'CLOSING',
+//     ERROR: 'ERROR',
+//     AUTHENTICATING: 'AUTHENTICATING',
+//     CHALLENGING: 'CHALLENGING',
+// };
+
+// const MessageType = {
+//     HELLO: 1,
+// };
+
+// const Direction = {
+//     RECEIVED: 'RECEIVED',
+//     SENT: 'SENT',
+// };
