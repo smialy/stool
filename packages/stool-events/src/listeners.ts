@@ -1,8 +1,13 @@
+interface IListnerType {
+    bind: any;
+    listener(): any;
+}
+
 export default class Listeners {
     /**
      * @param {Object} bind - Default context
      */
-    private _listeners: Array<{listener: () => any, bind: any}> = [];
+    private _listeners: IListnerType[] = [];
     private _isFire: boolean = false;
     private _bind: any;
 

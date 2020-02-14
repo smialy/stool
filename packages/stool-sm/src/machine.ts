@@ -22,7 +22,7 @@ export default class StateMachine implements IStateListeners {
     private _currentState: IState | null = null;
     private _previousState: IState | null = null;
     private _history: string[] = [];
-    private _stateQueue: Array<{action: string, payload: any }> = [];
+    private _stateQueue: ({action: string, payload: any })[] = [];
     private _pending: boolean = false;
     private _listeners: StateListeners = new StateListeners();
 

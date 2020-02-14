@@ -126,7 +126,7 @@ export abstract class Stream<T> implements IStream<T> {
         return new FilterStream<T>(this, fn);
     }
 
-    public pipe(...fns: Array<() => void>): IStream<T> {
+    public pipe(...fns: (() => void)[]): IStream<T> {
         return new PipeStream<T>(this, fns);
     }
 }

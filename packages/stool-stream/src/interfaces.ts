@@ -33,7 +33,7 @@ export interface IStream<T> {
 
     map(fn: () => void): IStream<T>;
     filter(fn: () => void): IStream<T>;
-    pipe(...fns: Array<() => void>): IStream<T>;
+    pipe(...fns: (() => void)[]): IStream<T>;
 }
 
 export interface IControllerOptions {
