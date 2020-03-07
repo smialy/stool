@@ -1,0 +1,40 @@
+{
+  "name": "@stool/micropack",
+  "version": "0.0.3",
+  "description": "Simple bundler for tiny modules, powered by rollup",
+  "bin": {
+      "micropack": "dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "require": "./dist/micropack.js",
+      "default": "./dist/micropack.mjs"
+    }
+  },
+  "scripts": {
+      "build": "node ./src/cli.mjs",
+      "prepare": "npm run build"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@modular-css/rollup": "^25.4.1",
+    "@rollup/plugin-buble": "^0.21.1",
+    "@rollup/plugin-commonjs": "^11.0.2",
+    "@rollup/plugin-json": "^4.0.2",
+    "@rollup/plugin-node-resolve": "^7.1.1",
+    "chokidar": "^3.3.1",
+    "commander": "^4.1.1",
+    "rollup": "^1.2.0",
+    "rollup-plugin-typescript2": "^0.26.0",
+    "typescript": "^3.8.3"
+  },
+  "files": [
+      "dist/*.*",
+      "README.md"
+  ],
+  "keywords": [
+    "bundle",
+    "rollup",
+    "micro library"
+  ]
+}
