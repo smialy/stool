@@ -1,6 +1,6 @@
 {
   "name": "@stool/core",
-  "version": "2.6.2",
+  "version": "2.6.3",
   "description": "Core",
   "license": "MIT",
   "homepage": "https://github.com/smialy/stool#readme",
@@ -8,18 +8,18 @@
     "type": "git",
     "url": "git+https://github.com/smialy/stool.git"
   },
-  "source": "src/index.ts",
-  "main": "dist/core.js",
-  "module": "dist/core.mjs",
-  "types": "dist/core.d.ts",
   "scripts": {
-    "build": "microbundle build --target node --tsconfig tsconfig.build.json -f es,cjs --no-compress --no-sourcemap",
+    "build": "micropack --tsconfig tsconfig.build.json",
     "test": "qunit --require ts-node/register tests/*.ts",
     "karma": "karma start --single-run",
     "lint": "tslint src/*",
     "prepare": "npm run build",
     "version": "npm run build"
   },
+  "source": "src/index.ts",
+  "main": "dist/core.js",
+  "module": "dist/core.mjs",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "default": "./dist/core.mjs",
@@ -28,16 +28,16 @@
   },
   "devDependencies": {
     "@types/qunit": "^2.9.0",
+    "@stool/micropack": "^0.0.4",
     "karma": "^4.4.1",
     "karma-chrome-launcher": "^3.1.0",
     "karma-firefox-launcher": "^1.3.0",
     "karma-qunit": "^4.0.0",
-    "karma-typescript": "^4.1.1",
-    "microbundle": "^v0.12.0-next.7",
+    "karma-typescript": "^5.0.0",
     "qunit": "^2.9.3",
     "ts-node": "^8.6.2",
     "tslint": "^6.0.0",
-    "typescript": "^3.7.5"
+    "typescript": "^3.8.3"
   },
   "files": [
     "dist/*.*",
