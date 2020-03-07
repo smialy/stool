@@ -100,7 +100,7 @@ const prepareRollupConfig = options => ({ input, output }) => {
                 }),
                 useTypescript && typescript({
                     // typescript: typescriptModule,
-                    cacheRoot: `./s/.cache/bundle_cache_${format}`,
+                    cacheRoot: `./node_modules/.cache/bundle_cache_${format}`,
                     tsconfigDefaults: {
                         compilerOptions: {
                             sourceMap: options.sourcemap,
