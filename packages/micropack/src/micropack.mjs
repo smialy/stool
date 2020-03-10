@@ -11,8 +11,7 @@ import chokidar from 'chokidar';
 
 import { readJsonFile } from './utils/file.mjs';
 
-async function loadConfig(cwd) {
-    const pkg = await readPackageFile(cwd);
+async function loadConfig(pkg, cwd) {
     let entries = await readConfigFile(cwd);
     if (entries.length === 0) {
         entries = findPackageEntries(pkg)
@@ -22,7 +21,8 @@ async function loadConfig(cwd) {
 
 export default async function micropack(options) {
     options.cwd = resolve(process.cwd(), options.cwd);
-    const { entries } = await loadConfig(options.cwd);
+    options.pkg = await readPackageFile(options.cwd);
+    const { entries } = await loadConfig(options.pkg, options.cwd);
 
     const tasks = entries
         .reduce((acc, entry) => {
@@ -60,7 +60,7 @@ const prepareRollupConfig = options => ({ input, output }) => {
         console.log('Entry:', {input, output});
     }
     const useTypescript = extname(input.file) === '.ts' || extname(input.file) === '.tsx';
-    // const typescriptModule = useTypescript ? (await import('typescript')).default : null;
+    const declarationDir = findTypesEntry(options.pkg);
     const format = extname(output.file) === '.mjs' ? 'es' : 'cjs';
     return {
         input: {
@@ -101,10 +101,12 @@ const prepareRollupConfig = options => ({ input, output }) => {
                 useTypescript && typescript({
                     // typescript: typescriptModule,
                     cacheRoot: `./node_modules/.cache/bundle_cache_${format}`,
+                    useTsconfigDeclarationDir: true,
                     tsconfigDefaults: {
                         compilerOptions: {
                             sourceMap: options.sourcemap,
-                            declaration: true,
+                            declaration: !!declarationDir,
+                            declarationDir,
                             jsx: 'react',
                             jsxFactory: options.jsx || 'h',
                         },
@@ -227,4 +229,10 @@ function findPackageEntries(pkg) {
         console.warn('Missing "source" in package.json file.');
     }
     return { entries };
+}
+
+function findTypesEntry(pkg) {
+    if (pkg.types) {
+        return dirname(pkg.types);
+    }
 }

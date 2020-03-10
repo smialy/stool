@@ -1,6 +1,6 @@
 {
   "name": "@stool/micropack",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "Simple bundler for tiny modules, powered by rollup",
   "bin": {
       "micropack": "dist/cli.js"

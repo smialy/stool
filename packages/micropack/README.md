@@ -8,10 +8,12 @@
 
 Example of `package.json`:
 
-```
-"source": "src/index.(js|mjs|jsx|ts|tsx)",         // source code (required)
-"main": "dist/foo.js",          // CJS bundle
-"module": "dist/foo.mjs",      // ES Modules bundle
+```json
+{
+"source": "src/index.(js|mjs|jsx|ts|tsx)",
+"main": "dist/foo.js",
+"module": "dist/foo.mjs",
+"types": "dist/types/index.d.ts",
 "scripts": {
     "build": "micropack",
     "dev": "micropack --watch"
