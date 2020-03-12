@@ -1,6 +1,6 @@
 import { resolve, dirname, extname } from 'path';
 
-import { rollup } from 'rollup';
+import rollup from 'rollup';
 import json from '@rollup/plugin-json';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
@@ -8,6 +8,7 @@ import typescript from 'rollup-plugin-typescript2';
 import buble from '@rollup/plugin-buble';
 import css from "@modular-css/rollup";
 import chokidar from 'chokidar';
+import cleanup from 'rollup-plugin-cleanup';
 
 import { readJsonFile } from './utils/file.mjs';
 
@@ -39,11 +40,14 @@ export default async function micropack(options) {
         process.exit(1);
     }
     if (options.watch) {
-        let input = typeof options.watch === 'string' ? options.watch : dirname(steps[0].input.input);
-        const watchPath = resolve(cwd, input);
+        let input = typeof options.watch === 'string' ? options.watch : dirname(tasks[0].input.input);
+        const watchPath = resolve(options.cwd, input);
         const watcher = chokidar.watch(watchPath);
         let lock = false;
-        watcher.on('change', async () => {
+        console.log(`Watching: ${watchPath}`);
+        watcher.on('change', async (path) => {
+            // process.stdout.write("\u001b[2J\u001b[0;0H");
+            console.log(`Change: ${path}`);
             if (!lock) {
                 lock = true;
                 await buildAll(tasks);
@@ -69,6 +73,9 @@ const prepareRollupConfig = options => ({ input, output }) => {
                 console.log({ warning });
             },
             external(id) {
+                if (id === 'tslib') {
+                    return false;
+                }
                 if (id.substr(0, 2) === './') {
                     return false;
                 }
@@ -144,6 +151,9 @@ const prepareRollupConfig = options => ({ input, output }) => {
                         stickyRegExp: false,
                     },
                 }),
+                cleanup({
+                    comments: 'none',
+                }),
             ],
         },
         output: {
@@ -164,10 +174,10 @@ const prepareRollupConfig = options => ({ input, output }) => {
 
 async function buildAll(tasks) {
     for (const { input, output } of tasks) {
-        let bundle = await rollup(input);
+        let bundle = await rollup.rollup(input);
         await bundle.write(output);
     }
-    console.log('Done')
+    console.log('Builded.');
 }
 
 async function readPackageFile(cwd) {
