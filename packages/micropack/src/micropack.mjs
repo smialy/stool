@@ -1,35 +1,38 @@
 import { resolve, dirname, extname } from 'path';
 
-import rollup from 'rollup';
+import { rollup, watch } from 'rollup';
 import json from '@rollup/plugin-json';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
 import buble from '@rollup/plugin-buble';
 import css from "@modular-css/rollup";
-import chokidar from 'chokidar';
 import cleanup from 'rollup-plugin-cleanup';
+import terser from 'rollup-plugin-terser';
 
 import { readJsonFile } from './utils/file.mjs';
 
 async function loadConfig(pkg, cwd) {
-    let entries = await readConfigFile(cwd);
-    if (entries.length === 0) {
-        entries = findPackageEntries(pkg)
+    let config = await readConfigFile(cwd);
+    if (!config) {
+        config = findPackageEntries(pkg)
     }
-    return validateEntries(entries);
+    return validateEntries(config);
 }
 
 export default async function micropack(options) {
+    if (options.dev) {
+        console.log(options);
+    }
     options.cwd = resolve(process.cwd(), options.cwd);
     options.pkg = await readPackageFile(options.cwd);
-    const { entries } = await loadConfig(options.pkg, options.cwd);
+    const { include, entries } = await loadConfig(options.pkg, options.cwd);
 
     const tasks = entries
         .reduce((acc, entry) => {
-            const {input, output} = entry;
+            const { input, output } = entry;
             for (const item of output) {
-                acc.push({ input, output: item });
+                acc.push({ include, input, output: item });
             }
             return acc;
         }, [])
@@ -40,32 +43,41 @@ export default async function micropack(options) {
         process.exit(1);
     }
     if (options.watch) {
-        let input = typeof options.watch === 'string' ? options.watch : dirname(tasks[0].input.input);
-        const watchPath = resolve(options.cwd, input);
-        const watcher = chokidar.watch(watchPath);
-        let lock = false;
-        console.log(`Watching: ${watchPath}`);
-        watcher.on('change', async (path) => {
-            // process.stdout.write("\u001b[2J\u001b[0;0H");
-            console.log(`Change: ${path}`);
-            if (!lock) {
-                lock = true;
-                await buildAll(tasks);
-                lock = false;
+        return new Promise((_, reject) => {
+            for (const { input, output } of tasks) {
+                watch({
+                    ...input,
+                    output: output,
+                    watch: {
+                        exclude: 'node_modules/**',
+                    }
+                }).on('event', e => {
+                    if (e.code === 'FATAL') {
+                        return reject(e.error);
+                    } else if (e.code === 'ERROR') {
+                        console.warn(e.error);
+                    }else if (e.code === 'END') {
+                        console.log('Saved.');
+                    }
+                });
             }
-        });
-    } else {
-        await buildAll(tasks);
+        })
+
     }
+    for (const { input, output } of tasks) {
+        let bundle = await rollup(input);
+        await bundle.write(output);
+    }
+    console.log('Builded.');
 }
 
-const prepareRollupConfig = options => ({ input, output }) => {
+const prepareRollupConfig = options => ({ include, input, output }) => {
     if (options.dev) {
         console.log('Entry:', {input, output});
     }
     const useTypescript = extname(input.file) === '.ts' || extname(input.file) === '.tsx';
     const declarationDir = findTypesEntry(options.pkg);
-    const format = extname(output.file) === '.mjs' ? 'es' : 'cjs';
+    const format = options.format ? options.format : extname(output.file) === '.mjs' ? 'es' : 'cjs';
     return {
         input: {
             input: resolve(options.cwd, input.file),
@@ -76,18 +88,14 @@ const prepareRollupConfig = options => ({ input, output }) => {
                 if (id === 'tslib') {
                     return false;
                 }
-                if (id.substr(0, 2) === './') {
+                if (include.includes(id)) {
                     return false;
                 }
-                if (extname(id) === '.ts' || extname(id) === '.tsx') {
-                    return false;
-                }
-                return true;
             },
             plugins: [
                 nodeResolve({
                     mainFields: ['module', 'jsnext', 'main'],
-                    browser: options.target !== 'node',
+                    browser: false,
                     extensions: ['.mjs', '.js', '.jsx', '.json'],
                     preferBuiltins: false,
                 }),
@@ -128,28 +136,33 @@ const prepareRollupConfig = options => ({ input, output }) => {
                 !useTypescript &&  buble({
                     jsx: options.jsx || 'h',
                     transforms: {
-                        modules: false,
-                        objectRestSpread: false,
+                        modules: !options.modern,
+                        objectRestSpread: !options.modern,
                         asyncAwait: false,
-                        getterSetter: false,
-                        arrow: false,
-                        classes: false,
-                        defaultParameter: false,
-                        destructuring: false,
-                        generator: false,
-                        forOf: false,
-                        letConst: false,
+                        getterSetter: !options.modern,
+                        arrow: !options.modern,
+                        classes: !options.modern,
+                        defaultParameter: !options.modern,
+                        destructuring: !options.modern,
+                        generator: !options.modern,
+                        forOf: !options.modern,
+                        letConst: !options.modern,
                         moduleExport: false,
                         moduleImport: false,
-                        numericLiteral: false,
-                        parameterDestructuring: false,
-                        spreadRest: false,
-                        templateString: false,
-                        conciseMethodProperty: false,
-                        computedProperty: false,
-                        unicodeRegExp: false,
-                        stickyRegExp: false,
+                        numericLiteral: !options.modern,
+                        parameterDestructuring: !options.modern,
+                        spreadRest: !options.modern,
+                        templateString: !options.modern,
+                        conciseMethodProperty: !options.modern,
+                        computedProperty: !options.modern,
+                        unicodeRegExp: !options.modern,
+                        stickyRegExp: !options.modern,
                     },
+                }),
+                options.compress && terser.terser({
+                    warnings: true,
+                    ecma: options.modern ? 9 : 5,
+                    toplevel: options.modern || format === 'cjs' || format === 'es',
                 }),
                 cleanup({
                     comments: 'none',
@@ -162,7 +175,7 @@ const prepareRollupConfig = options => ({ input, output }) => {
                 if (output.cli) {
                     return '#!/usr/bin/env node\n';
                 }
-                return '';
+                return `// ${new Date().toISOString()}`;
             },
             name: options.name,
             sourcemap: options.sourcemap,
@@ -172,14 +185,6 @@ const prepareRollupConfig = options => ({ input, output }) => {
     }
 }
 
-async function buildAll(tasks) {
-    for (const { input, output } of tasks) {
-        let bundle = await rollup.rollup(input);
-        await bundle.write(output);
-    }
-    console.log('Builded.');
-}
-
 async function readPackageFile(cwd) {
     return await readJsonFile(resolve(cwd, 'package.json'));
 }
@@ -187,14 +192,12 @@ async function readPackageFile(cwd) {
 async function readConfigFile(cwd, configFile = 'micropack.json') {
     try {
         return await readJsonFile(resolve(cwd, configFile));
-    } catch(e) {
-    }
-    return [];
+    } catch(e) {}
 }
 
 async function validateEntries(config) {
     if (Array.isArray(config)) {
-        config = { entries: config };
+        config = { include: [], entries: config };
     }
     const entries = [];
     for (let { input, output } of config.entries) {
@@ -219,7 +222,7 @@ async function validateEntries(config) {
             output,
         });
     }
-    return { ...config, entries };
+    return { include: [], ...config, entries };
 }
 
 function findPackageEntries(pkg) {

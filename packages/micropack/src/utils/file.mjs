@@ -18,5 +18,9 @@ export function isFile(filePath) {
 
 export async function readJsonFile(filePath) {
     const payload = await readFile(filePath, 'utf8');
-    return JSON.parse(payload);
+    try {
+        return JSON.parse(payload);
+    } catch(e) {
+        console.warn(e);
+    }
 }

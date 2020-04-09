@@ -5,38 +5,34 @@
   "bin": {
     "micropack": "src/cli.mjs"
   },
-  "main": "dist/micropack.js",
   "exports": {
     ".": {
       "require": "./dist/micropack.js",
       "import": "./src/micropack.mjs"
     }
   },
-  "scripts": {
-    "build": "node ./src/cli.mjs",
-    "prepare": "npm run build"
-  },
   "license": "MIT",
   "dependencies": {
-    "@modular-css/rollup": "^25.4.1",
+    "@modular-css/rollup": "^25.5.0",
     "@rollup/plugin-buble": "^0.21.1",
     "@rollup/plugin-commonjs": "^11.0.2",
     "@rollup/plugin-json": "^4.0.2",
     "@rollup/plugin-node-resolve": "^7.1.1",
-    "chokidar": "^3.3.1",
-    "commander": "^4.1.1",
-    "rollup": "^1.2.0",
+    "commander": "^5.0.0",
+    "rollup": "^2.3.4",
     "rollup-plugin-cleanup": "^3.1.1",
-    "rollup-plugin-typescript2": "^0.26.0",
-    "typescript": "^3.8.3"
+    "rollup-plugin-typescript2": "^0.27.0",
+    "typescript": "^3.8.3",
+    "rollup-plugin-terser": "^5.3.0"
   },
   "files": [
-    "dist/*.*",
+    "src/**/*.*",
     "README.md"
   ],
   "keywords": [
     "bundle",
     "rollup",
     "micro library"
-  ]
+  ],
+  "devDependencies": {}
 }
