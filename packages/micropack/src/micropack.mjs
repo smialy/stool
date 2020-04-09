@@ -6,7 +6,7 @@ import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
 import buble from '@rollup/plugin-buble';
-import css from "@modular-css/rollup";
+import css from '@modular-css/rollup';
 import cleanup from 'rollup-plugin-cleanup';
 import terser from 'rollup-plugin-terser';
 
@@ -15,7 +15,7 @@ import { readJsonFile } from './utils/file.mjs';
 async function loadConfig(pkg, cwd) {
     let config = await readConfigFile(cwd);
     if (!config) {
-        config = findPackageEntries(pkg)
+        config = findPackageEntries(pkg);
     }
     return validateEntries(config);
 }
@@ -50,19 +50,18 @@ export default async function micropack(options) {
                     output: output,
                     watch: {
                         exclude: 'node_modules/**',
-                    }
-                }).on('event', e => {
+                    },
+                }).on('event', (e) => {
                     if (e.code === 'FATAL') {
                         return reject(e.error);
                     } else if (e.code === 'ERROR') {
                         console.warn(e.error);
-                    }else if (e.code === 'END') {
+                    } else if (e.code === 'END') {
                         console.log('Saved.');
                     }
                 });
             }
-        })
-
+        });
     }
     for (const { input, output } of tasks) {
         let bundle = await rollup(input);
@@ -71,13 +70,18 @@ export default async function micropack(options) {
     console.log('Builded.');
 }
 
-const prepareRollupConfig = options => ({ include, input, output }) => {
+const prepareRollupConfig = (options) => ({ include, input, output }) => {
     if (options.dev) {
-        console.log('Entry:', {input, output});
+        console.log('Entry:', { input, output });
     }
-    const useTypescript = extname(input.file) === '.ts' || extname(input.file) === '.tsx';
+    const useTypescript =
+        extname(input.file) === '.ts' || extname(input.file) === '.tsx';
     const declarationDir = findTypesEntry(options.pkg);
-    const format = options.format ? options.format : extname(output.file) === '.mjs' ? 'es' : 'cjs';
+    const format = options.format
+        ? options.format
+        : extname(output.file) === '.mjs'
+        ? 'es'
+        : 'cjs';
     return {
         input: {
             input: resolve(options.cwd, input.file),
@@ -104,66 +108,72 @@ const prepareRollupConfig = options => ({ include, input, output }) => {
                 }),
                 json(),
                 css({
-                    json         : true,
-                    meta         : true,
-                    namedExports : true,
-                    styleExport  : true,
-                    dev          : options.dev,
-                    verbose      : options.dev,
-                    empties      : true,
+                    json: true,
+                    meta: true,
+                    namedExports: true,
+                    styleExport: true,
+                    dev: options.dev,
+                    verbose: options.dev,
+                    empties: true,
                     // namer: shornames(),
                 }),
-                useTypescript && typescript({
-                    // typescript: typescriptModule,
-                    cacheRoot: `./node_modules/.cache/bundle_cache_${format}`,
-                    useTsconfigDeclarationDir: true,
-                    tsconfigDefaults: {
-                        compilerOptions: {
-                            sourceMap: options.sourcemap,
-                            declaration: !!declarationDir,
-                            declarationDir,
-                            jsx: 'react',
-                            jsxFactory: options.jsx || 'h',
+                useTypescript &&
+                    typescript({
+                        // typescript: typescriptModule,
+                        cacheRoot: `./node_modules/.cache/bundle_cache_${format}`,
+                        useTsconfigDeclarationDir: true,
+                        tsconfigDefaults: {
+                            compilerOptions: {
+                                sourceMap: options.sourcemap,
+                                declaration: !!declarationDir,
+                                declarationDir,
+                                jsx: 'react',
+                                jsxFactory: options.jsx || 'h',
+                            },
                         },
-                    },
-                    tsconfig: options.tsconfig,
-                    tsconfigOverride: {
-                        compilerOptions: {
-                            target: 'esnext',
+                        tsconfig: options.tsconfig,
+                        tsconfigOverride: {
+                            compilerOptions: {
+                                target: 'esnext',
+                            },
                         },
-                    },
-                }),
-                !useTypescript &&  buble({
-                    jsx: options.jsx || 'h',
-                    transforms: {
-                        modules: !options.modern,
-                        objectRestSpread: !options.modern,
-                        asyncAwait: false,
-                        getterSetter: !options.modern,
-                        arrow: !options.modern,
-                        classes: !options.modern,
-                        defaultParameter: !options.modern,
-                        destructuring: !options.modern,
-                        generator: !options.modern,
-                        forOf: !options.modern,
-                        letConst: !options.modern,
-                        moduleExport: false,
-                        moduleImport: false,
-                        numericLiteral: !options.modern,
-                        parameterDestructuring: !options.modern,
-                        spreadRest: !options.modern,
-                        templateString: !options.modern,
-                        conciseMethodProperty: !options.modern,
-                        computedProperty: !options.modern,
-                        unicodeRegExp: !options.modern,
-                        stickyRegExp: !options.modern,
-                    },
-                }),
-                options.compress && terser.terser({
-                    warnings: true,
-                    ecma: options.modern ? 9 : 5,
-                    toplevel: options.modern || format === 'cjs' || format === 'es',
-                }),
+                    }),
+                !useTypescript &&
+                    buble({
+                        jsx: options.jsx || 'h',
+                        transforms: {
+                            modules: !options.modern,
+                            objectRestSpread: !options.modern,
+                            asyncAwait: false,
+                            getterSetter: !options.modern,
+                            arrow: !options.modern,
+                            classes: !options.modern,
+                            defaultParameter: !options.modern,
+                            destructuring: !options.modern,
+                            generator: !options.modern,
+                            forOf: !options.modern,
+                            letConst: !options.modern,
+                            moduleExport: false,
+                            moduleImport: false,
+                            numericLiteral: !options.modern,
+                            parameterDestructuring: !options.modern,
+                            spreadRest: !options.modern,
+                            templateString: !options.modern,
+                            conciseMethodProperty: !options.modern,
+                            computedProperty: !options.modern,
+                            unicodeRegExp: !options.modern,
+                            stickyRegExp: !options.modern,
+                        },
+                    }),
+                options.compress &&
+                    terser.terser({
+                        warnings: true,
+                        ecma: options.modern ? 9 : 5,
+                        toplevel:
+                            options.modern ||
+                            format === 'cjs' ||
+                            format === 'es',
+                    }),
                 cleanup({
                     comments: 'none',
                 }),
@@ -181,9 +191,9 @@ const prepareRollupConfig = options => ({ include, input, output }) => {
             sourcemap: options.sourcemap,
             strict: options.strict === true,
             file: resolve(options.cwd, output.file),
-        }
-    }
-}
+        },
+    };
+};
 
 async function readPackageFile(cwd) {
     return await readJsonFile(resolve(cwd, 'package.json'));
@@ -192,7 +202,7 @@ async function readPackageFile(cwd) {
 async function readConfigFile(cwd, configFile = 'micropack.json') {
     try {
         return await readJsonFile(resolve(cwd, configFile));
-    } catch(e) {}
+    } catch (e) {}
 }
 
 async function validateEntries(config) {
@@ -207,9 +217,9 @@ async function validateEntries(config) {
         if (typeof input === 'string') {
             input = {
                 file: input,
-            }
+            };
         }
-        output = output.map(file => {
+        output = output.map((file) => {
             if (typeof file === 'string') {
                 return {
                     file,
@@ -234,7 +244,7 @@ function findPackageEntries(pkg) {
                     input: pkg.source,
                     output: {
                         file: pkg[name],
-                    }
+                    },
                 });
             }
         }

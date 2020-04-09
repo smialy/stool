@@ -33,6 +33,33 @@ For multiple entries: `micropack.json`
     }]
 }]
 ```
+## CLI Options
+```
+Usage: micropack [options]
+
+Build bundle
+
+Options:
+  --cwd <cwd>            User custom working directory (default: "/home/smialy/works/my/stool/packages/micropack")
+  -f, --format <format>  Output format: (amd, cjs, es, iife, umd, system) (default: "")
+  -w, --watch            Rebuilds on change (default: false)
+  --compress             Compress output using Terser (default: false)
+  --no-modern            Specify your target environment (modern or old)
+  --dev                  Developer mode (default: false)
+  --config <config>      Add cumstom config file
+  --tsconfig <tsconfig>  Path to a custom tsconfig.json
+  --sourcemap            Generate sourcemap (default: false)
+  --jsx                  JSX pragma like React.createElement
+  -h, --help             display help for command
+
+        Basic Examples:
+
+        $ micropack
+        $ micropack --watch
+```
+
+## Roadmap
+ - [ ] Async to promise (https://github.com/rpetrich/babel-plugin-transform-async-to-promises)
 
 ## License
 

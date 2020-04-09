@@ -1,6 +1,6 @@
 {
   "name": "@stool/micropack",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Simple bundler for tiny modules, powered by rollup",
   "bin": {
     "micropack": "src/cli.mjs"
@@ -10,6 +10,9 @@
       "require": "./dist/micropack.js",
       "import": "./src/micropack.mjs"
     }
+  },
+  "scripts": {
+    "format": "prettier --write ./src"
   },
   "license": "MIT",
   "dependencies": {
@@ -34,5 +37,7 @@
     "rollup",
     "micro library"
   ],
-  "devDependencies": {}
+  "devDependencies": {
+    "prettier": "^2.0.4"
+  }
 }

@@ -7,6 +7,6 @@ function logError(error) {
 }
 
 export function setupExceptionHandler() {
-    process.on("uncaughtException", logError);
-    process.on('unhandledRejection', logError);  // catch all promisess
+    process.on('uncaughtException', logError);
+    process.on('unhandledRejection', logError); // catch all promisess
 }
