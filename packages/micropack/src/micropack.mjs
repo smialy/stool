@@ -5,12 +5,14 @@ import json from '@rollup/plugin-json';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
-import buble from '@rollup/plugin-buble';
+// import buble from '@rollup/plugin-buble';
 import css from '@modular-css/rollup';
 import cleanup from 'rollup-plugin-cleanup';
 import terser from 'rollup-plugin-terser';
 
 import { readJsonFile } from './utils/file.mjs';
+import { createBabelConfig } from './utils/babel.mjs';
+
 
 async function loadConfig(pkg, cwd) {
     let config = await readConfigFile(cwd);
@@ -28,7 +30,7 @@ export default async function micropack(options) {
     options.pkg = await readPackageFile(options.cwd);
     const { include, entries } = await loadConfig(options.pkg, options.cwd);
 
-    const tasks = entries
+    const tasks = await Promise.all(entries
         .reduce((acc, entry) => {
             const { input, output } = entry;
             for (const item of output) {
@@ -36,12 +38,13 @@ export default async function micropack(options) {
             }
             return acc;
         }, [])
-        .map(prepareRollupConfig(options));
-
+        .map(prepareRollupConfig(options)));
+    console.log({ tasks })
     if (!tasks.length) {
         console.log('Nothing to build');
         process.exit(1);
     }
+
     if (options.watch) {
         return new Promise((_, reject) => {
             for (const { input, output } of tasks) {
@@ -70,7 +73,7 @@ export default async function micropack(options) {
     console.log('Builded.');
 }
 
-const prepareRollupConfig = (options) => ({ include, input, output }) => {
+const prepareRollupConfig = (options) => async ({ include, input, output }) => {
     if (options.dev) {
         console.log('Entry:', { input, output });
     }
@@ -138,33 +141,7 @@ const prepareRollupConfig = (options) => ({ include, input, output }) => {
                             },
                         },
                     }),
-                !useTypescript &&
-                    buble({
-                        jsx: options.jsx || 'h',
-                        transforms: {
-                            modules: !options.modern,
-                            objectRestSpread: !options.modern,
-                            asyncAwait: false,
-                            getterSetter: !options.modern,
-                            arrow: !options.modern,
-                            classes: !options.modern,
-                            defaultParameter: !options.modern,
-                            destructuring: !options.modern,
-                            generator: !options.modern,
-                            forOf: !options.modern,
-                            letConst: !options.modern,
-                            moduleExport: false,
-                            moduleImport: false,
-                            numericLiteral: !options.modern,
-                            parameterDestructuring: !options.modern,
-                            spreadRest: !options.modern,
-                            templateString: !options.modern,
-                            conciseMethodProperty: !options.modern,
-                            computedProperty: !options.modern,
-                            unicodeRegExp: !options.modern,
-                            stickyRegExp: !options.modern,
-                        },
-                    }),
+                !useTypescript && !options.modern && await createBabelConfig(options),
                 options.compress &&
                     terser.terser({
                         warnings: true,
