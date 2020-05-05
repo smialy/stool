@@ -1,4 +1,4 @@
-# smicro
+# Micropack 
 ## Simple bundler for tiny modules, powered by [rollup](https://github.com/rollup/rollup)
 
 

@@ -1,7 +1,11 @@
 {
   "name": "@stool/micropack",
-  "version": "0.1.1",
+  "version": "0.2.1",
   "description": "Simple bundler for tiny modules, powered by rollup",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/smialy/stool/tree/master/packages/micropack"
+  },
   "bin": {
     "micropack": "src/cli.mjs"
   },
