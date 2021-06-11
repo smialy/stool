@@ -5,7 +5,6 @@ export type FilterFunction = (record: IRecord) => boolean;
 export type FilterType = IFilter | FilterFunction;
 
 export class Filter implements IFilter {
-
     constructor(private _name: string) {}
 
     public filter(record: IRecord) {
@@ -26,7 +25,6 @@ export class Filter implements IFilter {
  * Filters manager
  */
 export class Filterer implements IFilter {
-
     private _filters: Set<FilterType>;
 
     constructor() {

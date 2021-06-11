@@ -7,7 +7,7 @@ export class Manager {
     public disable: number;
 
     private _loggers: Map<string, ILogger>;
-    private _root: ILogger|null;
+    private _root: ILogger | null;
 
     constructor(root = null, level = LEVELS.NOTSET) {
         this._root = root;
@@ -34,7 +34,7 @@ export class Manager {
     }
 
     public _fixTree(logger: ILogger) {
-        const parts = logger.name.split('.');
+        const parts = logger.name.replace('/', '.').split('.');
         while (parts.length) {
             parts.pop();
             const name = parts.join('.') || 'root';

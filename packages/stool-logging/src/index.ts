@@ -1,10 +1,10 @@
+import { Manager } from './manager';
 import { ILogger } from './interfaces';
-export { IHandler, IFilter } from './interfaces';
+export * from './interfaces';
 export { Filter, Filterer } from './filter';
+export { SimpleFormater } from './formaters';
 export { Logger } from './logger';
 export { BaseHandler, ConsoleHandler } from './handlers';
-import { Manager } from './manager';
-export { ILogger };
 
 const manager = new Manager();
 

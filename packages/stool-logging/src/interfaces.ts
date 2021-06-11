@@ -1,17 +1,27 @@
+export type LevelType = string | number;
+
 export interface IRecord {
     readonly name: string;
-    readonly level: number;
+    readonly level: LevelType;
     readonly levelName?: string;
     readonly msg?: string;
     readonly exception?: any;
+    readonly timestamp: number;
+    readonly created: string;
+    readonly createdDate: Date;
 }
 
 export interface IFilter {
     filter(record: IRecord): boolean;
 }
 
+export interface IFormater {
+    format(record: IRecord): string;
+}
+
 export interface IHandler {
     readonly level: number;
+    setFormater(formater: IFormater): void;
     handle(record: IRecord): void;
     emit(record: IRecord): void;
     flush(): void;
@@ -23,7 +33,7 @@ export interface ILogger {
     readonly parent?: ILogger;
 
     setParent(parent: ILogger): void;
-    setLevel(level: number): void;
+    setLevel(level: LevelType): void;
     addHandler(handler: IHandler): ILogger;
     removeHandler(handler: IHandler): ILogger;
     hasHandlers(): boolean;

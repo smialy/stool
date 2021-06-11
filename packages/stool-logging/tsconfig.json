@@ -7,6 +7,13 @@
         "outDir": "./dist"
     },
     "files": [
+        "src/interfaces.ts",
+        "src/consts.ts",
+        "src/filter.ts",
+        "src/handlers.ts",
+        "src/logger.ts",
+        "src/manager.ts",
+        "src/utils.ts",
         "src/index.ts"
     ]
 }
