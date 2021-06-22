@@ -8,9 +8,15 @@ npm install @stool/logging
 
 ### Using
 ```js
-import { getLogger } from '@stool/logging';
+import { getLogger, ConsoleHandler } from '@stool/logging';
 
-const logger = getLogger('app');
+const logger = getLogger('app'); // or with root: const logger = getLogger();
+logger.setLevel('DEBUG');
+
+const consoleHandler = new ConsoleHandler();
+consoleHandler.setFormater(new SimpleFormater('{name} {levelName} {msg}'));
+logger.addHandler(consoleHandler);
+
 
 logger.fatal('...');
 logger.error('...');
