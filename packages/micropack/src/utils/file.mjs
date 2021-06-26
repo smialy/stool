@@ -1,19 +1,31 @@
-import fs from 'fs';
-import { promisify } from 'util';
+import { stat, writeFile, readFile, mkdir } from 'fs/promises';
+import { dirname } from 'path';
 
-export const readFile = promisify(fs.readFile);
-export const readFileStat = promisify(fs.stat);
-
-export function isDir(filePath) {
-    stat(filePath)
-        .then((stat) => stat.isDirectory())
-        .catch(() => false);
+export async function isFileExists(filePath) {
+    try {
+        await isFile(filePath);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+export async function isDirExists(filePath) {
+    try {
+        await isDir(filePath);
+    } catch (e) {
+        return false;
+    }
+    return true;
 }
 
-export function isFile(filePath) {
-    stat(filePath)
-        .then((stats) => stats.isFile())
-        .catch(() => false);
+export async function isDir(filePath) {
+    const info = await stat(filePath);
+    return info.isDirectory();
+}
+
+export async function isFile(filePath) {
+    const info = await stat(filePath);
+    return info.isFile();
 }
 
 export async function readJsonFile(filePath) {
@@ -21,6 +33,15 @@ export async function readJsonFile(filePath) {
     try {
         return JSON.parse(payload);
     } catch (e) {
-        console.warn(e);
+        throw new Error(`Problem with parse: ${filePath}\n${e}`);
     }
+}
+
+export async function writeTextFile(filePath, content) {
+    const basePath = dirname(filePath);
+    const exists = await isDirExists(basePath);
+    if (!exists) {
+        await mkdir(basePath, { recursive: true });
+    }
+    await writeFile(filePath, content);
 }

@@ -1,4 +1,4 @@
-# Micropack 
+# Micropack
 ## Simple bundler for tiny modules, powered by [rollup](https://github.com/rollup/rollup)
 
 
@@ -59,7 +59,6 @@ Options:
 ```
 
 ## Roadmap
- - [ ] Async to promise (https://github.com/rpetrich/babel-plugin-transform-async-to-promises)
 
 ## License
 
