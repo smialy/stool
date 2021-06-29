@@ -1,5 +1,8 @@
-export function ready(): Promise<any> {
+export function ready(): Promise<void> {
     return new Promise(resolve => {
+        if (typeof document === 'undefined') {
+            resolve();
+        }
         if (document.readyState === 'complete') {
             resolve();
         } else {

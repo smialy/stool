@@ -3,7 +3,7 @@
     "target": "esnext",
     "module": "commonjs",
     "noImplicitAny": false,
-    "strict": true,
+    "strict": true
   },
   "files": [
       "src/index.ts"
