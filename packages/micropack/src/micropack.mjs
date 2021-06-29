@@ -7,9 +7,6 @@ import { RollupTask } from './rollup.mjs';
 
 export default async function micropack(options) {
     options = { ...DEFAULT_OPTIONS, ...options };
-    // if (options.dev) {
-    console.log(options);
-    // }
     options.cwd = resolve(process.cwd(), options.cwd);
     options.pkg = await readPackageFile(options.cwd);
     options.ts = await findTsconfigFile(options.cwd);
@@ -28,19 +25,29 @@ export default async function micropack(options) {
     if (options.watch) {
         return Promise.all(tasks.map((task) => task.watch()));
     }
-    console.log('Building...');
-    const elapse = elapsed();
-    for (const task of tasks) {
-        await task.build();
+    if (tasks.length) {
+        console.log('Building...');
+        const elapse = elapsed();
+        for (const task of tasks) {
+            await task.build();
+        }
+        if (options.showBuildime) {
+            console.log(`Done. (${elapse()})`);
+        } else {
+            console.log('Done.');
+        }
     }
-    console.log(`Done. (${elapse()})`);
 }
 
 function readPackageFile(cwd) {
     return readJsonFile(resolve(cwd, 'package.json'));
 }
-function findTsconfigFile(cwd) {
-    return readJsonFile(resolve(cwd, 'tsconfig.json'));
+async function findTsconfigFile(cwd) {
+    const tsConfigFile = resolve(cwd, 'tsconfig.json');
+    if (await isFileExists(tsConfigFile)) {
+        return await readJsonFile(tsConfigFile);
+    }
+    return {};
 }
 
 async function readConfigFile(cwd, configFile = '.micropack.json') {
@@ -71,15 +78,21 @@ function validateConfig(conf) {
         if (typeof input === 'string') {
             input = {
                 file: input,
-                bundle: false,
                 cli: false,
             };
+        }
+        if (!input.file) {
+            throw new Error('Not found input file.');
+        }
+        if (!outputs.length) {
+            throw new Error(`Not found any outputs files for: "${input.file}"`);
         }
         entries.push({
             input,
             outputs,
         });
     }
+
     return { ...config, entries };
 }
 

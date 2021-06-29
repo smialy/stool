@@ -2,7 +2,7 @@ import * as Path from 'path';
 
 import { rollup, watch } from 'rollup';
 import json from '@rollup/plugin-json';
-import nodeResolve from '@rollup/plugin-node-resolve';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
 
 import { swcRollupPlugin } from './plugins/swc.mjs';

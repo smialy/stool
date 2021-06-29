@@ -1,0 +1,6 @@
+{
+    "name": "simple",
+    "source": "src/index.ts",
+    "main": "dist/index.js",
+    "module": "dist/index.mjs"
+}
