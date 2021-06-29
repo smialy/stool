@@ -1,7 +1,7 @@
 import { sid as randomSid } from './random';
-import {getType} from './types';
+import { getType } from './types';
 
-export const noop = () => {}; // tslint:disable-line
+export const noop = () => {}; // eslint-disable-line
 
 export type IDebounceHandler = (self: any, ...args: any[]) => void;
 
@@ -23,10 +23,8 @@ export function debounce(fn: () => void, wait: number): IDebounceHandler {
  *          return 2
  *      });
  *
- * @method tr
- * @return {Object}
  */
-export function tr(...args: (() => void)[]) {
+export function tr<T = any>(...args: (() => T)[]): T | undefined {
     for (const fn of args) {
         try {
             return fn();
@@ -34,7 +32,6 @@ export function tr(...args: (() => void)[]) {
             // noop
         }
     }
-    return null;
 }
 
 /**
@@ -50,14 +47,10 @@ export function tr(...args: (() => void)[]) {
  *      > t1 === t2
  *      false
  *
- * @type {Function}
- * @param {Object} obj
- * @return {Object}
  */
 const MARKER = Symbol('~~clone-marker~~');
 
-function cloneInner(o: any, m: any= null): any {
-
+function cloneInner(o: any, m: any = null): any {
     if (!o) {
         return o;
     }

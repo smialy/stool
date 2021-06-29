@@ -31,7 +31,7 @@ export function getType(o: any): string {
             return 'element';
         }
         if (o.nodeType === 3) {
-            return (/\S/).test(o.nodeValue) ? 'textnode' : 'whitespace';
+            return /\S/.test(o.nodeValue) ? 'textnode' : 'whitespace';
         }
     }
     if (typeof o.length === 'number') {
@@ -133,7 +133,7 @@ export const isWhitespace = (o: any) => getType(o) === 'whitespace';
  */
 export const isCollection = (o: any) => getType(o) === 'collection';
 
-function buildTypesMap(): {[index: string]: string} {
+function buildTypesMap(): { [index: string]: string } {
     const types = {};
     const names = [
         'Number',

@@ -9,13 +9,8 @@ export const random = Math.random;
  *
  *      > randomInt(5, 10)
  *      [5..9]
- *
- * @method random
- * @param {Number} min
- * @param {Number} max
- * @returns {Number}
  */
-export function randomInt(min: number, max: number = 0) {
+export function randomInt(min: number, max = 0): number {
     if (max === 0) {
         max = min;
         min = 0;
@@ -33,14 +28,9 @@ export function randomInt(min: number, max: number = 0) {
  *      > choice([1,2,3])
  *      // 1 or 2 or 3
  *
- * @param {ArrayLike} sequence
- * @return {any}
  */
-export function choice(sequence: any[]): any {
-    if (sequence && sequence.length) {
-        return sequence[randomInt(sequence.length)];
-    }
-    return null;
+export function choice<T extends any>(sequence: T[]): T {
+    return sequence[randomInt(sequence.length)];
 }
 
 /**
@@ -53,16 +43,13 @@ export function choice(sequence: any[]): any {
  *      > sid(3)
  *      'WK5' (3)
  *
- * @method sid
- * @param {Number} [len=32] Hash length
- * @return {String}
  */
-export function sid(len: number = 32) {
+export function sid(len = 32): string {
     // start from letter (can be use as DOM id)
-    let id = String.fromCharCode(Math.floor((Math.random() * 25) + 65));
+    let id = String.fromCharCode(Math.floor(Math.random() * 25 + 65));
     while (id.length < len) {
         // between [48,57](number) + [65,90](ascii)
-        const code = Math.floor((Math.random() * 42) + 48);
+        const code = Math.floor(Math.random() * 42 + 48);
         if (code < 58 || code > 64) {
             id += String.fromCharCode(code);
         }
@@ -81,8 +68,6 @@ export function sid(len: number = 32) {
  *      > uid()
  *      '2d'
  *
- * @method uid
- * @return {String}
  */
 export function createUID(uid: [string] = ['0']): () => string {
     return () => {
