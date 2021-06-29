@@ -10,5 +10,7 @@ export class SimpleFormater implements IFormater {
         }
         const { name, levelName, msg } = record;
         return `${name}::${levelName}::${msg}`;
+        // const { created, name, levelName, msg } = record;
+        // return `${created.toISOString()}::${name}::${levelName}::${msg}`;
     }
 }

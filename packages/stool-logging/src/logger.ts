@@ -1,7 +1,7 @@
 import { LEVEL_NAMES, LEVELS } from './consts';
 import { Filterer } from './filter';
 import { IHandler, ILogger, IRecord, LevelType } from './interfaces';
-import { checkLevel, formatDate } from './utils';
+import { checkLevel } from './utils';
 
 export class Logger extends Filterer implements ILogger {
     public manager?: any;
@@ -87,8 +87,7 @@ export class Logger extends Filterer implements ILogger {
         if (this._isEnabledFor(level)) {
             const now = new Date();
             this.handle({
-                created: formatDate(now),
-                createdDate: now,
+                created: now,
                 timestamp: Math.floor(now.getTime() / 1000),
                 name: this.name,
                 level,

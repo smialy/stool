@@ -7,8 +7,7 @@ export interface IRecord {
     readonly msg?: string;
     readonly exception?: any;
     readonly timestamp: number;
-    readonly created: string;
-    readonly createdDate: Date;
+    readonly created: Date;
 }
 
 export interface IFilter {
