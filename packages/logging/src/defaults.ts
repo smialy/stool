@@ -1,13 +1,13 @@
 import { ILogger } from './types';
 import { LoggerFactory } from './logger';
 
-const symbol = Symbol('logger-factory');
+const NAME = 'global-logger-factory';
 
 
-if (!globalThis[symbol]) {
-    globalThis[symbol] = new LoggerFactory();
+if (!globalThis[NAME]) {
+    globalThis[NAME] = new LoggerFactory();
 }
 
 export function getLogger(name?: string): ILogger {
-    return globalThis[symbol].getLogger(name);
+    return globalThis[NAME].getLogger(name);
 }

@@ -37,11 +37,12 @@ export const DEFAULT_FORMATERS: TFormaters = {
     }
 };
 
-const DEFAULT_TEMPLATE = '{created}::{name}::{levelName}::{msg}';
+const DEFAULT_TEMPLATE = '{created}|{levelName}|{name}|{msg}{exception}';
 
 export class SimpleFormater implements IFormater {
-    static BASIC = "{name}::{levelName}::{msg}{exception}";
-    static FULL = "{created}::{name}::{levelName}::{msg}{exception}";
+    static FULL = DEFAULT_TEMPLATE;
+    static BASIC = "{levelName}|{name}|{msg}{exception}";
+    static MINIMAL = "{msg}{exception}";
 
     constructor(
         private template: string = DEFAULT_TEMPLATE,
