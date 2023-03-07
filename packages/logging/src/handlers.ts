@@ -26,8 +26,8 @@ export abstract class BaseHandler extends Filterer implements IHandler {
         }
         return false;
     }
+    // eslint-disable-line
     public emit(record: IRecord) {
-        // eslint-disable-line
         throw new Error('Not implemented');
     }
     public flush() {

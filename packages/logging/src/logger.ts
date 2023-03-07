@@ -1,7 +1,9 @@
 import { LEVEL_NAMES, Levels, ROOT_LOGGER_NAME } from './consts';
 import { Filterer } from './filter';
 import { IHandler, ILogger, ILoggerFactory, IRecord, LevelType } from './types';
-import { checkLevel } from './utils';
+import { checkLevel, isException } from './utils';
+
+type TExtra = Record<string, any>;
 
 export class Logger extends Filterer implements ILogger {
     public manager?: any;
@@ -50,28 +52,28 @@ export class Logger extends Filterer implements ILogger {
         return Array.from(this._handlers);
     }
 
-    public fatal(msg: string, exception?: any) {
-        this.log(Levels.FATAL, msg, exception);
+    public fatal(msg: string, exception?: any, extra?: TExtra) {
+        this.log(Levels.FATAL, msg, exception, extra);
     }
 
-    public critical(msg: string, exception?: any) {
-        this.log(Levels.CRITICAL, msg, exception);
+    public critical(msg: string, exception?: any, extra?: TExtra) {
+        this.log(Levels.CRITICAL, msg, exception, extra);
     }
 
-    public error(msg: string, exception?: any) {
-        this.log(Levels.ERROR, msg, exception);
+    public error(msg: string, exception?: any, extra?: TExtra) {
+        this.log(Levels.ERROR, msg, exception, extra);
     }
 
-    public warn(msg: string, exception?: any) {
-        this.log(Levels.WARN, msg, exception);
+    public warn(msg: string, exception?: any, extra?: TExtra) {
+        this.log(Levels.WARN, msg, exception, extra);
     }
 
-    public warning(msg: string, exception?: any) {
-        this.log(Levels.WARN, msg, exception);
+    public warning(msg: string, exception?: any, extra?: TExtra) {
+        this.log(Levels.WARN, msg, exception, extra);
     }
 
-    public info(msg: string) {
-        this.log(Levels.INFO, msg);
+    public info(msg: string, extra?: TExtra) {
+        this.log(Levels.INFO, msg, extra);
     }
 
     public debug(msg: string) {
@@ -82,7 +84,11 @@ export class Logger extends Filterer implements ILogger {
         this.log(Levels.ERROR, exception.message, exception);
     }
 
-    public log(level: number, msg: string, exception?: any) {
+    public log(level: number, msg: string, exception?: any, extra?: any): void {
+        if (exception && !isException(exception)) {
+            extra = exception;
+            exception = undefined;
+        }
         level = checkLevel(level);
         if (this._isEnabledFor(level)) {
             const now = new Date();
@@ -94,18 +100,19 @@ export class Logger extends Filterer implements ILogger {
                 levelName: LEVEL_NAMES[level] as string,
                 msg,
                 exception,
+                extra,
             });
         }
     }
 
-    public _isEnabledFor(level: number) {
+    private _isEnabledFor(level: number) {
         if (this.manager && this.manager.disable > level) {
             return false;
         }
         return level >= this._getParentLevel();
     }
 
-    public handle(record: IRecord) {
+    private handle(record: IRecord) {
         if (this.filter(record)) {
             let p = this as Logger;
             while (p) {
@@ -123,7 +130,7 @@ export class Logger extends Filterer implements ILogger {
         }
     }
 
-    public _getParentLevel() {
+    private _getParentLevel() {
         let logger = this as Logger;
         while (logger) {
             if (logger.level) {

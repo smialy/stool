@@ -16,6 +16,10 @@ export function checkLevel(level: number | string): number {
             return Levels[level] as number;
         }
     }
-    const msg = `Level not number or valid string: "${level}" [${NAMES}]`;
+    const msg = `Level is not number or valid string: "${level}" [${NAMES}]`;
     throw TypeError(msg);
+}
+
+export function isException(ex: any) {
+    return ex && ex.message && ex.stack;
 }

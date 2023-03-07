@@ -1,7 +1,7 @@
 import { ILogger } from './types';
 import { LoggerFactory } from './logger';
 
-const NAME = 'global-logger-factory';
+const NAME = Symbol('global.stool.logger.factory');
 
 
 if (!globalThis[NAME]) {

@@ -6,6 +6,7 @@ export interface IRecord {
     readonly levelName?: string;
     readonly msg?: string;
     readonly exception?: any;
+    readonly extra?: any;
     readonly timestamp: number;
     readonly created: Date;
 }
@@ -37,15 +38,15 @@ export interface ILogger {
     removeHandler(handler: IHandler): ILogger;
     hasHandlers(): boolean;
     getHandlers(): IHandler[];
-    fatal(msg: string, exception?: any): void;
-    critical(msg: string, exception?: any): void;
-    error(msg: string, exception?: any): void;
-    warn(msg: string, exception?: any): void;
-    warning(msg: string, exception?: any): void;
-    info(msg: string): void;
-    debug(msg: string): void;
-    exception(exception: any): void;
-    log(level: number, msg: string, exception?: any): void;
+    fatal(msg: string, exception?: any, extra?: any): void;
+    critical(msg: string, exception?: any, extra?: any): void;
+    error(msg: string, exception?: any, extra?: any): void;
+    warn(msg: string, exception?: any, extra?: any): void;
+    warning(msg: string, exception?: any, extra?: any): void;
+    info(msg: string, extra?: any): void;
+    debug(msg: string, extra?: any): void;
+    exception(exception: any, extra?: any): void;
+    log(level: number, msg: string, exception?: any, extra?: any): void;
 }
 
 export interface ILoggerFactory {

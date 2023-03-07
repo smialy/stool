@@ -21,7 +21,7 @@ export const DEFAULT_FORMATERS: TFormaters = {
         return [
           created.getUTCFullYear(),
           '-',
-          pad10(created.getUTCMonth()+1),
+          pad10(created.getUTCMonth() + 1),
           '-',
           pad10(created.getUTCDate()),
           'T',
@@ -41,8 +41,8 @@ const DEFAULT_TEMPLATE = '{created}|{levelName}|{name}|{msg}{exception}';
 
 export class SimpleFormater implements IFormater {
     static FULL = DEFAULT_TEMPLATE;
-    static BASIC = "{levelName}|{name}|{msg}{exception}";
-    static MINIMAL = "{msg}{exception}";
+    static BASIC = "{levelName}|{name}|{msg} {extra} {exception}";
+    static MINIMAL = "{msg}{extra}{exception}";
 
     constructor(
         private template: string = DEFAULT_TEMPLATE,
@@ -52,7 +52,7 @@ export class SimpleFormater implements IFormater {
     format(record: IRecord): string {
         return this.template.replace(/\{(.+?)\}/g, (_, name) => {
             return this.getFormatted(record, name);
-        });
+        }).trim();
     }
     getFormatted(record: IRecord, name: string): string {
         const value = record[name];

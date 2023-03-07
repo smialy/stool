@@ -12,6 +12,10 @@
         "src/index.ts"
     ],
     "ts-node": {
-        "transpileOnly": true
+        "transpileOnly": true,
+        "moduleTypes": {
+            "src/*.ts": "cjs",
+            "tests/*.ts": "cjs"
+        }
     }
 }
