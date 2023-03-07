@@ -1,6 +1,6 @@
 import { transform } from '@swc/core';
 
-export const swcRollupPlugin = ({ sourcemap, modern, useTypescript }) => ({
+export const swcRollupPlugin = ({ sourcemap, modern, useTypescript, jsx }) => ({
     name: 'swc',
     async transform(code) {
         const syntax = useTypescript ? 'typescript' : 'ecmascript';
@@ -10,10 +10,19 @@ export const swcRollupPlugin = ({ sourcemap, modern, useTypescript }) => ({
                 transform: {
                     legacyDecorator: true,
                     decoratorMetadata: false,
+                    react: {
+                        runtime: 'automatic',
+                        importSource: jsx ? jsx : 'preact',
+                        // pragma: "h",
+                        // pragmaFrag: "Fragment",
+                        throwIfNamespace: true,
+                        development: false,
+                        useBuiltins: false
+                    },
                 },
-                target: modern ? 'es2020' : 'es2015',
+                target: 'es2020',
                 loose: true,
-                // keepClassNames: true,
+                keepClassNames: true,
             },
             sourceMaps: sourcemap,
             minify: false,
@@ -26,12 +35,13 @@ export const swcRollupPlugin = ({ sourcemap, modern, useTypescript }) => ({
 const swcParserConfig = {
     typescript: {
         syntax: 'typescript',
+        tsx: true,
         decorators: true,
         dynamicImport: true,
     },
     ecmascript: {
         syntax: 'ecmascript',
-        jsx: false,
+        jsx: true,
         dynamicImport: true,
         // "privateMethod": false,
         // "functionBind": false,

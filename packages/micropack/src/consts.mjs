@@ -8,5 +8,7 @@ export const DEFAULT_OPTIONS = {
     include: [],
     paths: {},
     define: {},
-    compress: true,
+    compress: false,
+    css: 'inline',
+    cssModule: null,
 };

@@ -1,32 +1,24 @@
 #!/usr/bin/env node
 
-import commander from 'commander';
+import { program } from 'commander';
 
 import { DEFAULT_OPTIONS } from './consts.mjs';
 import { setupExceptionHandler } from './utils/error.mjs';
 import micropack from './micropack.mjs';
+import { collectDict, collectList, increaseVerbose } from './utils/cmd.mjs';
 
-const collectDict = (vals, acc) => ({
-    ...acc,
-    ...vals
-        .split(',')
-        .map((item) => item.split(':'))
-        .reduce((acc, val) => {
-            acc[val[0]] = val[1];
-            return acc;
-        }, {}),
-});
-const collectList = (vals, acc) => [...acc, ...vals.split(',')];
-const increaseVerbose = (_, acc) => (acc += 1);
-
-commander
+program
     .description('Build bundle')
     .option(
         '-c, --config-file <config>',
         'Add custom config file',
         DEFAULT_OPTIONS.configFile
     )
-    .option('-w, --watch', 'Rebuilds on change', DEFAULT_OPTIONS.watch)
+    .option(
+        '-f, --format <format>',
+        'Build only in specified format (es, cjs)',
+    )
+    .option('-w, --watch', 'Rebuild on change', DEFAULT_OPTIONS.watch)
     .option(
         '-i, --include <package-name>',
         'Include external package',
@@ -34,13 +26,13 @@ commander
         []
     )
     .option('-p, --paths <paths>', 'List of module to replace', collectDict, {})
-    .option('-d, --define <vars>', 'Variables to inline.', collectDict, {})
+    .option('-d, --define <vars>', 'Inline variables.', collectDict, {})
     .option('--cwd <cwd>', 'Use custom working directory', DEFAULT_OPTIONS.cwd)
-    .option('--dev', 'Developer mode', DEFAULT_OPTIONS.dev)
+    .option('--dev', 'Developer mode (use quick SWC compiler)', DEFAULT_OPTIONS.dev)
     .option(
         '--no-modern',
         'Specify your target environment (modern or old)',
-        !DEFAULT_OPTIONS.modern
+        DEFAULT_OPTIONS.modern
     )
     .option('--no-sourcemap', 'Generate sourcemap', !DEFAULT_OPTIONS.sourcemap)
     .option(
@@ -49,12 +41,28 @@ commander
         increaseVerbose,
         0
     )
-    .option('--jsx', 'JSX pragma like React.createElement', 'h')
+    .option('--jsx <name>', 'JSX Runtime', 'preact')
     .option(
-        '--no-compress',
-        'Disable output compressing',
-        !DEFAULT_OPTIONS.compress
+        '--compress',
+        'Enable output compressing',
+        DEFAULT_OPTIONS.compress
     )
+    // .option(
+    //     '--css <name>',
+    //     'Output of CSS: "inline" or "external" (default: "external")',
+    //     value => {
+    //         if (!['inline', 'external'].includes(value)) {
+    //             throw new commander.InvalidArgumentError('Expected: [inline, external].');
+    //         }
+    //         return value;
+    //     }
+    // )
+    .option(
+        '--css-module',
+        'Files .css will be parsed as modules (default: null)',
+        DEFAULT_OPTIONS.cssModule,
+    )
+    .option('--no-timestamp', 'Add timestamp to beging of file', true)
     .action(async (opts) => {
         try {
             await micropack(opts);
@@ -63,7 +71,7 @@ commander
         }
     });
 
-commander.on('--help', function () {
+program.on('--help', function () {
     console.log(`
         Basic Examples:
 
@@ -74,7 +82,7 @@ commander.on('--help', function () {
 
 export function run(argv) {
     setupExceptionHandler();
-    commander.parse(argv);
+    program.parse(argv);
 }
 
 run(process.argv);

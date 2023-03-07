@@ -17,26 +17,61 @@ export default async function micropack(options) {
         console.log('Nothing to build.');
         return;
     }
-
-    const tasks = options.entries.map(
-        ({ input, outputs }) => new RollupTask(options, input, outputs)
-    );
+    const tasks = new Tasks(options);
 
     if (options.watch) {
-        return Promise.all(tasks.map((task) => task.watch()));
+        return tasks.watch();
     }
-    if (tasks.length) {
-        console.log('Building...');
+    return tasks.build();
+}
+
+class Tasks {
+    constructor(options) {
+        this.options = options;
+        this.tasks = options.entries.map(
+            ({ input, outputs }) => new RollupTask(options, input, outputs)
+        );
+    }
+    async build() {
         const elapse = elapsed();
-        for (const task of tasks) {
-            await task.build();
-        }
-        if (options.showBuildime) {
+        console.log('Building...');
+        await Promise.all(this.tasks.map(task => task.build()));
+        if (this.options.showBuildime) {
             console.log(`Done. (${elapse()})`);
         } else {
             console.log('Done.');
         }
     }
+    async watch() {
+        const listener = watchListener();
+        return Promise.all(this.tasks.map(task => task.watch(listener)));
+    }
+}
+
+function watchListener() {
+    let items = 0;
+    return (name, payload) => {
+        switch(name) {
+            case 'start':
+                if (items === 0) {
+                    console.log('Building...');
+                }
+                items+=1;
+                break;
+            case 'error':
+                console.warn(payload);
+                break;
+            case 'end':
+                items-=1;
+                for(const file of payload) {
+                    console.log(`    ${file}`);
+                }
+                if (items === 0) {
+                    console.log('Done');
+                }
+                break;
+        }
+    };
 }
 
 function readPackageFile(cwd) {
@@ -89,7 +124,15 @@ function validateConfig(conf) {
         }
         entries.push({
             input,
-            outputs,
+            outputs: outputs.map(output => {
+                if (typeof output === 'string') {
+                    return {
+                        file: output,
+                        cli: false,
+                    };
+                }
+                return output;
+            }),
         });
     }
 

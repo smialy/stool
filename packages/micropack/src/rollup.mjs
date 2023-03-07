@@ -3,11 +3,12 @@ import * as Path from 'path';
 import { rollup, watch } from 'rollup';
 import json from '@rollup/plugin-json';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
-import { terser } from 'rollup-plugin-terser';
+import terser from '@rollup/plugin-terser';
+import image from '@rollup/plugin-image';
+import postcss from 'rollup-plugin-postcss';
 
 import { swcRollupPlugin } from './plugins/swc.mjs';
 import { tsRollupPlugin } from './plugins/ts.mjs';
-// import css from '@modular-css/rollup';
 
 const isRelative = (path) => path.startsWith('./') || path.startsWith('../');
 
@@ -20,28 +21,25 @@ export class RollupTask {
     prepareConfig() {
         const {
             options: {
-                pkg,
-                ts,
-                cwd,
                 modern,
                 format,
                 include,
                 paths,
                 sourcemap,
                 compress,
+                dev,
+                jsx,
+                timestamp,
             },
             input,
             outputs,
         } = this;
-
         const useTypescript =
             Path.extname(input.file) === '.ts' ||
             Path.extname(input.file) === '.tsx';
-        const useSwc =
-            !pkg.types && !ts?.compilerOptions?.emitDecoratorMetadata;
-        return {
+        return outputs.map(({ cli, file }, i) => ({
             source: {
-                input: Path.resolve(cwd, input.file),
+                input: Path.resolve(this.options.cwd, input.file),
                 onwarn(warning) {
                     console.log({ warning });
                 },
@@ -49,16 +47,28 @@ export class RollupTask {
                     if (id === 'tslib') {
                         return false;
                     }
-                    if (
-                        isRelative(id) ||
-                        Path.isAbsolute(id) ||
-                        include.includes(id)
-                    ) {
+                    if (isRelative(id) || Path.isAbsolute(id)) {
                         return false;
                     }
-                    return true;
+                    return !include.some(name => {
+                        if (name.endsWith('/*')) {
+                            return id.startsWith(name.substring(0, name.length - 2));
+                        }
+                        return name === id;
+                    });
                 },
                 plugins: [
+                    postcss({
+                        inject: false,
+                        extract: false,
+                        autoModules: true,
+                        modules: !!this.options.cssModule,
+                        autoModules: true,
+                        namedExports: (name) => {
+                            return name.replace(/-/g,'_');
+                        },
+                    }),
+                    image(),
                     nodeResolve({
                         mainFields: ['module', 'unpkg', 'main'],
                         browser: true,
@@ -73,20 +83,44 @@ export class RollupTask {
                         preferBuiltins: true,
                     }),
                     json(),
-                    useSwc
+                    // css({
+                    //     verbose: true,
+                    //     styleExport: true,
+                    //     json: true,
+                    // }),
+
+                    dev || !useTypescript
                         ? swcRollupPlugin({
-                              sourcemap,
-                              useTypescript,
-                              modern,
+                                jsx,
+                                sourcemap,
+                                useTypescript,
+                                modern,
                           })
                         : tsRollupPlugin({
-                              sourcemap,
-                              format,
+                                jsx,
+                                sourcemap,
+                                modern,
+                                id: i
                           }),
-                    compress && terser(),
+                    (compress || file.includes('.min.')) && terser({
+                        compress: {
+                            keep_classnames: true,
+                            keep_infinity: true,
+                            pure_getters: true,
+                        },
+                        format: {
+                            comments: /^ Generated at: .+?$/,
+                            preserve_annotations: true,
+                            wrap_func_args: false,
+
+                        },
+                        module: modern,
+                        keep_fnames: true,
+                        ecma: modern ? 2017 : 5,
+                    }),
                 ].filter(Boolean),
             },
-            outputs: outputs.map(({ cli, file }) => ({
+            output: {
                 format: format
                     ? format
                     : Path.extname(file) === '.mjs'
@@ -96,53 +130,56 @@ export class RollupTask {
                     if (cli) {
                         return '#!/usr/bin/env node\n';
                     }
-                    return `// ${new Date().toISOString()}`;
+                    if (timestamp) {
+                        return `// Generated at: ${new Date().toISOString()}`;
+                    }
+                    return '';
                 },
                 // name: options.name,
                 paths,
                 sourcemap,
                 // strict: options.strict === true,
-                file: Path.resolve(cwd, file),
-            })),
-        };
+                file: Path.resolve(this.options.cwd, file),
+            },
+        }));
     }
     async build() {
         const { cwd } = this.options;
-        const { source, outputs } = this.prepareConfig();
-        let bundle = await rollup(source);
-        await Promise.all(
-            outputs.map((output) => {
+        const jobs = this.prepareConfig()
+            .map(async ({ source, output }) => {
+                let bundle = await rollup(source);
+                await bundle.write(output);
+                await bundle.close();
                 console.log(`    ${Path.relative(cwd, output.file)}`);
-                return bundle.write(output);
-            })
-        );
-        await bundle.close();
+            });
+        await Promise.all(jobs);
     }
-    watch() {
+    watch(listener = () => {}) {
         const { cwd } = this.options;
-        const { source, outputs } = this.prepareConfig();
-        return new Promise((_, reject) => {
-            watch({
-                ...source,
-                output: outputs,
-                watch: {
-                    exclude: 'node_modules/**',
-                },
-            }).on('event', (e) => {
-                if (e.code === 'BUNDLE_START') {
-                    console.log('Building...');
-                }
-                if (e.code === 'FATAL') {
-                    return reject(e.error);
-                } else if (e.code === 'ERROR') {
-                    console.warn(e.error);
-                } else if (e.code === 'BUNDLE_END') {
-                    const files = e.output
-                        .map((file) => `    ${Path.relative(cwd, file)}`)
-                        .join('\n');
-                    console.log(`${files}\nDone.`);
-                }
+        const jobs = this.prepareConfig().map(({ source, output}) => {
+            return new Promise((_, reject) => {
+                watch({
+                    ...source,
+                    output,
+                    watch: {
+                        exclude: 'node_modules/**',
+                    },
+                }).on('event', (e) => {
+                    if (e.code === 'BUNDLE_START') {
+                        listener('start');
+                    }
+                    if (e.code === 'FATAL') {
+                        return reject(e.error);
+                    } else if (e.code === 'ERROR') {
+                        listener('error', e.error);
+                        console.warn(e.error);
+                    } else if (e.code === 'BUNDLE_END') {
+                        const files = e.output.map(file => Path.relative(cwd, file));
+                        listener('end', files);
+                    }
+                });
             });
         });
+        return Promise.all(jobs);
     }
 }
