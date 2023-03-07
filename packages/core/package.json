@@ -1,0 +1,52 @@
+{
+  "name": "@stool/core",
+  "version": "2.6.3",
+  "description": "Core",
+  "license": "MIT",
+  "homepage": "https://github.com/smialy/stool#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smialy/stool.git"
+  },
+  "scripts": {
+    "build": "micropack",
+    "dev": "micropack --watch",
+    "test": "mocha",
+    "karma": "karma start karma.conf.cjs",
+    "lint": "eslint src/*",
+    "format": "prettier src tests --write",
+    "prepare": "npm run build"
+  },
+  "type": "module",
+  "source": "src/index.ts",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "devDependencies": {
+    "@stool/micropack": "0.4.0",
+    "@types/chai": "4.2.22",
+    "@types/mocha": "9.0.0",
+    "@typescript-eslint/eslint-plugin": "4.32.0",
+    "chai": "^4.3.4",
+    "eslint": "7.32.0",
+    "karma": "6.3.4",
+    "karma-chrome-launcher": "3.1.0",
+    "karma-firefox-launcher": "2.1.1",
+    "karma-mocha": "2.0.1",
+    "karma-typescript": "5.5.2",
+    "mocha": "9.1.2",
+    "prettier": "^2.4.1",
+    "ts-node": "10.2.1",
+    "typescript": "4.4.3"
+  },
+  "files": [
+    "dist/**/*.*",
+    "README.md"
+  ]
+}
