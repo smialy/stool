@@ -1,3 +1,4 @@
+// https://github.com/zenparsing/zen-observable/blob/master/LICENSE
 // === Symbol Support ===
 
 const hasSymbol = name => Boolean(Symbol[name]);

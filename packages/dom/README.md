@@ -15,7 +15,7 @@ npm install @stool/dom
 > Waiting for DOM ready.
 
 ```typescript
-declare function ready(): Promise<any>;
+declare function ready(): Promise<void>;
 ```
 
 ```js
@@ -42,7 +42,7 @@ classNames({ foo: true }, { bar: true }); // 'foo bar'
 classNames(null, false, 'foo', undefined, 0, 1, { baz: null }, ''); // 'foo 1'
 ```
 
-#### findParentNode()
+### findParentNode()
  
  > Find parent of element using selector.
 
@@ -52,5 +52,27 @@ declare function findParent(element: HTMLElement, selector: string): HTMLElement
 ```js
 const container = findParent(element, '.container');
 ```
+
+
+### fromEvent()
+
+> Create event stream base on Observable.
+
+```typescript
+function fromEvent(element: HTMLElement, eventName: string): Observable
+```
+
+```js
+cosnt subscription = fromEvent(element, "keydown").subscribe(event => {
+    console.log(event);
+});
+// ...
+subscription.unsubscribe();
+```
+@see: <br/>
+[proposal-observable](https://github.com/tc39/proposal-observable) <br/>
+[zen-observer](https://github.com/zenparsing/zen-observable)
+
+
 ## License
 MIT
