@@ -11,6 +11,7 @@ export default async function micropack(options) {
     options.pkg = await readPackageFile(options.cwd);
     options.ts = await findTsconfigFile(options.cwd);
     options.entries = findPackageEntries(options.pkg);
+
     const config = await readConfigFile(options.cwd, options.configFile);
     options = validateConfig({ ...options, ...config });
     if (!options.entries?.length) {
@@ -77,6 +78,7 @@ function watchListener() {
 function readPackageFile(cwd) {
     return readJsonFile(resolve(cwd, 'package.json'));
 }
+
 async function findTsconfigFile(cwd) {
     const tsConfigFile = resolve(cwd, 'tsconfig.json');
     if (await isFileExists(tsConfigFile)) {
@@ -85,7 +87,7 @@ async function findTsconfigFile(cwd) {
     return {};
 }
 
-async function readConfigFile(cwd, configFile = '.micropack.json') {
+async function readConfigFile(cwd, configFile) {
     const filePath = resolve(cwd, configFile);
     if (await isFileExists(filePath)) {
         try {
@@ -140,6 +142,47 @@ function validateConfig(conf) {
 }
 
 function findPackageEntries(pkg) {
+    let entries = checkExportEntries(pkg);
+    if (!entries?.length) {
+        entries = checkGlobalEntries(pkg);
+    }
+    if (entries.length) {
+        return entries;
+    }
+    console.warn('Missing key: "source" in package.json file.');
+    return [];
+}
+function *findExportsEntries(exports) {
+    const names = ['browser', 'import', 'module', 'main', 'default'];
+    if (typeof exports !== 'string') {
+        const { source: input } = exports;
+        if( input ) {
+            const outputs = names
+                .filter(name => exports[name] && typeof exports[name] === 'string')
+                .map(name => exports[name]);
+            if (outputs.length) {
+                yield {
+                    input,
+                    outputs: [...new Set(outputs)],
+                };
+            }
+        }
+    }
+}
+
+function checkExportEntries(pkg) {
+    const { exports } = pkg;
+    const entries = [];
+    if (exports) {
+        for(const values of Object.values(exports)) {
+            for (const entry of [...findExportsEntries(values)]) {
+                entries.push(entry);
+            }
+        }
+    }
+    return entries;
+}
+function checkGlobalEntries(pkg) {
     const { source: file } = pkg;
     if (file) {
         const names = ['main', 'module', 'unpkg'];
@@ -162,8 +205,6 @@ function findPackageEntries(pkg) {
             },
         ];
     }
-    console.warn('Missing key: "source" in package.json file.');
-    return [];
 }
 
 //"@modular-css/rollup": "26.0.0",
