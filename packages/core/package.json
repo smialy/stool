@@ -1,6 +1,6 @@
 {
   "name": "@stool/core",
-  "version": "2.6.3",
+  "version": "2.6.4",
   "description": "Core",
   "license": "MIT",
   "homepage": "https://github.com/smialy/stool#readme",
@@ -19,13 +19,14 @@
   },
   "type": "module",
   "source": "src/index.ts",
-  "main": "dist/index.cjs",
+  "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/types/index.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs"
+      "browser": "./dist/index.mjs",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     }
   },
   "devDependencies": {
