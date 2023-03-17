@@ -63,3 +63,12 @@ export function fromEvent(element: HTMLElement, eventName: string): Observable {
         return () => element.removeEventListener(eventName, handler, true);
     });
 }
+
+export function importStyles(styles: string[] | string, name: string = '@stool/dom'): () => void {
+    styles = Array.isArray(styles) ? styles : [styles];
+    const element = document.createElement('style');
+    element.dataset.name = name;
+    element.innerHTML = styles.join("\n");
+    document.head.appendChild(element);
+    return () => element?.parentNode?.removeChild(element);
+}

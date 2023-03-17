@@ -62,7 +62,7 @@ const container = findParent(element, '.container');
 function fromEvent(element: HTMLElement, eventName: string): Observable
 ```
 
-```js
+```typescript
 cosnt subscription = fromEvent(element, "keydown").subscribe(event => {
     console.log(event);
 });
@@ -73,6 +73,13 @@ subscription.unsubscribe();
 [proposal-observable](https://github.com/tc39/proposal-observable) <br/>
 [zen-observer](https://github.com/zenparsing/zen-observable)
 
+### 
+
+> Import style(s) to `document`.
+
+```typescript
+function importStyles(styles: string[] | string, name: string = '@stool/dom'): () => void
+```
 
 ## License
 MIT
