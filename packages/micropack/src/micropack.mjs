@@ -5,7 +5,7 @@ import { readJsonFile, isFileExists } from './utils/file.mjs';
 import { elapsed } from './utils/time.mjs';
 import { RollupTask } from './rollup.mjs';
 
-export default async function micropack({ cwd, configFile, ...cliOptions}) {
+export default async function micropack({ cwd, configFile, ...cliOptions }) {
     cwd = resolve(process.cwd(), cwd);
     const pkg = await readPackageFile(cwd);
     const ts = await findTsconfigFile(cwd);
@@ -15,7 +15,7 @@ export default async function micropack({ cwd, configFile, ...cliOptions}) {
     const initOptions = {
         ...DEFAULT_OPTIONS,
         ...cliOptions,
-        ...pkg.micropack || {},
+        ...(pkg.micropack || {}),
         ...configOptions,
         cwd,
         pkg,
@@ -51,7 +51,7 @@ class Tasks {
     async build() {
         const elapse = elapsed();
         console.log('Building...');
-        await Promise.all(this.tasks.map(task => task.build()));
+        await Promise.all(this.tasks.map((task) => task.build()));
         if (this.options.showBuildtime) {
             console.log(`Done. (${elapse()})`);
         } else {
@@ -60,26 +60,26 @@ class Tasks {
     }
     async watch() {
         const listener = watchListener();
-        return Promise.all(this.tasks.map(task => task.watch(listener)));
+        return Promise.all(this.tasks.map((task) => task.watch(listener)));
     }
 }
 
 function watchListener() {
     let items = 0;
     return (name, payload) => {
-        switch(name) {
+        switch (name) {
             case 'start':
                 if (items === 0) {
                     console.log('Building...');
                 }
-                items+=1;
+                items += 1;
                 break;
             case 'error':
                 console.warn(payload);
                 break;
             case 'end':
-                items-=1;
-                for(const file of payload) {
+                items -= 1;
+                for (const file of payload) {
                     console.log(`    ${file}`);
                 }
                 if (items === 0) {
@@ -141,7 +141,7 @@ function validateConfig(conf) {
         }
         entries.push({
             input,
-            outputs: outputs.map(output => {
+            outputs: outputs.map((output) => {
                 if (typeof output === 'string') {
                     return {
                         file: output,
@@ -167,14 +167,16 @@ function findPackageEntries(pkg) {
     console.warn('Missing key: "source" in package.json file.');
     return [];
 }
-function *findExportsEntries(exports) {
+function* findExportsEntries(exports) {
     const names = ['browser', 'import', 'module', 'main', 'default'];
     if (typeof exports !== 'string') {
         const { source: input } = exports;
-        if( input ) {
+        if (input) {
             const outputs = names
-                .filter(name => exports[name] && typeof exports[name] === 'string')
-                .map(name => exports[name]);
+                .filter(
+                    (name) => exports[name] && typeof exports[name] === 'string'
+                )
+                .map((name) => exports[name]);
             if (outputs.length) {
                 yield {
                     input,
@@ -189,7 +191,7 @@ function checkExportEntries(pkg) {
     const { exports } = pkg;
     const entries = [];
     if (exports) {
-        for(const values of Object.values(exports)) {
+        for (const values of Object.values(exports)) {
             for (const entry of [...findExportsEntries(values)]) {
                 entries.push(entry);
             }

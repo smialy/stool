@@ -30,7 +30,7 @@ export class RollupTask {
                 dev,
                 jsx,
                 timestamp,
-                pkg: { name }
+                pkg: { name },
             },
             input,
             outputs,
@@ -51,9 +51,11 @@ export class RollupTask {
                     if (isRelative(id) || Path.isAbsolute(id)) {
                         return false;
                     }
-                    return !include.some(name => {
+                    return !include.some((name) => {
                         if (name.endsWith('/*')) {
-                            return id.startsWith(name.substring(0, name.length - 2));
+                            return id.startsWith(
+                                name.substring(0, name.length - 2)
+                            );
                         }
                         return name === id;
                     });
@@ -66,7 +68,7 @@ export class RollupTask {
                         modules: !!this.options.cssModule,
                         autoModules: true,
                         namedExports: (name) => {
-                            return name.replace(/-/g,'_');
+                            return name.replace(/-/g, '_');
                         },
                     }),
                     image(),
@@ -92,33 +94,33 @@ export class RollupTask {
 
                     dev || !useTypescript
                         ? swcRollupPlugin({
-                                jsx,
-                                sourcemap,
-                                useTypescript,
-                                modern,
+                              jsx,
+                              sourcemap,
+                              useTypescript,
+                              modern,
                           })
                         : tsRollupPlugin({
-                                jsx,
-                                sourcemap,
-                                modern,
-                                id: i
+                              jsx,
+                              sourcemap,
+                              modern,
+                              id: i,
                           }),
-                    (compress || file.includes('.min.')) && terser({
-                        compress: {
-                            keep_classnames: true,
-                            keep_infinity: true,
-                            pure_getters: true,
-                        },
-                        format: {
-                            comments: /^\/\/ Generated: .+?$/,
-                            preserve_annotations: true,
-                            wrap_func_args: false,
-
-                        },
-                        module: modern,
-                        keep_fnames: true,
-                        ecma: modern ? 2017 : 5,
-                    }),
+                    (compress || file.includes('.min.')) &&
+                        terser({
+                            compress: {
+                                keep_classnames: true,
+                                keep_infinity: true,
+                                pure_getters: true,
+                            },
+                            format: {
+                                comments: /^\/\/ Generated: .+?$/,
+                                preserve_annotations: true,
+                                wrap_func_args: false,
+                            },
+                            module: modern,
+                            keep_fnames: true,
+                            ecma: modern ? 2017 : 5,
+                        }),
                 ].filter(Boolean),
             },
             output: {
@@ -146,18 +148,17 @@ export class RollupTask {
     }
     async build() {
         const { cwd } = this.options;
-        const jobs = this.prepareConfig()
-            .map(async ({ source, output }) => {
-                let bundle = await rollup(source);
-                await bundle.write(output);
-                await bundle.close();
-                console.log(`    ${Path.relative(cwd, output.file)}`);
-            });
+        const jobs = this.prepareConfig().map(async ({ source, output }) => {
+            let bundle = await rollup(source);
+            await bundle.write(output);
+            await bundle.close();
+            console.log(`    ${Path.relative(cwd, output.file)}`);
+        });
         await Promise.all(jobs);
     }
     watch(listener = () => {}) {
         const { cwd } = this.options;
-        const jobs = this.prepareConfig().map(({ source, output}) => {
+        const jobs = this.prepareConfig().map(({ source, output }) => {
             return new Promise((_, reject) => {
                 watch({
                     ...source,
@@ -175,7 +176,9 @@ export class RollupTask {
                         listener('error', e.error);
                         console.warn(e.error);
                     } else if (e.code === 'BUNDLE_END') {
-                        const files = e.output.map(file => Path.relative(cwd, file));
+                        const files = e.output.map((file) =>
+                            Path.relative(cwd, file)
+                        );
                         listener('end', files);
                     }
                 });

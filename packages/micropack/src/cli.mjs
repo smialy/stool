@@ -9,20 +9,13 @@ import { collectDict, collectList, increaseVerbose } from './utils/cmd.mjs';
 
 program
     .description('Build bundle')
-    .option(
-        '-p, --print-config',
-        'Show current config',
-        false,
-    )
+    .option('-p, --print-config', 'Show current config', false)
     .option(
         '-c, --config-file <config>',
         'Add custom config file',
         DEFAULT_OPTIONS.configFile
     )
-    .option(
-        '-f, --format <format>',
-        'Build only in specified format (es, cjs)',
-    )
+    .option('-f, --format <format>', 'Build only in specified format (es, cjs)')
     .option('-w, --watch', 'Rebuild on change', DEFAULT_OPTIONS.watch)
     .option(
         '-i, --include <package-name>',
@@ -33,7 +26,11 @@ program
     .option('-p, --paths <paths>', 'List of module to replace', collectDict, {})
     .option('-d, --define <vars>', 'Inline variables.', collectDict, {})
     .option('--cwd <cwd>', 'Use custom working directory', DEFAULT_OPTIONS.cwd)
-    .option('--dev', 'Developer mode (use quick SWC compiler)', DEFAULT_OPTIONS.dev)
+    .option(
+        '--dev',
+        'Developer mode (use quick SWC compiler)',
+        DEFAULT_OPTIONS.dev
+    )
     .option(
         '--no-modern',
         'Specify your target environment (modern or old)',
@@ -47,15 +44,11 @@ program
         0
     )
     .option('--jsx <name>', 'JSX Runtime', 'preact')
-    .option(
-        '--compress',
-        'Enable output compressing',
-        DEFAULT_OPTIONS.compress
-    )
+    .option('--compress', 'Enable output compressing', DEFAULT_OPTIONS.compress)
     .option(
         '--css-module',
         'Files .css will be parsed as modules (default: null)',
-        DEFAULT_OPTIONS.cssModule,
+        DEFAULT_OPTIONS.cssModule
     )
     .option('--no-timestamp', 'Add timestamp to beging of file', true)
     .action(async (opts) => {

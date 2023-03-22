@@ -17,7 +17,7 @@ export const swcRollupPlugin = ({ sourcemap, modern, useTypescript, jsx }) => ({
                         // pragmaFrag: "Fragment",
                         throwIfNamespace: true,
                         development: false,
-                        useBuiltins: false
+                        useBuiltins: false,
                     },
                 },
                 target: 'es2020',
