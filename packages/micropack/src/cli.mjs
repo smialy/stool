@@ -10,6 +10,11 @@ import { collectDict, collectList, increaseVerbose } from './utils/cmd.mjs';
 program
     .description('Build bundle')
     .option(
+        '-p, --print-config',
+        'Show current config',
+        false,
+    )
+    .option(
         '-c, --config-file <config>',
         'Add custom config file',
         DEFAULT_OPTIONS.configFile
@@ -47,16 +52,6 @@ program
         'Enable output compressing',
         DEFAULT_OPTIONS.compress
     )
-    // .option(
-    //     '--css <name>',
-    //     'Output of CSS: "inline" or "external" (default: "external")',
-    //     value => {
-    //         if (!['inline', 'external'].includes(value)) {
-    //             throw new commander.InvalidArgumentError('Expected: [inline, external].');
-    //         }
-    //         return value;
-    //     }
-    // )
     .option(
         '--css-module',
         'Files .css will be parsed as modules (default: null)',

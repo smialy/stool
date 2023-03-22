@@ -30,6 +30,7 @@ export class RollupTask {
                 dev,
                 jsx,
                 timestamp,
+                pkg: { name }
             },
             input,
             outputs,
@@ -109,7 +110,7 @@ export class RollupTask {
                             pure_getters: true,
                         },
                         format: {
-                            comments: /^ Generated at: .+?$/,
+                            comments: /^\/\/ Generated: .+?$/,
                             preserve_annotations: true,
                             wrap_func_args: false,
 
@@ -131,7 +132,7 @@ export class RollupTask {
                         return '#!/usr/bin/env node\n';
                     }
                     if (timestamp) {
-                        return `// Generated at: ${new Date().toISOString()}`;
+                        return `// Generated: ${name} ${new Date().toISOString()}`;
                     }
                     return '';
                 },

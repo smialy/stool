@@ -5,15 +5,30 @@ import { readJsonFile, isFileExists } from './utils/file.mjs';
 import { elapsed } from './utils/time.mjs';
 import { RollupTask } from './rollup.mjs';
 
-export default async function micropack(options) {
-    options = { ...DEFAULT_OPTIONS, ...options };
-    options.cwd = resolve(process.cwd(), options.cwd);
-    options.pkg = await readPackageFile(options.cwd);
-    options.ts = await findTsconfigFile(options.cwd);
-    options.entries = findPackageEntries(options.pkg);
+export default async function micropack({ cwd, configFile, ...cliOptions}) {
+    cwd = resolve(process.cwd(), cwd);
+    const pkg = await readPackageFile(cwd);
+    const ts = await findTsconfigFile(cwd);
+    const entries = findPackageEntries(pkg);
+    const configOptions = await readConfigFile(cwd, configFile);
 
-    const config = await readConfigFile(options.cwd, options.configFile);
-    options = validateConfig({ ...options, ...config });
+    const initOptions = {
+        ...DEFAULT_OPTIONS,
+        ...cliOptions,
+        ...pkg.micropack || {},
+        ...configOptions,
+        cwd,
+        pkg,
+        ts,
+        entries,
+    };
+
+    const options = validateConfig(initOptions);
+    if (options.printConfig) {
+        console.log(options);
+        return 0;
+    }
+
     if (!options.entries?.length) {
         console.log('Nothing to build.');
         return;
@@ -37,7 +52,7 @@ class Tasks {
         const elapse = elapsed();
         console.log('Building...');
         await Promise.all(this.tasks.map(task => task.build()));
-        if (this.options.showBuildime) {
+        if (this.options.showBuildtime) {
             console.log(`Done. (${elapse()})`);
         } else {
             console.log('Done.');
