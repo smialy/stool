@@ -5,37 +5,40 @@ import { readJsonFile, isFileExists } from './utils/file.mjs';
 import { elapsed } from './utils/time.mjs';
 import { RollupTask } from './rollup.mjs';
 
-export default async function micropack({ cwd, configFile, ...cliOptions }) {
+export default async function micropack({
+    cwd,
+    printConfig,
+    configFile,
+    watch,
+    ...cliOptions
+}) {
     cwd = resolve(process.cwd(), cwd);
     const pkg = await readPackageFile(cwd);
     const ts = await findTsconfigFile(cwd);
-    const entries = findPackageEntries(pkg);
-    const configOptions = await readConfigFile(cwd, configFile);
-
-    const initOptions = {
+    const config = await readConfigFile(cwd, configFile);
+    const { type, entries } = findEntries(config, pkg);
+    const options = validateConfig({
         ...DEFAULT_OPTIONS,
-        ...cliOptions,
         ...(pkg.micropack || {}),
-        ...configOptions,
+        ...config,
+        ...cliOptions,
         cwd,
         pkg,
         ts,
         entries,
-    };
-
-    const options = validateConfig(initOptions);
-    if (options.printConfig) {
+        entriesType: type,
+    });
+    if (printConfig) {
         console.log(options);
         return 0;
     }
-
     if (!options.entries?.length) {
         console.log('Nothing to build.');
         return;
     }
     const tasks = new Tasks(options);
 
-    if (options.watch) {
+    if (watch) {
         return tasks.watch();
     }
     return tasks.build();
@@ -52,7 +55,7 @@ class Tasks {
         const elapse = elapsed();
         console.log('Building...');
         await Promise.all(this.tasks.map((task) => task.build()));
-        if (this.options.showBuildtime) {
+        if (this.options.timestamp) {
             console.log(`Done. (${elapse()})`);
         } else {
             console.log('Done.');
@@ -155,18 +158,29 @@ function validateConfig(conf) {
 
     return { ...config, entries };
 }
+function findEntries({ entries }, pkg) {
+    if (entries) {
+        return { entries, type: 'config.file' };
+    }
+    return findPackageEntries(pkg);
+}
 
 function findPackageEntries(pkg) {
     let entries = checkExportEntries(pkg);
-    if (!entries?.length) {
-        entries = checkGlobalEntries(pkg);
-    }
     if (entries.length) {
-        return entries;
+        return { entries, type: 'pkg.exports' };
+    }
+    entries = checkGlobalEntries(pkg);
+    if (entries.length) {
+        return { entries, type: 'pkg.global' };
+    }
+    if (pkg.micropack?.entries) {
+        return { entries, type: 'pkg.micropack' };
     }
     console.warn('Missing key: "source" in package.json file.');
-    return [];
+    return { entries: [], type: 'none' };
 }
+
 function* findExportsEntries(exports) {
     const names = ['browser', 'import', 'module', 'main', 'default'];
     if (typeof exports !== 'string') {
@@ -222,6 +236,7 @@ function checkGlobalEntries(pkg) {
             },
         ];
     }
+    return [];
 }
 
 //"@modular-css/rollup": "26.0.0",
