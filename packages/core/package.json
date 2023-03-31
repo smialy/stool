@@ -1,6 +1,6 @@
 {
   "name": "@stool/core",
-  "version": "2.6.5",
+  "version": "2.7.0",
   "description": "Core",
   "license": "MIT",
   "homepage": "https://github.com/smialy/stool#readme",
@@ -17,7 +17,6 @@
     "format": "prettier src tests --write",
     "prepare": "npm run build"
   },
-  "type": "module",
   "source": "src/index.ts",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
