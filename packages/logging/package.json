@@ -30,7 +30,7 @@
     "version": "npm run build"
   },
   "devDependencies": {
-    "@stool/micropack": "0.4.0",
+    "@stool/micropack": "0.6.2",
     "@types/chai": "4.3.4",
     "@types/mocha": "10.0.1",
     "@typescript-eslint/eslint-plugin": "5.54.1",
