@@ -2,7 +2,7 @@ export type LevelType = string | number;
 
 export interface IRecord {
     readonly name: string;
-    readonly level: LevelType;
+    readonly level: number;
     readonly levelName?: string;
     readonly msg?: string;
     readonly exception?: any;

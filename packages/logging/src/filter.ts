@@ -32,7 +32,7 @@ export class Filterer implements IFilter {
     }
 
     public addFilter(filter: FilterType): boolean {
-        if (filter && (typeof filter === 'function' || filter.filter)) {
+        if (filter && (typeof filter === 'function' || typeof filter.filter === 'function')) {
             this._filters.add(filter);
             return true;
         }
