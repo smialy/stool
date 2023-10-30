@@ -12,15 +12,15 @@ export default async function micropack({
     watch,
     ...cliOptions
 }) {
-    cwd = resolve(process.cwd(), cwd);
+    cwd = cwd ? resolve(process.cwd(), cwd) : process.cwd();
+    const fileOptions = await readConfigFile(cwd, configFile);
     const pkg = await readPackageFile(cwd);
+    const { type, entries } = findEntries(fileOptions, pkg);
     const ts = await findTsconfigFile(cwd);
-    const config = await readConfigFile(cwd, configFile);
-    const { type, entries } = findEntries(config, pkg);
     const options = validateConfig({
         ...DEFAULT_OPTIONS,
         ...(pkg.micropack || {}),
-        ...config,
+        ...fileOptions,
         ...cliOptions,
         cwd,
         pkg,
@@ -28,6 +28,7 @@ export default async function micropack({
         entries,
         entriesType: type,
     });
+
     if (printConfig) {
         console.log(options);
         return 0;

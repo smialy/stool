@@ -13,4 +13,5 @@ export const DEFAULT_OPTIONS = {
     compress: false,
     css: 'inline',
     cssModule: null,
+    jsx: 'preact',
 };

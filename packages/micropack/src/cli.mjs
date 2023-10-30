@@ -21,11 +21,10 @@ program
         '-i, --include <package-name>',
         'Include external package',
         collectList,
-        []
     )
-    .option('-p, --paths <paths>', 'List of module to replace', collectDict, {})
-    .option('-d, --define <vars>', 'Inline variables.', collectDict, {})
-    .option('--cwd <cwd>', 'Use custom working directory', DEFAULT_OPTIONS.cwd)
+    .option('-p, --paths <paths>', 'List of module to replace')
+    .option('-d, --define <vars>', 'Inline variables.', collectDict)
+    .option('--cwd <cwd>', 'Use custom working directory')
     .option(
         '--dev',
         'Developer mode (use quick SWC compiler)',
@@ -36,14 +35,14 @@ program
         'Specify your target environment (modern or old)',
         DEFAULT_OPTIONS.modern
     )
-    .option('--no-sourcemap', 'Generate sourcemap', !DEFAULT_OPTIONS.sourcemap)
+    .option('--no-sourcemap', 'Generate sourcemap')
     .option(
         '-v, --verbose',
         'verbosity that can be increased',
         increaseVerbose,
         0
     )
-    .option('--jsx <name>', 'JSX Runtime', 'preact')
+    .option('--jsx <name>', 'JSX Runtime')
     .option('--compress', 'Enable output compressing', DEFAULT_OPTIONS.compress)
     .option(
         '--css-module',
