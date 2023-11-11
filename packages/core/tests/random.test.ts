@@ -1,6 +1,5 @@
-// import {sid, randomInt, choice, createUID} from '../src/random';
 import { assert } from 'chai';
-import { sid, randomInt, choice, createUID } from '../src/random';
+import { sid, randomInt, choice, uidFactory } from '../src/random';
 
 describe('core/random', () => {
     it('create sid by sid()', () => {
@@ -55,8 +54,8 @@ describe('core/random', () => {
         }
     });
 
-    it('createUID()', () => {
-        let uid = createUID();
+    it('uidFactory()', () => {
+        let uid = uidFactory();
         assert.equal(uid(), '1');
         assert.equal(uid(), '2');
         assert.equal(uid(), '3');
@@ -72,7 +71,7 @@ describe('core/random', () => {
         assert.equal(uid(), '4U');
         assert.equal(uid(), '4V');
 
-        let newUid = createUID();
+        let newUid = uidFactory();
         assert.equal(newUid(), '1');
     });
 });

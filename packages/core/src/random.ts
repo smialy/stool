@@ -69,7 +69,7 @@ export function sid(len = 32): string {
  *      '2d'
  *
  */
-export function createUID(uid: [string] = ['0']): () => string {
+export function uidFactory(uid: [string] = ['0']): () => string {
     return () => {
         let i = uid.length;
         while (i--) {

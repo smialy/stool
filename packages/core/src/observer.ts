@@ -1,5 +1,5 @@
-import { Observable, Observer } from "zen-observable-ts";
-export { Observable, Observer };
+import { Observable, Observer, Subscription } from "zen-observable-ts";
+export { Observable, Observer, Subscription };
 
 export class Subject<T> extends Observable<T> {
 
@@ -7,7 +7,7 @@ export class Subject<T> extends Observable<T> {
   private _isStopped = false;
 
   constructor() {
-    super((observed) => {
+    super((observed: Observer<T>) => {
       this._observers.add(observed);
       return () => this._observers.delete(observed)
     });

@@ -1,8 +1,6 @@
 import { assert } from 'chai';
 import { Observer, Subject, Subscription} from '../src/observer';
 
-const s = new Subject();
-
 describe('core/Subject()', () => {
     it('should send message to subscriber', () => {
         const subject = new Subject<number>();
@@ -18,7 +16,7 @@ describe('core/Subject()', () => {
     it('should subscribe many observer', () => {
         const subject = new Subject<number>();
         const observer = new TestObserver<number>();
-        const s1 = subject.subscribe(observer);
+        subject.subscribe(observer);
         subject.next(1);
         const s2 = subject.subscribe(observer);
         subject.next(2);
@@ -46,7 +44,7 @@ describe('core/Subject()', () => {
     it('should not send message after error()', () => {
         const subject = new Subject<number>();
         const observer = new TestObserver<number>();
-        const subscribtion = subject.subscribe(observer);
+        subject.subscribe(observer);
         subject.next(1);
         subject.error('error');
         subject.next(2);

@@ -8,11 +8,13 @@
     "declarationDir": "./types"
   },
   "files": [
-    "src/index.ts",
+    "src/events.ts",
+    "src/observer.ts",
     "src/function.ts",
     "src/random.ts",
     "src/string.ts",
-    "src/types.ts"
+    "src/types.ts",
+    "src/index.ts"
   ],
   "ts-node": {
     "transpileOnly": true,

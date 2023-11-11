@@ -1,11 +1,11 @@
 import { assert } from 'chai';
-import * as Types from '../src/types';
+import { Types } from '../src/types';
 
 describe('core/types', () => {
     it('import', () => assert.ok(typeof Types === 'object'));
 
     it('test type dectect stool.type()', () => {
-        let type = Types.getType;
+        let type = Types.get;
         assert.equal(type(null), 'null');
         assert.equal(type([]), 'array');
         assert.equal(type(1), 'number');
@@ -113,7 +113,7 @@ describe('core/types', () => {
                 }
             }
         }
-        function getMsg(method, value, type, result) {
+        function getMsg(method: string, value: any, type: string, result: any) {
             try {
                 return `${method}(${value}) => ${type} : ${result}`;
             } catch (e) {

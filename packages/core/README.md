@@ -37,10 +37,6 @@ declarate function noop() {};
 tr(() => { throw new Error() }, () => 'One'); // 'One';
 ```
 
-#### clone()
-> Clone object
-
-
 ### Random
 #### randomInt()
 ```js
@@ -59,13 +55,41 @@ choice([1,2,3]); // 1 or 2 or 3
 sid(); // IBA1CCRQ69NIELNLBG65WHHEGNVGQPO1 (32)
 sid(3); //WK5
 ```
-#### createUID()
+#### uidFactory()
 ```js
-const uid = createUID();
+const uid = uidFactory();
 uid(); // '0'
 ...
 uid(); // 'ac'
 uid(); // 'ad'
+```
+
+
+classNames('foo', 'bar'); // 'foo bar'
+classNames('foo', { bar: true }); // 'foo bar'
+classNames({ 'foo-bar': false }); // ''
+classNames({ 'foo-bar': true }); // 'foo-bar'
+classNames({ foo: true }, { bar: true }); // 'foo bar'
+classNames(null, false, 'foo', undefined, 0, 1, { baz: null }, ''); // 'foo 1'
+```
+
+#### clsx
+> Conditionally joining className together.
+
+```js
+import { clsx } from '@stool/core';
+
+clsx('a', 1, 0, null, undefined, NaN, true); 
+//=> 'a 1'
+
+clsx('foo', true && 'bar', 'baz');
+//=> 'a b c'
+
+clsx(['a', 'b', 'c']);
+//=> 'a b c'
+
+clsx({ foo: true, bar: false}, {a: true, b: false})
+//=> 'foo a'
 ```
 
 ## License
