@@ -1,0 +1,9 @@
+{
+    "name": "basic",
+    "scripts": {
+        "build": "micropack"
+    },
+    "source": "./src/index.ts",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs"
+}

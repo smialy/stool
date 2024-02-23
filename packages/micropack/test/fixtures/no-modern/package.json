@@ -1,0 +1,9 @@
+{
+    "name": "no-modern",
+    "scripts": {
+        "build": "micropack --no-modern"
+    },
+    "source": "./src/index.ts",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs"
+}

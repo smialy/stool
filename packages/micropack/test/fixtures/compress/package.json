@@ -1,0 +1,9 @@
+{
+    "name": "compress",
+    "scripts": {
+        "build": "micropack --compress"
+    },
+    "source": "./src/index.ts",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs"
+}

@@ -9,7 +9,7 @@ import { collectDict, collectList, increaseVerbose } from './utils/cmd.mjs';
 
 program
     .description('Build bundle')
-    .option('-p, --print-config', 'Show current config', false)
+    .option('--show-config', 'Show current config', false)
     .option(
         '-c, --config-file <config>',
         'Add custom config file',
@@ -49,7 +49,7 @@ program
         'Files .css will be parsed as modules (default: null)',
         DEFAULT_OPTIONS.cssModule
     )
-    .option('--no-timestamp', 'Add timestamp to beging of file', true)
+    .option('--timestamp', 'Add timestamp to beging of file', false)
     .action(async (opts) => {
         try {
             await micropack(opts);

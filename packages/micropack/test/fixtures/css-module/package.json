@@ -1,0 +1,9 @@
+{
+    "name": "css-module",
+    "scripts": {
+        "build": "micropack --no-sourcemap"
+    },
+    "source": "./src/index.ts",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs"
+}
