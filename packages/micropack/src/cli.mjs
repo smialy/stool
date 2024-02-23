@@ -13,7 +13,7 @@ program
     .option(
         '-c, --config-file <config>',
         'Add custom config file',
-        DEFAULT_OPTIONS.configFile
+        DEFAULT_OPTIONS.configFile,
     )
     .option('-f, --format <format>', 'Build only in specified format (es, cjs)')
     .option('-w, --watch', 'Rebuild on change', DEFAULT_OPTIONS.watch)
@@ -28,30 +28,29 @@ program
     .option(
         '--dev',
         'Developer mode (use quick SWC compiler)',
-        DEFAULT_OPTIONS.dev
+        DEFAULT_OPTIONS.dev,
     )
     .option(
         '--no-modern',
         'Specify your target environment (modern or old)',
-        DEFAULT_OPTIONS.modern
+        DEFAULT_OPTIONS.modern,
     )
     .option('--no-sourcemap', 'Generate sourcemap')
     .option(
         '-v, --verbose',
         'verbosity that can be increased',
         increaseVerbose,
-        0
+        0,
     )
     .option('--jsx <name>', 'JSX Runtime')
     .option('--compress', 'Enable output compressing', DEFAULT_OPTIONS.compress)
     .option(
         '--css-module',
         'Files .css will be parsed as modules (default: null)',
-        DEFAULT_OPTIONS.cssModule
+        DEFAULT_OPTIONS.cssModule,
     )
     .option('--no-timestamp', 'Add timestamp to beging of file', true)
     .action(async (opts) => {
-        console.log(opts)
         try {
             await micropack(opts);
         } catch (e) {
@@ -70,7 +69,6 @@ program.on('--help', function () {
 
 export function run(argv) {
     setupExceptionHandler();
-    console.log(argv)
     program.parse(argv);
 }
 run(process.argv);

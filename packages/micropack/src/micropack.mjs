@@ -49,7 +49,7 @@ class Tasks {
     constructor(options) {
         this.options = options;
         this.tasks = options.entries.map(
-            ({ input, outputs }) => new RollupTask(options, input, outputs)
+            ({ input, outputs }) => new RollupTask(options, input, outputs),
         );
     }
     async build() {
@@ -189,7 +189,8 @@ function* findExportsEntries(exports) {
         if (input) {
             const outputs = names
                 .filter(
-                    (name) => exports[name] && typeof exports[name] === 'string'
+                    (name) =>
+                        exports[name] && typeof exports[name] === 'string',
                 )
                 .map((name) => exports[name]);
             if (outputs.length) {

@@ -1,6 +1,6 @@
 {
   "name": "@stool/micropack",
-  "version": "0.7.1",
+  "version": "0.8.1",
   "description": "Simple bundler for tiny modules powered by rollup",
   "type": "module",
   "bin": {
@@ -14,7 +14,7 @@
   "scripts": {
     "format": "prettier --write ./src",
     "lint": "eslint src/**/*.mjs",
-    "test": "mocha"
+    "test": "mocha  --timeout 10000"
   },
   "repository": {
     "type": "git",

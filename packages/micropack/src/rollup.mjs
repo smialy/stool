@@ -54,7 +54,7 @@ export class RollupTask {
                     return !include.some((name) => {
                         if (name.endsWith('/*')) {
                             return id.startsWith(
-                                name.substring(0, name.length - 2)
+                                name.substring(0, name.length - 2),
                             );
                         }
                         return name === id;
@@ -127,8 +127,8 @@ export class RollupTask {
                 format: format
                     ? format
                     : Path.extname(file) === '.mjs'
-                    ? 'es'
-                    : 'cjs',
+                      ? 'es'
+                      : 'cjs',
                 banner() {
                     if (cli) {
                         return '#!/usr/bin/env node\n';
@@ -177,7 +177,7 @@ export class RollupTask {
                         console.warn(e.error);
                     } else if (e.code === 'BUNDLE_END') {
                         const files = e.output.map((file) =>
-                            Path.relative(cwd, file)
+                            Path.relative(cwd, file),
                         );
                         listener('end', files);
                     }
