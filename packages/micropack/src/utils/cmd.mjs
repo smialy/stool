@@ -8,5 +8,7 @@ export const collectDict = (vals, acc) => ({
             return acc;
         }, {}),
 });
-export const collectList = (vals, acc) => [...acc, ...vals.split(',')];
+export const collectList = (vals, acc=[]) => {
+    return [...acc, ...vals.split(',')];
+}
 export const increaseVerbose = (_, acc) => (acc += 1);

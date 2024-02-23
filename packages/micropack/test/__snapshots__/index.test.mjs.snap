@@ -37,6 +37,7 @@ css-module
     index.mjs
   package.json
   src
+    declarations.d.ts
     index.ts
     main.css
     main.module.css

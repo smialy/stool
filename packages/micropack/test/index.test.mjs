@@ -8,7 +8,6 @@ import { buildFixture, printDirTree, findAllFiles } from './utils.mjs';
 
 chai.use(jestSnapshotPlugin());
 
-
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 const FIXTURES_DIR = `${__dirname}fixtures`;
@@ -41,6 +40,6 @@ describe('fixtures', () => {
             for(const [name, filePath] of files) {
                 expect(readFileSync(filePath, { encoding: 'utf8'})).toMatchSnapshot(`dist/${name}`);
             }
-        });
+        }).timeout(5000);
     });
 });

@@ -49,8 +49,9 @@ program
         'Files .css will be parsed as modules (default: null)',
         DEFAULT_OPTIONS.cssModule
     )
-    .option('--timestamp', 'Add timestamp to beging of file', false)
+    .option('--no-timestamp', 'Add timestamp to beging of file', true)
     .action(async (opts) => {
+        console.log(opts)
         try {
             await micropack(opts);
         } catch (e) {
@@ -69,7 +70,7 @@ program.on('--help', function () {
 
 export function run(argv) {
     setupExceptionHandler();
+    console.log(argv)
     program.parse(argv);
 }
-
 run(process.argv);

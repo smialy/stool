@@ -1,10 +1,19 @@
+import {readFileSync} from 'fs';
+import Path from 'node:path';
+import Url from 'node:url';
 import {execaSync} from 'execa';
 import dirTree from 'directory-tree';
 
 
+const __dirname = Url.fileURLToPath(new URL('.', import.meta.url));
+const mainScript = Path.resolve(__dirname, '../src/cli.mjs');
+
 export function buildFixture(path) {
+    const build = JSON.parse(readFileSync(Path.join(path, 'package.json')))['scripts']['build'];
+    const buildParams = build.split(' ').slice(1);
+    const params = [mainScript, ...buildParams, '--no-timestamp'];
     try {
-        const result = execaSync('npm', ['run', 'build'], {cwd: path});
+        const result = execaSync('node', params, {cwd: path});
         if (result.stderr) {
             return result.stderr;
         }
