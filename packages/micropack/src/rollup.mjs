@@ -7,8 +7,9 @@ import terser from '@rollup/plugin-terser';
 import image from '@rollup/plugin-image';
 import postcss from 'rollup-plugin-postcss';
 
-import { swcRollupPlugin } from './plugins/swc.mjs';
-import { tsRollupPlugin } from './plugins/ts.mjs';
+import svg from './plugins/svg.mjs';
+import swc from './plugins/swc.mjs';
+import ts from './plugins/ts.mjs';
 
 const isRelative = (path) => path.startsWith('./') || path.startsWith('../');
 
@@ -19,30 +20,15 @@ export class RollupTask {
         this.outputs = outputs;
     }
     prepareConfig() {
-        const {
-            options: {
-                modern,
-                format,
-                include,
-                paths,
-                sourcemap,
-                compress,
-                dev,
-                jsx,
-                timestamp,
-                pkg: { name },
-            },
-            input,
-            outputs,
-        } = this;
+        const options = this.options;
         const useTypescript =
-            Path.extname(input.file) === '.ts' ||
-            Path.extname(input.file) === '.tsx';
-        return outputs.map(({ cli, file }, i) => ({
+            Path.extname(this.input.file) === '.ts' ||
+            Path.extname(this.input.file) === '.tsx';
+        return this.outputs.map(({ cli, file }) => ({
             source: {
-                input: Path.resolve(this.options.cwd, input.file),
+                input: Path.resolve(options.cwd, this.input.file),
                 onwarn(warning) {
-                    console.log({ warning });
+                    console.log(warning);
                 },
                 external(id) {
                     if (id === 'tslib') {
@@ -51,10 +37,13 @@ export class RollupTask {
                     if (isRelative(id) || Path.isAbsolute(id)) {
                         return false;
                     }
-                    return !include.some((name) => {
-                        if (name.endsWith('/*')) {
+                    return !options.include.some((name) => {
+                        if (name.endsWith('*')) {
                             return id.startsWith(
-                                name.substring(0, name.length - 2),
+                                name.substring(
+                                    0,
+                                    name.length - 2,
+                                ),
                             );
                         }
                         return name === id;
@@ -64,13 +53,13 @@ export class RollupTask {
                     postcss({
                         inject: false,
                         extract: false,
-                        autoModules: true,
-                        modules: !!this.options.cssModule,
+                        modules: !!options.cssModule,
                         autoModules: true,
                         namedExports: (name) => {
                             return name.replace(/-/g, '_');
                         },
                     }),
+                    svg(),
                     image(),
                     nodeResolve({
                         mainFields: ['module', 'unpkg', 'main'],
@@ -92,20 +81,10 @@ export class RollupTask {
                     //     json: true,
                     // }),
 
-                    dev || !useTypescript
-                        ? swcRollupPlugin({
-                              jsx,
-                              sourcemap,
-                              useTypescript,
-                              modern,
-                          })
-                        : tsRollupPlugin({
-                              jsx,
-                              sourcemap,
-                              modern,
-                              id: i,
-                          }),
-                    (compress || file.includes('.min.')) &&
+                    options.dev || !useTypescript
+                        ? swc(options, useTypescript)
+                        : ts(options),
+                    (options.compress || file.includes('.min.')) &&
                         terser({
                             compress: {
                                 keep_classnames: true,
@@ -117,15 +96,15 @@ export class RollupTask {
                                 preserve_annotations: true,
                                 wrap_func_args: false,
                             },
-                            module: modern,
+                            module: options.modern,
                             keep_fnames: true,
-                            ecma: modern ? 2017 : 5,
+                            ecma: options.modern ? 2023 : 5,
                         }),
                 ].filter(Boolean),
             },
             output: {
-                format: format
-                    ? format
+                format: options.format
+                    ? options.format
                     : Path.extname(file) === '.mjs'
                       ? 'es'
                       : 'cjs',
@@ -133,26 +112,25 @@ export class RollupTask {
                     if (cli) {
                         return '#!/usr/bin/env node\n';
                     }
-                    if (timestamp) {
-                        return `// Generated: ${name} ${new Date().toISOString()}`;
+                    if (options.timestamp) {
+                        return `// Generated: ${options.pkg.name} ${new Date().toISOString()}`;
                     }
                     return '';
                 },
                 // name: options.name,
-                paths,
-                sourcemap,
+                paths: options.paths,
+                sourcemap: options.sourcemap,
                 // strict: options.strict === true,
-                file: Path.resolve(this.options.cwd, file),
+                file: Path.resolve(options.cwd, file),
             },
         }));
     }
     async build() {
-        const { cwd } = this.options;
         const jobs = this.prepareConfig().map(async ({ source, output }) => {
             let bundle = await rollup(source);
             await bundle.write(output);
             await bundle.close();
-            console.log(`    ${Path.relative(cwd, output.file)}`);
+            // console.log(`    ${Path.relative(cwd, output.file)}`);
         });
         await Promise.all(jobs);
     }

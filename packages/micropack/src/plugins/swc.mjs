@@ -1,36 +1,41 @@
 import { transform } from '@swc/core';
 
-export const swcRollupPlugin = ({ sourcemap, modern, useTypescript, jsx }) => ({
-    name: 'swc',
-    async transform(code) {
-        const syntax = useTypescript ? 'typescript' : 'ecmascript';
-        const config = {
-            jsc: {
-                parser: swcParserConfig[syntax],
-                transform: {
-                    legacyDecorator: true,
-                    decoratorMetadata: false,
-                    react: {
-                        runtime: 'automatic',
-                        importSource: jsx ? jsx : 'preact',
-                        // pragma: "h",
-                        // pragmaFrag: "Fragment",
-                        throwIfNamespace: true,
-                        development: false,
-                        useBuiltins: false,
+export default function swcRollupPlugin(
+    { sourcemap, modern, jsx },
+    useTypescript,
+) {
+    return {
+        name: 'swc',
+        async transform(code) {
+            const syntax = useTypescript ? 'typescript' : 'ecmascript';
+            const config = {
+                jsc: {
+                    parser: swcParserConfig[syntax],
+                    transform: {
+                        legacyDecorator: true,
+                        decoratorMetadata: false,
+                        react: {
+                            runtime: 'automatic',
+                            importSource: jsx ? jsx : 'preact',
+                            // pragma: "h",
+                            // pragmaFrag: "Fragment",
+                            throwIfNamespace: true,
+                            development: false,
+                            useBuiltins: false,
+                        },
                     },
+                    target: 'es2020',
+                    loose: true,
+                    keepClassNames: true,
                 },
-                target: 'es2020',
-                loose: true,
-                keepClassNames: true,
-            },
-            sourceMaps: sourcemap,
-            minify: false,
-        };
-        // config.filename = id;
-        return transform(code, config);
-    },
-});
+                sourceMaps: sourcemap,
+                minify: false,
+            };
+            // config.filename = id;
+            return transform(code, config);
+        },
+    };
+}
 
 const swcParserConfig = {
     typescript: {

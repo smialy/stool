@@ -1,12 +1,12 @@
 import { readdirSync, statSync, readFileSync } from 'fs';
 import url from 'node:url';
 import path from 'node:path';
-import chai, { expect } from 'chai';
+import { use, expect } from 'chai';
 import { jestSnapshotPlugin } from 'mocha-chai-jest-snapshot';
 
 import { buildFixture, printDirTree, findAllFiles } from './utils.mjs';
 
-chai.use(jestSnapshotPlugin());
+use(jestSnapshotPlugin());
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
