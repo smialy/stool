@@ -21,5 +21,5 @@ export function checkLevel(level: number | string): number {
 }
 
 export function isException(ex: any) {
-    return ex && ex.message && ex.stack;
+    return !!(ex && ex.message && ex.stack);
 }

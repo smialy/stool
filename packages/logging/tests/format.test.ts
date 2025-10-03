@@ -1,5 +1,5 @@
-import { assert } from 'chai';
-import { IRecord, Logger, BaseHandler, SimpleFormater } from '../src/index';
+import { assert, describe, it } from 'vitest'
+import { IRecord, Logger, BaseHandler, SimpleFormater } from '../src';
 
 describe('@stool/logging :: formater', () => {
     class TestHandler extends BaseHandler {

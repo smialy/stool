@@ -1,7 +1,8 @@
-import { assert } from 'chai';
+import { assert, describe, it } from 'vitest'
 
 import { Levels } from '../src/consts';
-import { LoggerFactory, Logger, BaseHandler } from '../src/index';
+import { LoggerFactory, Logger } from '../src/logger';
+import { BaseHandler } from '../src/handlers';
 
 class TestHandler extends BaseHandler {
     private _body: Array<any>;

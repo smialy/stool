@@ -1,6 +1,7 @@
-import { assert } from 'chai';
+import { assert, describe, it } from 'vitest'
 
-import { IRecord, Filter, Filterer } from '../src/index';
+import { Filter, Filterer } from '../src/filter';
+import { IRecord } from '../src/types';
 
 describe('@stool/logging :: Filters', () => {
     function makeRecord(name: string): IRecord {
