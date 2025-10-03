@@ -1,19 +1,20 @@
-import { Observable, Observer, Subscription } from "zen-observable-ts";
-export { Observable, Observer, Subscription };
+import { Observable } from "zen-observable-ts";
+
+export { Observable };
 
 export class Subject<T> extends Observable<T> {
 
-  private _observers: Set<Observer<T>> = new Set();
+  private _observers: Set<any> = new Set();
   private _isStopped = false;
 
   constructor() {
-    super((observed: Observer<T>) => {
+    super((observed) => {
       this._observers.add(observed);
       return () => this._observers.delete(observed)
     });
   }
 
-  next(value: T) {
+  next(value: any) {
     if (this._isStopped) {
       throw Error('Subject already completed');
     }

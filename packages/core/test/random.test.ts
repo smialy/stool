@@ -1,4 +1,4 @@
-import { assert } from 'chai';
+import { assert, describe, it } from 'vitest'
 import { sid, randomInt, choice, uidFactory } from '../src/random';
 
 describe('core/random', () => {

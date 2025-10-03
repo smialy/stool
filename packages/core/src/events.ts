@@ -6,9 +6,9 @@ interface ListenersHandler<T> {
 interface Listener<T> {
     (event: T): void;
 }
-export class Events<T> implements IDisposable {
+export class EventEmitter<T> implements IDisposable {
 
-    private _handlers: ListenersHandler<T> | undefined;
+    private _events: ListenersHandler<T> | undefined;
     private _listeners: Set<Listener<T>> | undefined;
     private _disposed: boolean = false;
 
@@ -27,8 +27,8 @@ export class Events<T> implements IDisposable {
             } 
         }
     }
-    handlers(): ListenersHandler<T> {
-        this._handlers ??= (callback: (event: T) => void, bind?: any) => {
+    get events(): ListenersHandler<T> {
+        this._events ??= (callback: (event: T) => void, bind?: any) => {
             if (this._disposed) {
                 return () => {};
             }
@@ -41,7 +41,7 @@ export class Events<T> implements IDisposable {
             this._listeners.add(callback)
             return () => this._listeners?.delete(callback);
         };
-        return this._handlers;
+        return this._events;
     }
     size() {
         return this._listeners?.size || 0;

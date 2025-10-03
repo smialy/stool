@@ -61,7 +61,7 @@ export function sid(len = 32): string {
  * Genereate sequense hash
  *
  * @example
- *      const uid = createUID()
+ *      const uid = uidFactory()
  *      > uid()
  *      '2c'
  *

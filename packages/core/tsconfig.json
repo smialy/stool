@@ -1,26 +1,14 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "ESNext",
-    "noImplicitAny": false,
-    "strict": true,
-    "declaration": true,
-    "declarationDir": "./types"
+    "module": "ES2022",
+    "target": "ES2022",
+    "moduleResolution": "Node"
   },
-  "files": [
-    "src/events.ts",
-    "src/observer.ts",
-    "src/function.ts",
-    "src/random.ts",
-    "src/string.ts",
-    "src/types.ts",
-    "src/index.ts"
-  ],
+"include": ["src/*.ts"],
+"exclude": [],
   "ts-node": {
-    "transpileOnly": true,
-    "moduleTypes": {
-      "src/*.ts": "cjs",
-      "tests/*.ts": "cjs"
-    }
+    "esm": true,
+    "swt": true,
+    "experimentalSpecifierResolution": "node"
   }
 }

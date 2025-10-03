@@ -1,4 +1,4 @@
-import { assert } from 'chai';
+import { assert, describe, it } from 'vitest'
 import { Types } from '../src/types';
 
 describe('core/types', () => {

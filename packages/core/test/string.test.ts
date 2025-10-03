@@ -1,4 +1,4 @@
-import { assert } from 'chai';
+import { assert, describe, it } from 'vitest'
 import { camelCase, format, hyphenate, clsx } from '../src/string';
 
 describe('core/string', () => {

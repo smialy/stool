@@ -1,4 +1,4 @@
-import { assert } from 'chai';
+import { assert, describe, it } from 'vitest'
 import { Observer, Subject, Subscription} from '../src/observer';
 
 describe('core/Subject()', () => {
