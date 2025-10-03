@@ -7,7 +7,7 @@ export default defineConfig({
     },
     browser: {
       provider: 'playwright', // or 'webdriverio'
-      enabled: true,
+      enabled: false,
       // at least one instance is required
       instances: [
         { browser: 'chromium' },
