@@ -2,24 +2,24 @@ import { Levels } from './consts';
 
 const NAMES = Object.keys(Levels);
 
-export function levelToMask(level: number) {
-    return level === Levels.NOTSET ? Levels.NOTSET : level * 2 - 1;
-}
-
 export function checkLevel(level: number | string): number {
-    const type = typeof level;
-    if (type === 'number') {
-        return level as number;
-    } else if (type === 'string') {
-        level = (level as string).toUpperCase();
-        if (NAMES.includes('' + level)) {
-            return Levels[level] as number;
+    if (typeof level === 'number') {
+        return level;
+    }
+
+    if (typeof level === 'string') {
+        const normalizedLevel = level.toUpperCase();
+        if (NAMES.includes(normalizedLevel)) {
+            return Levels[normalizedLevel] as number;
         }
     }
-    const msg = `Level is not number or valid string: "${level}" [${NAMES}]`;
-    throw TypeError(msg);
+
+    throw new TypeError(`Level is not number or valid string: "${level}" [${NAMES.join(', ')}]`);
 }
 
-export function isException(ex: any) {
-    return !!(ex && ex.message && ex.stack);
+export function isException(ex: unknown): ex is Error {
+    return (
+        ex instanceof Error ||
+        (typeof ex === 'object' && ex !== null && 'message' in ex && 'stack' in ex)
+    );
 }
