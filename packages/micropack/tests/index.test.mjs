@@ -1,12 +1,10 @@
 import { readdirSync, statSync, readFileSync } from 'fs';
 import url from 'node:url';
 import path from 'node:path';
-import { use, expect } from 'chai';
-import { jestSnapshotPlugin } from 'mocha-chai-jest-snapshot';
+
+import { describe, expect, it } from 'vitest'
 
 import { buildFixture, printDirTree, findAllFiles } from './utils.mjs';
-
-use(jestSnapshotPlugin());
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
@@ -40,6 +38,6 @@ describe('fixtures', () => {
             for(const [name, filePath] of files) {
                 expect(readFileSync(filePath, { encoding: 'utf8'})).toMatchSnapshot(`dist/${name}`);
             }
-        }).timeout(5000);
+        });
     });
 });

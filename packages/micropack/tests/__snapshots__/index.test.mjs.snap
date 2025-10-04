@@ -1,0 +1,206 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`fixtures > build fixtures/compress > dist/index.js 1`] = `
+"exports.foobar=function foobar(){return"foobar"};
+//# sourceMappingURL=index.js.map
+"
+`;
+
+exports[`fixtures > build fixtures/compress > dist/index.mjs 1`] = `
+"function foobar(){return"foobar"}export{foobar};
+//# sourceMappingURL=index.mjs.map
+"
+`;
+
+exports[`fixtures > build fixtures/compress 1`] = `
+"Tree:
+compress
+  dist
+    index.js
+    index.js.map
+    index.mjs
+    index.mjs.map
+  package.json
+  src
+    foo.ts
+    index.ts
+
+Output:
+"
+`;
+
+exports[`fixtures > build fixtures/css-module > dist/index.js 1`] = `
+"'use strict';
+
+var css_248z = ".foo {\\n    background: #f3f3f3;\\n}\\n";
+
+var scoped = {"foo":"main-module_foo__alNSp"};
+
+var index = function () {
+    var el1 = document.createElement('div');
+    el1.innerHTML = css_248z;
+    var el2 = document.createElement('div');
+    el2.className = scoped.foo;
+};
+
+exports.index = index;
+"
+`;
+
+exports[`fixtures > build fixtures/css-module > dist/index.mjs 1`] = `
+"var css_248z = ".foo {\\n    background: #f3f3f3;\\n}\\n";
+
+var scoped = {"foo":"main-module_foo__alNSp"};
+
+var index = function () {
+    var el1 = document.createElement('div');
+    el1.innerHTML = css_248z;
+    var el2 = document.createElement('div');
+    el2.className = scoped.foo;
+};
+
+export { index };
+"
+`;
+
+exports[`fixtures > build fixtures/css-module 1`] = `
+"Tree:
+css-module
+  dist
+    index.js
+    index.mjs
+  package.json
+  src
+    declarations.d.ts
+    index.ts
+    main.css
+    main.module.css
+
+Output:
+"
+`;
+
+exports[`fixtures > build fixtures/no-modern > dist/index.js 1`] = `
+"'use strict';
+
+var foo = function () { return 'foo'; };
+
+function foobar() {
+    return foo() + 'bar';
+}
+
+exports.foobar = foobar;
+//# sourceMappingURL=index.js.map
+"
+`;
+
+exports[`fixtures > build fixtures/no-modern > dist/index.mjs 1`] = `
+"var foo = function () { return 'foo'; };
+
+function foobar() {
+    return foo() + 'bar';
+}
+
+export { foobar };
+//# sourceMappingURL=index.mjs.map
+"
+`;
+
+exports[`fixtures > build fixtures/no-modern 1`] = `
+"Tree:
+no-modern
+  dist
+    index.js
+    index.js.map
+    index.mjs
+    index.mjs.map
+  package.json
+  src
+    foo.ts
+    index.ts
+
+Output:
+"
+`;
+
+exports[`fixtures > build fixtures/no-sourcemap > dist/index.js 1`] = `
+"'use strict';
+
+var foo = function () { return 'foo'; };
+
+function foobar() {
+    return foo() + 'bar';
+}
+
+exports.foobar = foobar;
+"
+`;
+
+exports[`fixtures > build fixtures/no-sourcemap > dist/index.mjs 1`] = `
+"var foo = function () { return 'foo'; };
+
+function foobar() {
+    return foo() + 'bar';
+}
+
+export { foobar };
+"
+`;
+
+exports[`fixtures > build fixtures/no-sourcemap 1`] = `
+"Tree:
+no-sourcemap
+  dist
+    index.js
+    index.mjs
+  package.json
+  src
+    foo.ts
+    index.ts
+
+Output:
+"
+`;
+
+exports[`fixtures > build fixtures/simple > dist/index.js 1`] = `
+"'use strict';
+
+var foo = function () { return 'foo'; };
+
+function foobar() {
+    return foo() + 'bar';
+}
+
+exports.foobar = foobar;
+//# sourceMappingURL=index.js.map
+"
+`;
+
+exports[`fixtures > build fixtures/simple > dist/index.mjs 1`] = `
+"var foo = function () { return 'foo'; };
+
+function foobar() {
+    return foo() + 'bar';
+}
+
+export { foobar };
+//# sourceMappingURL=index.mjs.map
+"
+`;
+
+exports[`fixtures > build fixtures/simple 1`] = `
+"Tree:
+simple
+  dist
+    index.js
+    index.js.map
+    index.mjs
+    index.mjs.map
+  package.json
+  src
+    foo.ts
+    index.ts
+
+Output:
+"
+`;
