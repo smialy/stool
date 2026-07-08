@@ -1,0 +1,16 @@
+{
+  "name": "@stool/tus",
+  "version": "1.0.0",
+  "description": "TUS Client",
+  "type":"module",
+  "source":"./src/index.ts",
+  "module":"./dist/index.mjs",
+  "types": "./dist/types/index.d.ts",
+  "scripts": {
+    "test": "vitest",
+    "test:run": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "^0.34.0"
+  }
+}

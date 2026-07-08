@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TUS Client Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .upload-area {
+            border: 2px dashed #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            text-align: center;
+        }
+        .upload-area.dragover {
+            border-color: #007cba;
+            background-color: #f0f8ff;
+        }
+        button {
+            background-color: #007cba;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .progress-container {
+            display: none;
+        }
+        .progress-bar {
+            height: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: #4caf50;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        .status {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .error {
+            color: #d32f2f;
+        }
+        .success {
+            color: #388e3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TUS Client Test</h1>
+        
+        <div class="upload-area" id="dropArea">
+            <p>Drag &amp; drop a file here or click to select</p>
+            <input type="file" id="fileInput" style="display: none;">
+            <button id="selectFileBtn">Select File</button>
+        </div>
+        
+        <div>
+            <label for="endpoint">TUS Endpoint:</label>
+            <input type="text" id="endpoint" placeholder="https://tusd.tusdemo.net/files/" value="https://tusd.tusdemo.net/files/" style="width: 100%; padding: 8px; margin-top: 5px;">
+        </div>
+        
+        <button id="uploadBtn" disabled>Upload File</button>
+        
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="status" id="status"></div>
+        </div>
+    </div>
+
+    <!-- Include the compiled TUS client -->
+    <script src="dist/index.js"></script>
+    
+    <script>
+        // DOM elements
+        const dropArea = document.getElementById('dropArea');
+        const fileInput = document.getElementById('fileInput');
+        const selectFileBtn = document.getElementById('selectFileBtn');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const endpointInput = document.getElementById('endpoint');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressFill = document.getElementById('progressFill');
+        const statusEl = document.getElementById('status');
+
+        // State variables
+        let selectedFile = null;
+
+        // Event listeners
+        selectFileBtn.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', handleFileSelect);
+        uploadBtn.addEventListener('click', startUpload);
+        
+        // Drag and drop events
+        dropArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropArea.classList.add('dragover');
+        });
+        
+        dropArea.addEventListener('dragleave', () => {
+            dropArea.classList.remove('dragover');
+        });
+        
+        dropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropArea.classList.remove('dragover');
+            if (e.dataTransfer.files.length) {
+                handleFiles(e.dataTransfer.files);
+            }
+        });
+
+        // File selection handler
+        function handleFileSelect(e) {
+            if (e.target.files.length) {
+                handleFiles(e.target.files);
+            }
+        }
+
+        // Process selected files
+        function handleFiles(files) {
+            selectedFile = files[0];
+            selectFileBtn.textContent = selectedFile.name;
+            uploadBtn.disabled = false;
+        }
+
+        // Start file upload
+        async function startUpload() {
+            if (!selectedFile) return;
+            
+            const endpoint = endpointInput.value;
+            if (!endpoint) {
+                showError('Please enter a TUS endpoint');
+                return;
+            }
+            
+            // Reset UI
+            progressContainer.style.display = 'block';
+            progressFill.style.width = '0%';
+            statusEl.textContent = 'Starting upload...';
+            statusEl.className = 'status';
+            uploadBtn.disabled = true;
+            
+            try {
+                // Create TUS client
+                const client = new createTusClient(endpoint, {
+                    onProgress: (loaded, total) => {
+                        const percentage = (loaded / total * 100).toFixed(2);
+                        progressFill.style.width = `${percentage}%`;
+                        statusEl.textContent = `Uploading... ${percentage}%`;
+                    },
+                    onSuccess: (uploadUrl) => {
+                        statusEl.textContent = `Upload successful! URL: ${uploadUrl}`;
+                        statusEl.className = 'status success';
+                    },
+                    onError: (error) => {
+                        showError(`Upload failed: ${error.message}`);
+                    }
+                });
+                
+                // Start upload
+                await client.upload(selectedFile);
+            } catch (error) {
+                showError(`Upload failed: ${error.message}`);
+            } finally {
+                uploadBtn.disabled = false;
+            }
+        }
+
+        // Show error message
+        function showError(message) {
+            statusEl.textContent = message;
+            statusEl.className = 'status error';
+        }
+    </script>
+</body>
+</html>
