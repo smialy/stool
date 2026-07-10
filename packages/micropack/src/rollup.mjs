@@ -83,7 +83,7 @@ export class RollupTask {
 
                     options.dev || !useTypescript
                         ? swc(options, useTypescript)
-                        : ts(options),
+                        : ts(options, Path.dirname(Path.resolve(options.cwd, file))),
                     (options.compress || file.includes('.min.')) &&
                         terser({
                             compress: {

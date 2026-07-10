@@ -1,5 +1,6 @@
 import { readFileSync } from 'fs';
 import { extname } from 'node:path';
+
 import { createFilter } from '@rollup/pluginutils';
 
 export default function svg(options = {}) {
