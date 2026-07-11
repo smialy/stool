@@ -11,7 +11,7 @@
   "source": "src/index.ts",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
-  "types": "dist/dist/index.d.ts",
+  "types": "dist/types/index.d.ts",
   "type": "module",
   "exports": {
     ".": {
@@ -31,7 +31,7 @@
     "version": "npm run build"
   },
   "devDependencies": {
-    "@stool/micropack": "0.8.2",
+    "@stool/micropack": "0.8.4",
     "@vitest/browser": "^3.2.4",
     "@vitest/coverage-v8": "^3.2.4",
     "@vitest/ui": "^3.2.4",

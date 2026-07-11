@@ -1,31 +1,23 @@
-test-ci:
-	make test-ci-install
-	make test-ci-run
+DEFAULT_TARGET := help
+.PHONY: help
+help: ## Show this help info
+	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make <target>\n\nTargets:\n"} \
+		/^[a-zA-Z_-]+:.*##/ { printf "  %-18s %s\n", $$1, $$2 } \
+		/^##@/ { printf "\n%s\n", substr($$0, 4) }' $(MAKEFILE_LIST)
 
-test-ci-install:
-	npm install --no-save lerna@3.20.2 microbundle@0.12.0-next.7 qunit@2.9.3 ts-node@8.6.2 typescript@3.7.5 tslint@6.0.0 eslint@5.0.0 @types/qunit@2.9.0
+bootstrap: ## Install dependencies
+	npm install
 
-test-ci-run:
-	./node_modules/.bin/lerna run test
-	./node_modules/.bin/lerna run lint
+build: ## Build all workspaces
+	npm run build -ws --if-present
 
+clean: ## Remove node_modules and build artifacts
+	rm -rf node_modules
+	npm run clean -ws --if-present || true
+	find packages -type d -name dist -prune -exec rm -rf {} +
 
-bootstrap:
-	npm install --no-package-lock
-	./node_modules/.bin/lerna bootstrap
+test: ## Run tests in all workspaces
+	npm run test -ws --if-present
 
-build:
-	./node_modules/.bin/lerna run build
-
-clean:
-	./node_modules/.bin/lerna clean --yes
-	./node_modules/.bin/lerna exec -- rm -rf dist
-
-test:
-	./node_modules/.bin/lerna run test
-
-karma:
-	./node_modules/.bin/lerna run karma --concurrency 1
-
-lint:
-	./node_modules/.bin/lerna run lint
+lint: ## Lint all workspaces
+	npm run lint -ws --if-present
