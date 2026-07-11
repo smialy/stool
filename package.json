@@ -1,7 +1,7 @@
 {
   "name": "stool",
   "license": "MIT",
-  "devDependencies": {
-    "lerna": "^6.5.1"
-  }
+  "workspaces": [
+    "./packages/*"
+  ]
 }
