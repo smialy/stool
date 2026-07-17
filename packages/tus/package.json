@@ -7,10 +7,11 @@
   "module":"./dist/index.mjs",
   "types": "./dist/types/index.d.ts",
   "scripts": {
-    "test": "vitest",
-    "test:run": "vitest run"
+    "test": "vitest run --coverage",
+    "test:watch": "vitest"
   },
   "devDependencies": {
-    "vitest": "^0.34.0"
+    "vitest": "^4.1.10",
+    "@vitest/coverage-v8": "^4.1.10"
   }
 }
