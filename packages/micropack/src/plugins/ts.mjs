@@ -1,32 +1,21 @@
-import { resolve, dirname } from 'path';
-// import typescript2 from 'rollup-plugin-typescript2';
-import typescript from '@rollup/plugin-typescript';
+import { resolve } from 'path';
 
-function getDeclarationDir(cwd, pkg) {
-    if (pkg.types || pkg.typings) {
-        const typeFile = pkg.types || pkg.typings;
-        return dirname(resolve(cwd, typeFile));
-    }
-    return null;
-}
-export default function tsRollupPlugin({ cwd, pkg, sourcemap, jsx }, outDir) {
-    const declarationDir = getDeclarationDir(cwd, pkg);
-    return typescript({
-            compilerOptions: {
-                allowJs: true,
-                // outDir must match the Rollup output dir, otherwise
-                // @rollup/plugin-typescript auto-creates a temp outDir
-                // outside the output dir and fails validatePaths.
-                ...(outDir && { outDir }),
-                sourceMap: sourcemap,
-                declaration: !!declarationDir,
-                ...(declarationDir && {
-                    declarationDir,
-                }),
-                jsx: 'react-jsx',
-                jsxImportSource: jsx ? jsx : 'preact',
-                // jsxFactory: jsx,
-                // jsxFragmentFactory: options.jsxFragment,
-            },
+import tsgoPlugin from './tsgo.mjs';
+
+/**
+ * Build a TypeScript rollup plugin backed by the native `tsgo` compiler
+ * (TypeScript >= 7). Handles TS, JS, and JSX for both dev and prod builds.
+ *
+ * @param {object} options  micropack options (cwd, pkg, jsx).
+ * @param {string} entry    Absolute path to the entry input file.
+ */
+export default function tsRollupPlugin({ cwd, pkg, jsx }, entry) {
+    const tsconfig = resolve(cwd, 'tsconfig.json');
+    return tsgoPlugin({
+        cwd,
+        pkg,
+        jsx,
+        tsconfig,
+        entry,
     });
 }

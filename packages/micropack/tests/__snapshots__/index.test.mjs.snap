@@ -29,6 +29,50 @@ Output:
 "
 `;
 
+exports[`fixtures > build fixtures/config-file > dist/index.js 1`] = `
+"'use strict';
+
+const foo = () => 'foo';
+
+function foobar() {
+    return foo() + 'bar';
+}
+
+exports.foobar = foobar;
+//# sourceMappingURL=index.js.map
+"
+`;
+
+exports[`fixtures > build fixtures/config-file > dist/index.mjs 1`] = `
+"const foo = () => 'foo';
+
+function foobar() {
+    return foo() + 'bar';
+}
+
+export { foobar };
+//# sourceMappingURL=index.mjs.map
+"
+`;
+
+exports[`fixtures > build fixtures/config-file 1`] = `
+"Tree:
+config-file
+  custom.config.json
+  dist
+    index.js
+    index.js.map
+    index.mjs
+    index.mjs.map
+  package.json
+  src
+    foo.ts
+    index.ts
+
+Output:
+"
+`;
+
 exports[`fixtures > build fixtures/css-module > dist/index.js 1`] = `
 "'use strict';
 
@@ -36,10 +80,10 @@ var css_248z = ".foo {\\n    background: #f3f3f3;\\n}\\n";
 
 var scoped = {"foo":"main-module_foo__alNSp"};
 
-var index = function () {
-    var el1 = document.createElement('div');
+const index = () => {
+    const el1 = document.createElement('div');
     el1.innerHTML = css_248z;
-    var el2 = document.createElement('div');
+    const el2 = document.createElement('div');
     el2.className = scoped.foo;
 };
 
@@ -52,10 +96,10 @@ exports[`fixtures > build fixtures/css-module > dist/index.mjs 1`] = `
 
 var scoped = {"foo":"main-module_foo__alNSp"};
 
-var index = function () {
-    var el1 = document.createElement('div');
+const index = () => {
+    const el1 = document.createElement('div');
     el1.innerHTML = css_248z;
-    var el2 = document.createElement('div');
+    const el2 = document.createElement('div');
     el2.className = scoped.foo;
 };
 
@@ -83,7 +127,7 @@ Output:
 exports[`fixtures > build fixtures/no-modern > dist/index.js 1`] = `
 "'use strict';
 
-var foo = function () { return 'foo'; };
+const foo = () => 'foo';
 
 function foobar() {
     return foo() + 'bar';
@@ -95,7 +139,7 @@ exports.foobar = foobar;
 `;
 
 exports[`fixtures > build fixtures/no-modern > dist/index.mjs 1`] = `
-"var foo = function () { return 'foo'; };
+"const foo = () => 'foo';
 
 function foobar() {
     return foo() + 'bar';
@@ -126,7 +170,7 @@ Output:
 exports[`fixtures > build fixtures/no-sourcemap > dist/index.js 1`] = `
 "'use strict';
 
-var foo = function () { return 'foo'; };
+const foo = () => 'foo';
 
 function foobar() {
     return foo() + 'bar';
@@ -137,7 +181,7 @@ exports.foobar = foobar;
 `;
 
 exports[`fixtures > build fixtures/no-sourcemap > dist/index.mjs 1`] = `
-"var foo = function () { return 'foo'; };
+"const foo = () => 'foo';
 
 function foobar() {
     return foo() + 'bar';
@@ -162,10 +206,64 @@ Output:
 "
 `;
 
+exports[`fixtures > build fixtures/pkg-exports > dist/index.js 1`] = `
+"'use strict';
+
+const foo = () => 'foo';
+
+function foobar() {
+    return foo() + 'bar';
+}
+
+exports.foobar = foobar;
+//# sourceMappingURL=index.js.map
+"
+`;
+
+exports[`fixtures > build fixtures/pkg-exports > dist/index.mjs 1`] = `
+"const foo = () => 'foo';
+
+function foobar() {
+    return foo() + 'bar';
+}
+
+export { foobar };
+//# sourceMappingURL=index.mjs.map
+"
+`;
+
+exports[`fixtures > build fixtures/pkg-exports > dist/sub.mjs 1`] = `
+"const sub = 'sub-value';
+
+export { sub };
+//# sourceMappingURL=sub.mjs.map
+"
+`;
+
+exports[`fixtures > build fixtures/pkg-exports 1`] = `
+"Tree:
+pkg-exports
+  dist
+    index.js
+    index.js.map
+    index.mjs
+    index.mjs.map
+    sub.mjs
+    sub.mjs.map
+  package.json
+  src
+    foo.ts
+    index.ts
+    sub.ts
+
+Output:
+"
+`;
+
 exports[`fixtures > build fixtures/simple > dist/index.js 1`] = `
 "'use strict';
 
-var foo = function () { return 'foo'; };
+const foo = () => 'foo';
 
 function foobar() {
     return foo() + 'bar';
@@ -177,7 +275,7 @@ exports.foobar = foobar;
 `;
 
 exports[`fixtures > build fixtures/simple > dist/index.mjs 1`] = `
-"var foo = function () { return 'foo'; };
+"const foo = () => 'foo';
 
 function foobar() {
     return foo() + 'bar';

@@ -1,12 +1,9 @@
 function logError(error) {
-    if (error && error.stack) {
-        error = error.stack;
-    }
-    let message = `\n${error} \n\nNode.js ${process.version}\n`;
-    console.log(message);
+    const detail = error?.stack ?? error;
+    console.log(`\n${detail}\n\nNode.js ${process.version}\n`);
 }
 
 export function setupExceptionHandler() {
     process.on('uncaughtException', logError);
-    process.on('unhandledRejection', logError); // catch all promisess
+    process.on('unhandledRejection', logError); // catch all promises
 }

@@ -1,6 +1,6 @@
 {
   "name": "@stool/micropack",
-  "version": "0.8.4",
+  "version": "1.0.0",
   "description": "Simple bundler for tiny modules powered by rollup",
   "type": "module",
   "bin": {
@@ -30,15 +30,12 @@
     "@rollup/plugin-json": "6.1.0",
     "@rollup/plugin-node-resolve": "16.0.3",
     "@rollup/plugin-terser": "1.0.0",
-    "@rollup/plugin-typescript": "^12.3.0",
     "@rollup/pluginutils": "^4.2.1",
-    "@swc/core": "1.15.43",
     "commander": "15.0.0",
     "rollup": "4.62.2",
     "rollup-plugin-postcss": "4.0.2",
-    "rollup-plugin-typescript2": "^0.37.0",
     "tslib": "2.8.1",
-    "typescript": "5.9.3"
+    "typescript": "^7.0.2"
   },
   "files": [
     "src/**/*.*",

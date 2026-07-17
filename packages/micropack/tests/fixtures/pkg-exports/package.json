@@ -1,0 +1,17 @@
+{
+    "name": "pkg-exports",
+    "scripts": {
+        "build": "micropack"
+    },
+    "exports": {
+        ".": {
+            "source": "./src/index.ts",
+            "import": "./dist/index.mjs",
+            "main": "./dist/index.js"
+        },
+        "./sub": {
+            "source": "./src/sub.ts",
+            "import": "./dist/sub.mjs"
+        }
+    }
+}

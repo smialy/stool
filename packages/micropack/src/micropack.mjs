@@ -35,7 +35,7 @@ export default async function micropack({
     }
     if (!options.entries?.length) {
         console.log('Nothing to build.');
-        return;
+        return 0;
     }
     const tasks = new Tasks(options);
 
@@ -118,7 +118,7 @@ async function readConfigFile(cwd, configFile) {
     return {};
 }
 
-function validateConfig(conf) {
+export function validateConfig(conf) {
     const config = {
         include: [],
         global: {},
@@ -159,14 +159,14 @@ function validateConfig(conf) {
 
     return { ...config, entries };
 }
-function findEntries({ entries }, pkg) {
+export function findEntries({ entries }, pkg) {
     if (entries) {
         return { entries, type: 'config.file' };
     }
     return findPackageEntries(pkg);
 }
 
-function findPackageEntries(pkg) {
+export function findPackageEntries(pkg) {
     let entries = checkExportEntries(pkg);
     if (entries.length) {
         return { entries, type: 'pkg.exports' };
@@ -182,73 +182,37 @@ function findPackageEntries(pkg) {
     return { entries: [], type: 'none' };
 }
 
-function* findExportsEntries(exports) {
+export function* findExportsEntries(exports) {
+    if (typeof exports === 'string') return;
+    const { source: input } = exports;
+    if (!input) return;
     const names = ['browser', 'import', 'module', 'main', 'default'];
-    if (typeof exports !== 'string') {
-        const { source: input } = exports;
-        if (input) {
-            const outputs = names
+    const outputs = [
+        ...new Set(
+            names
                 .filter(
                     (name) =>
                         exports[name] && typeof exports[name] === 'string',
                 )
-                .map((name) => exports[name]);
-            if (outputs.length) {
-                yield {
-                    input,
-                    outputs: [...new Set(outputs)],
-                };
-            }
-        }
+                .map((name) => exports[name]),
+        ),
+    ];
+    if (outputs.length) {
+        yield { input, outputs };
     }
 }
 
-function checkExportEntries(pkg) {
-    const { exports } = pkg;
-    const entries = [];
-    if (exports) {
-        for (const values of Object.values(exports)) {
-            for (const entry of [...findExportsEntries(values)]) {
-                entries.push(entry);
-            }
-        }
-    }
-    return entries;
+export function checkExportEntries(pkg) {
+    if (!pkg.exports) return [];
+    return Object.values(pkg.exports).flatMap((values) => [
+        ...findExportsEntries(values),
+    ]);
 }
-function checkGlobalEntries(pkg) {
+export function checkGlobalEntries(pkg) {
     const { source: file } = pkg;
-    if (file) {
-        const names = ['main', 'module', 'unpkg'];
-        const outputs = names.reduce((acc, name) => {
-            if (pkg[name]) {
-                const file = pkg[name];
-                acc.push({
-                    file,
-                    cli: false,
-                });
-            }
-            return acc;
-        }, []);
-        return [
-            {
-                input: {
-                    file,
-                },
-                outputs,
-            },
-        ];
-    }
-    return [];
+    if (!file) return [];
+    const outputs = ['main', 'module', 'unpkg']
+        .filter((name) => pkg[name])
+        .map((name) => ({ file: pkg[name], cli: false }));
+    return [{ input: { file }, outputs }];
 }
-
-//"@modular-css/rollup": "26.0.0",
-// css({
-//     json: true,
-//     meta: true,
-//     namedExports: true,
-//     styleExport: true,
-//     dev: options.dev,
-//     verbose: options.dev,
-//     empties: true,
-//     // namer: shornames(),
-// }),

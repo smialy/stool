@@ -25,11 +25,7 @@ program
     .option('-p, --paths <paths>', 'List of module to replace')
     .option('-d, --define <vars>', 'Inline variables.', collectDict)
     .option('--cwd <cwd>', 'Use custom working directory')
-    .option(
-        '--dev',
-        'Developer mode (use quick SWC compiler)',
-        DEFAULT_OPTIONS.dev,
-    )
+    .option('--dev', 'Developer mode (faster rebuilds)', DEFAULT_OPTIONS.dev)
     .option(
         '--no-modern',
         'Specify your target environment (modern or old)',
@@ -49,7 +45,7 @@ program
         'Files .css will be parsed as modules (default: null)',
         DEFAULT_OPTIONS.cssModule,
     )
-    .option('--no-timestamp', 'Add timestamp to beging of file', true)
+    .option('--no-timestamp', 'Add timestamp to beginning of file', true)
     .action(async (opts) => {
         try {
             await micropack(opts);
@@ -58,7 +54,7 @@ program
         }
     });
 
-program.on('--help', function () {
+program.on('--help', () => {
     console.log(`
         Basic Examples:
 

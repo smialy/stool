@@ -1,0 +1,8 @@
+{
+    "entries": [
+        {
+            "input": "./src/index.ts",
+            "outputs": ["./dist/index.mjs", "./dist/index.js"]
+        }
+    ]
+}

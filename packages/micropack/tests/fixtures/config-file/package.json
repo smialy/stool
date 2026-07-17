@@ -1,0 +1,6 @@
+{
+    "name": "config-file",
+    "scripts": {
+        "build": "micropack -c custom.config.json"
+    }
+}

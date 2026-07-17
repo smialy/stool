@@ -9,8 +9,10 @@ export default function svg(options = {}) {
         name: 'svg-import',
         load: (id) => {
             if (!filter(id) || extname(id) !== '.svg') return null;
-            const source = readFileSync(id, 'utf-8').trim().replace(/[\r\n]+/gm, '');
+            const source = readFileSync(id, 'utf-8')
+                .trim()
+                .replace(/[\r\n]+/gm, '');
             return `export default '${source}';`;
         },
     };
-};
+}

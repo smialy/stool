@@ -49,7 +49,7 @@ export function printDirTree(path) {
 function printTree(nodes, indentLevel=0) {
     const indent = '  '.repeat(indentLevel);
     return sortTreeEntries(nodes)
-        .filter(node => node.name[0] !== '.')
+        .filter(node => node.name[0] !== '.' && node.name !== 'node_modules')
         .map(node => {
             const isDir = node.type === 'directory';
             return `${indent}${node.name}\n${

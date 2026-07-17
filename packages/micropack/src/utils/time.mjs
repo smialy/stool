@@ -1,13 +1,10 @@
 export function elapsed() {
-    const start = new Date().getTime();
+    const start = Date.now();
     return () => {
-        const end = new Date().getTime();
-        let time = end - start;
-        let sufix = 'ms';
-        if (time >= 1000) {
-            time = time / 1000;
-            sufix = 'sec';
+        const time = Date.now() - start;
+        if (time < 1000) {
+            return `${time}ms`;
         }
-        return `${time}${sufix}`;
+        return `${time / 1000}sec`;
     };
 }

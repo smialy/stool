@@ -1,31 +1,20 @@
 import { stat, writeFile, readFile, mkdir } from 'fs/promises';
 import { dirname } from 'path';
 
-export async function isFileExists(filePath) {
-    try {
-        await isFile(filePath);
-    } catch (e) {
-        return false;
-    }
-    return true;
-}
-export async function isDirExists(filePath) {
-    try {
-        await isDir(filePath);
-    } catch (e) {
-        return false;
-    }
-    return true;
+export async function isFile(filePath) {
+    return (await stat(filePath)).isFile();
 }
 
 export async function isDir(filePath) {
-    const info = await stat(filePath);
-    return info.isDirectory();
+    return (await stat(filePath)).isDirectory();
 }
 
-export async function isFile(filePath) {
-    const info = await stat(filePath);
-    return info.isFile();
+export async function isFileExists(filePath) {
+    return isFile(filePath).catch(() => false);
+}
+
+export async function isDirExists(filePath) {
+    return isDir(filePath).catch(() => false);
 }
 
 export async function readJsonFile(filePath) {
@@ -39,8 +28,7 @@ export async function readJsonFile(filePath) {
 
 export async function writeTextFile(filePath, content) {
     const basePath = dirname(filePath);
-    const exists = await isDirExists(basePath);
-    if (!exists) {
+    if (!(await isDirExists(basePath))) {
         await mkdir(basePath, { recursive: true });
     }
     await writeFile(filePath, content);
