@@ -55,11 +55,11 @@ export class SimpleFormater implements IFormater {
         }).trim();
     }
     getFormatted(record: IRecord, name: string): string {
-        const value = record[name];
+        const value = (record as unknown as Record<string, unknown>)[name];
         if (value === undefined) {
             return '';
         }
         const method = this.formaters[name];
-        return method ? method(value) : value;
+        return method ? method(value) : value as string;
     }
 }

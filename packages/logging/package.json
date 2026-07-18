@@ -40,7 +40,7 @@
     "vite": "^7.1.9",
     "vitest": "^3.2.4"
   },
-  "files2": [
+  "files": [
     "dist/**/*.*",
     "README.md"
   ]

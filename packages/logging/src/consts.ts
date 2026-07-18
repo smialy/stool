@@ -9,7 +9,7 @@ export enum Levels {
     NOTSET = 0,
 }
 
-export const LEVEL_NAMES = {
+export const LEVEL_NAMES: Record<number, string> = {
     16: 'FATAL',
     8: 'ERROR',
     4: 'WARN',

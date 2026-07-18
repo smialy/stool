@@ -10,7 +10,7 @@ export function checkLevel(level: number | string): number {
     if (typeof level === 'string') {
         const normalizedLevel = level.toUpperCase();
         if (NAMES.includes(normalizedLevel)) {
-            return Levels[normalizedLevel] as number;
+            return Levels[normalizedLevel as keyof typeof Levels] as number;
         }
     }
 
