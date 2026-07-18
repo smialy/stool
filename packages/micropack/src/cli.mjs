@@ -2,12 +2,15 @@
 
 import { program } from 'commander';
 
+import pkg from '../package.json' with { type: 'json' };
 import { DEFAULT_OPTIONS } from './consts.mjs';
 import { setupExceptionHandler } from './utils/error.mjs';
 import micropack from './micropack.mjs';
 import { collectDict, collectList, increaseVerbose } from './utils/cmd.mjs';
 
 program
+    .name('micropack')
+    .version(pkg.version)
     .description('Build bundle')
     .option('--show-config', 'Show current config', false)
     .option(
