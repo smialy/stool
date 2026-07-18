@@ -1,6 +1,6 @@
 {
   "name": "@stool/micropack",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple bundler for tiny modules powered by rollup",
   "type": "module",
   "bin": {
@@ -34,7 +34,6 @@
     "commander": "15.0.0",
     "rollup": "4.62.2",
     "rollup-plugin-postcss": "4.0.2",
-    "tslib": "2.8.1",
     "typescript": "^7.0.2"
   },
   "files": [
@@ -47,9 +46,7 @@
     "micro library"
   ],
   "devDependencies": {
-    "directory-tree": "^3.6.0",
     "eslint": "10.6.0",
-    "execa": "^9.6.1",
     "prettier": "3.9.5",
     "vitest": "^4.1.10"
   }

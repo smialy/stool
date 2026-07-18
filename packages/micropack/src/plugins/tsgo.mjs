@@ -34,19 +34,6 @@ function resolveTsgo() {
 }
 
 /**
- * Resolve the ESM tslib helper path so Rollup can bundle it when
- * `importHelpers` is enabled. Mirrors @rollup/plugin-typescript behavior.
- * @returns {string|null}
- */
-function resolveTslib() {
-    try {
-        return require.resolve('tslib/tslib.es6.js');
-    } catch {
-        return null;
-    }
-}
-
-/**
  * True for file names tsgo emits as JS (i.e. everything except declaration
  * files and source maps).
  */
@@ -75,7 +62,6 @@ function isCodeEmit(name) {
  * @param {string} opts.entry      Absolute path to the entry input file.
  */
 export default function tsgoPlugin({ cwd, pkg, jsx, tsconfig, entry }) {
-    const tslibPath = resolveTslib();
     const declarationDir = getDeclarationDir(cwd, pkg);
     const rootDir = path.dirname(entry);
     const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'micropack-tsgo-'));
@@ -152,12 +138,6 @@ export default function tsgoPlugin({ cwd, pkg, jsx, tsconfig, entry }) {
             // Rebuild is driven by buildStart on the next pass; just ensure a
             // recompile happens.
             didCompile = false;
-        },
-        resolveId(importee) {
-            if (importee === 'tslib') {
-                return tslibPath;
-            }
-            return null;
         },
         load(id) {
             if (!didCompile) {
